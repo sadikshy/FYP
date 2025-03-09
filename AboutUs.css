@@ -1,0 +1,94 @@
+/* Reset some default styles */
+body, h1, h2, p, ul {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Navigation Bar */
+nav {
+    background-color: #333;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo Styling */
+.logo {
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* Navigation List */
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+/* Navigation Links */
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+/* Active Page & Hover Effects */
+nav ul li a:hover,
+nav ul li a.active {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+/* Container Styling */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Headings */
+h1 {
+    font-size: 28px;
+    color: #333;
+}
+
+h2 {
+    font-size: 22px;
+    margin-top: 20px;
+    color: #444;
+}
+
+/* Paragraph Styling */
+p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* Contact Info */
+.contact {
+    margin-top: 30px;
+}
+
+.contact p {
+    font-size: 16px;
+    color: #222;
+}
+
+/* Contact Links */
+.contact a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.contact a:hover {
+    text-decoration: underline;
+}
