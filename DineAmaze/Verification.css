@@ -1,0 +1,92 @@
+/* Verification.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.verification-section {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #e0e0e0; /* Light gray background */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.verification-section h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.verification-form {
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #f9f9f9; /* Lighter background for inputs */
+}
+
+.form-group input:disabled {
+    background-color: #e9e9e9; /* Slightly darker background for disabled inputs */
+    color: #777;
+    border: 1px solid #ccc;
+}
+
+.form-group .citizenship-preview {
+    width: 100%;
+    min-height: 100px;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+    color: #777;
+    font-style: italic;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.verification-form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+    margin-top: 20px; /* Added margin on top */
+}
+
+.verification-form button:hover {
+    background-color: #45a049;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .verification-section {
+        padding: 20px;
+    }
+}
