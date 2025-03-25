@@ -22,18 +22,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Sanitize input (important for security)
-    $email = mysqli_real_escape_string($conn, $email);
-
-    $sql = "SELECT * FROM user WHERE email = '$email'";
-    $result = $conn->query($sql);
+    // Prepare and execute query
+    $stmt = $conn->prepare("SELECT * FROM user WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
+        
+        // Verify password
         if (password_verify($password, $row['password'])) {
             // Login successful
             $_SESSION['user_id'] = $row['user_id']; // Store user ID in session
-            echo '<div class="success-message">Login successful! Redirecting to homepage...</div>';
+            $_SESSION['user_name'] = $row['name']; // Store user name for display
+            
+            echo '<div class="success-message">Login successful! Redirecting...</div>';
             echo '<style>
                     .success-message {
                         font-size: 24px;
@@ -47,33 +51,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         display: inline-block;
                         animation: fadeIn 1s ease-in-out forwards;
                         position: absolute;
+                        top: 50%;
                         left: 50%;
-                        transform: translateX(-50%) scale(0);
+                        transform: translate(-50%, -50%);
                     }
+                    
                     @keyframes fadeIn {
-                        from { 
-                            top: 10%;
-                            transform: translateX(-50%) scale(0.2);
+                        0% {
+                            opacity: 0;
                         }
-                        to {
-                            top: 50%;
-                            transform: translateX(-50%) scale(1);
+                        100% {
+                            opacity: 1;
                         }
                     }
                   </style>';
-            echo '<script>
-                    setTimeout(function() {
-                        window.location.href = "Homepage.html";
-                    }, 2000); // Redirect after 2 seconds
-                  </script>';
+            
+            // Check if there's a redirect destination
+            if (isset($_SESSION['redirect_after_login'])) {
+                $redirect = $_SESSION['redirect_after_login'];
+                unset($_SESSION['redirect_after_login']); // Clear the redirect
+                echo '<meta http-equiv="refresh" content="2;url=' . $redirect . '">';
+            } else {
+                // Default redirect to homepage
+                echo '<meta http-equiv="refresh" content="2;url=Homepage.php">';
+            }
+            
         } else {
             echo '<div class="error-message">Incorrect password.</div>';
         }
     } else {
         echo '<div class="error-message">User not found.</div>';
     }
+    
+    $stmt->close();
 }
 
-// Close the connection (optional, as the script will end here anyway)
-$conn->close(); 
+$conn->close();
 ?>

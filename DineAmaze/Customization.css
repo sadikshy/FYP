@@ -98,45 +98,8 @@ body.dark-mode .pizza-info select {
         grid-template-columns: 1fr; /* Single column on smaller screens */
     }
 }
-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 30px; /* Increased padding */
-    transition: background-color 0.3s ease;
-}
 
-.dark-mode footer {
-    background-color: #1a1a1a;
-}
-
-.footer-content {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    max-width: 1200px; /* Limit width */
-    margin: 0 auto; /* Center */
-}
-
-.nav-footer .nav-links{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    
-   
-}
-.nav-footer .nav-links a{
-    margin-bottom: 10px; /* Add spacing between sections */
-    
-   
-}
-.contact-footer {
-    text-align: left;
-    margin-bottom: 20px; /* Add spacing between sections */
-}
-
-
+/* Remove all footer-related CSS below this line */
 .nav-links a {
     color: white;
     text-decoration: none;
