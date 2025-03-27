@@ -84,7 +84,7 @@ session_start();
             <h3>3. Pizza, Burgers, and Snacks</h3>
             <div class="dish-grid">
                 <div class="dish-item">
-                    <img src="Margherita Pizza.jpg" alt="Margherita Pizza">
+                    <img src="Margherita Pizza.png" alt="Margherita Pizza">
                     <h4>Margherita Pizza - Rs. 350</h4>
                     <p>Ingredients: Pizza Dough, Tomato Sauce, Mozzarella Cheese, Basil</p>
                 </div>
@@ -125,17 +125,17 @@ session_start();
                     <p>Ingredients: Noodles, Vegetables (Carrot, Bell Pepper, Cabbage), Soy Sauce, Garlic, Ginger</p>
                 </div>
                 <div class="dish-item">
-                    <img src="/DineAmaze/jsalkfjl/img" alt="Soy Sauce Noodles">
+                    <img src="Soy Sauce Noodles.jpg" alt="Soy Sauce Noodles">
                     <h4>Soy Sauce Noodles - Rs. 210</h4>
                     <p>Ingredients: Noodles, Soy Sauce, Garlic, Ginger, Green Onion</p>
                 </div>
                 <div class="dish-item">
-                    <img src="/DineAmaze/jsalkfjl/img" alt="Noodles Bowl">
+                    <img src="Noodles Bowl.jpg" alt="Noodles Bowl">
                     <h4>Noodles Bowl - Rs. 150</h4>
                     <p>Ingredients: Noodles, Vegetables, Soy Sauce, Spices</p>
                 </div>
                 <div class="dish-item">
-                    <img src="/DineAmaze/jsalkfjl/img" alt="Pasta Bowl">
+                    <img src="Pasta Bowl.jpg" alt="Pasta Bowl">
                     <h4>Pasta Bowl - Rs. 250</h4>
                     <p>Ingredients: Pasta, Tomato Sauce, Garlic, Basil, Parmesan Cheese</p>
                 </div>
@@ -146,27 +146,27 @@ session_start();
             <h3>5. Desserts</h3>
             <div class="dish-grid">
                 <div class="dish-item">
-                    <img src="/DineAmaze/jsalkfjl/img" alt="Gulab Jamun">
+                    <img src="Gulab Jamun.jpg" alt="Gulab Jamun">
                     <h4>Gulab Jamun - Rs. 80</h4>
                     <p>Ingredients: Milk Powder, Flour, Ghee, Sugar, Rose Water</p>
                 </div>
                 <div class="dish-item">
-                    <img src="/DineAmaze/jsalkfjl/img" alt="Cashew Ladoo">
+                    <img src="Cashew Ladoo.jpg" alt="Cashew Ladoo">
                     <h4>Cashew Ladoo - Rs. 120</h4>
                     <p>Ingredients: Cashews, Sugar, Ghee, Cardamom</p>
                 </div>
                 <div class="dish-item">
-                    <img src="/DineAmaze/jsalkfjl/img" alt="Tiramisu">
+                    <img src="Tiramisu.jpg" alt="Tiramisu">
                     <h4>Tiramisu - Rs. 150</h4>
                     <p>Ingredients: Mascarpone Cheese, Coffee, Ladyfingers, Cocoa Powder, Sugar, Eggs</p>
                 </div>
                 <div class="dish-item">
-                    <img src="/DineAmaze/jsalkfjl/img" alt="Chocolate Cake">
+                    <img src="Chocolate Cake.jpg" alt="Chocolate Cake">
                     <h4>Chocolate Cake - Rs. 180</h4>
                     <p>Ingredients: Flour, Cocoa Powder, Sugar, Eggs, Butter, Baking Powder</p>
                 </div>
                 <div class="dish-item">
-                    <img src="/DineAmaze/jsalkfjl/img" alt="Fruit Salad">
+                    <img src="Fruit Salad.jpg" alt="Fruit Salad">
                     <h4>Fruit Salad - Rs. 130</h4>
                     <p>Ingredients: Seasonal Fruits (Apple, Orange, Banana, Grapes), Honey, Mint</p>
                 </div>
@@ -177,27 +177,27 @@ session_start();
             <h3>6. Beverages</h3>
             <div class="dish-grid">
                 <div class="dish-item">
-                    <img src="/DineAmaze/jsalkfjl/img" alt="Momo Soup">
+                    <img src="Lassi.jpg" alt="Lassi">
                     <h4>Momo Soup - Rs. 70</h4>
-                    <p>Ingredients: Momo (Dumplings), Chicken Broth, Spices, Green Onions</p>
+                    <p>Ingredients: Yogurt, Milk, Sugar, Nuts</p>
                 </div>
                 <div class="dish-item">
-                    <img src="/DineAmaze/jsalkfjl/img" alt="Milkshake">
+                    <img src="Milkshake.jpg" alt="Milkshake">
                     <h4>Milkshake - Rs. 150</h4>
                     <p>Ingredients: Milk, Ice Cream, Sugar, Chocolate or Strawberry Syrup</p>
                 </div>
                 <div class="dish-item">
-                    <img src="/DineAmaze/jsalkfjl/img" alt="Fresh Juice">
+                    <img src="Fruit Juice.png" alt="Fresh Juice">
                     <h4>Fresh Juice - Rs. 120</h4>
                     <p>Ingredients: Fresh Fruit (Orange, Mango, Apple), Ice, Sugar</p>
                 </div>
                 <div class="dish-item">
-                    <img src="/DineAmaze/jsalkfjl/img" alt="Tea">
+                    <img src="Milk Tea.jpg" alt="Milk Tea">
                     <h4>Tea - Rs. 40</h4>
                     <p>Ingredients: Tea Leaves, Milk, Sugar</p>
                 </div>
                 <div class="dish-item">
-                    <img src="/DineAmaze/jsalkfjl/img" alt="Coffee">
+                    <img src="Coffee.jpg" alt="Coffee">
                     <h4>Coffee - Rs. 60</h4>
                     <p>Ingredients: Coffee Beans, Milk, Sugar</p>
                 </div>
