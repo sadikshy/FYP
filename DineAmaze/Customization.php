@@ -19,7 +19,7 @@ session_start();
     <section class="customize-dish">
         <h2>Customize Your Dish</h2>
         <div class="pizza-section">
-            <img src="images/pizza-image.jpg" alt="Pizza" class="pizza-image"> 
+            <img src="images/Menu Photos/pizza-image.jpg" alt="Pizza" class="pizza-image"> 
             <div class="pizza-info">
                 <label for="portion">Number of Portion:</label>
                 <select id="portion">

@@ -246,7 +246,7 @@ section h2::after {
 .welcome-text {
   font-family: 'Great Vibes', cursive;
   font-size: 3.5rem;
-  color: #9370DB;
+  color: #FF6B00;
   margin: 0;
   font-weight: 400;
   line-height: 1;
@@ -489,7 +489,7 @@ footer {
   flex: 1;
   position: relative;
   min-height: 500px;
-  background-image: url('../images/Menu Photos/menu-collage.jpg');
+  background-image: url('../images/menu-collage.jpg');
   background-size: cover;
   background-position: center;
 }

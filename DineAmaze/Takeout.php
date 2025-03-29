@@ -24,7 +24,7 @@ if (!isset($_SESSION['user_id'])) {
     <section class="takeout-section">
         <div class="takeout-info">
             <h1>TakeOut are available</h1>
-            <p>Mon-Sun: 10Am-9PM</p>
+            <p>Mon-Sun: 10AM-10PM</p>
         </div>
 
         <!-- Filter Section -->

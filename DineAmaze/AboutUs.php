@@ -10,40 +10,95 @@ session_start();
     <title>About Us - DineAmaze</title>
     
     <link rel="stylesheet" href="css/header.css">
-    
     <link rel="stylesheet" href="css/AboutUs.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 </head>
 <body>
-    <?php include 'includes/header.php'; ?><br> <br>
+    <?php include 'includes/header.php'; ?>
 
-    <div class="container">
-        <h1>Welcome to DineAmaze!</h1>
-        <p>At <strong>DineAmaze</strong>, we believe that great food is more than just a meal—it's an experience. Our restaurant is dedicated to serving delicious, high-quality dishes made from the freshest ingredients, customized to your taste.</p>
-        
-        <h2>Our Commitment to Quality</h2>
-        <p>We take pride in offering a menu crafted with care and precision. Every dish at <strong>DineAmaze</strong> is prepared with passion, ensuring that each bite is filled with flavor and satisfaction.</p>
-        
-        <h2>Customize Your Meal, Your Way</h2>
-        <p>We offer a unique <strong>food customization feature</strong>, allowing you to create a meal that suits your preferences. To ensure smooth service, we verify each customization request through a simple identity verification process.</p>
-        
-        <h2>Convenient Takeout, No Delivery</h2>
-        <p>At <strong>DineAmaze</strong>, we focus on dine-in and takeout services. Once your order is verified, our chefs begin preparing your meal, and you'll receive a <strong>notification 10 minutes before it's ready</strong>.</p>
-        
-        <h2>Cash Payments for a Hassle-Free Experience</h2>
-        <p>To keep things simple, we accept <strong>cash payments only</strong>. This allows us to focus on delivering excellent food and service.</p>
-        
-        <h2>Join Us for an Amazing Dining Experience</h2>
-        <p>Whether you're stopping by for takeout or looking to enjoy a flavorful meal at our restaurant, <strong>DineAmaze</strong> welcomes you!</p>
-        
-        <div class="contact">
-            <p><strong>📍 Location:</strong> Srijananagar, Bhaktapur</p>
-            <p><strong>📞 Contact Us:</strong> 9861050118, 016675486</p>
-            <p><strong>📧 Email:</strong> <a href="mailto:DineAmaze@gmail.com">DineAmaze@gmail.com</a></p>
-            <p><strong>🌐 Website:</strong> <a href="https://www.dineamaze.com">www.dineamaze.com</a></p>
+    <!-- Hero Section with Who We Are -->
+    <div class="hero-section">
+        <div class="hero-overlay">
+            <h2>About Us</h2>
+            <p class="tagline">Cooking Since 2010</p>
         </div>
     </div>
-    
-    <!-- After your main container div -->
+
+    <!-- About Us Section -->
+    <div class="about-section">
+        <div class="section-title">
+            <h2>About<span>Us</span></h2>
+        </div>
+        <p class="about-description">
+        Welcome to DineAmaze, your go-to place for delicious and authentic food! We offer a variety of meals, including Traditional Nepali Platters, Street Food, Pizza, Burgers, Cozy Bowls, Desserts, and Beverages.
+        </p>
+         <p>At DineAmaze, we focus on quality, taste, and hygiene in every dish. Our food customization feature lets you personalize your meal just the way you like it. To ensure safety, we verify all customized orders with a citizenship photo or national ID card before preparation.</p>
+         <p>Whether you're in the mood for a quick bite, a hearty meal, or a sweet treat, our team is here to serve you with great flavors and excellent service. Every visit to DineAmaze is a memorable dining experience!</p>
+    </div>
+
+    <!-- Our Mission Section -->
+    <div class="mission-section">
+        <div class="mission-container">
+            <div class="mission-images">
+                <div class="image-grid">
+                    <img src="images/AboutUs/chef-cooking.jpg" alt="Chef cooking" class="grid-image img1">
+                    <img src="images/AboutUs/Food.jpg" alt="Our team" class="grid-image img2">
+                    <img src="images/AboutUs/food-prep.jpg" alt="Food preparation" class="grid-image img3">
+                </div>
+            </div>
+            <div class="mission-content">
+                <h2> <span>Our</span>  Mission</h2>
+                <p>At DineAmaze, our mission is to make every meal delicious and memorable. We believe food is more than just eating—it’s an experience to enjoy. That’s why we use fresh, high-quality ingredients to serve everything from Traditional Nepali Meals to Pizza, Burgers, and Street Food.</p>
+                <p>We provide a clean and cozy space and let you customize your meal while keeping it safe with ID verification. Whether you're dining in or picking up, we ensure fast service and notify you 10 minutes before your order is ready. At DineAmaze, we promise great taste, hygiene, and a warm welcome every time.</p>
+                <p>We believe in using only the freshest ingredients and authentic recipes to create dishes that transport you to Nepal with every bite.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Why To Choose Us Section -->
+    <div class="why-choose-section">
+        <div class="section-title">
+            <h2><span>Why</span> To Choose Us</h2>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fi fi-rr-restaurant"></i>
+                <h3>Authentic & Customizable Meals</h3>
+                <p>Our dishes are prepared using traditional recipes and cooking methods to ensure authentic flavors, while allowing you to customize each meal to your preferences.</p>
+            </div>
+            
+            <div class="feature-card">
+                <i class="fi fi-rr-leaf"></i>
+                <h3>Fresh & Quality Ingredients</h3>
+                <p>We choose fresh local ingredients to prepare dishes that are not only delicious but also nutritious.</p>
+            </div>
+            
+            <div class="feature-card">
+                <i class="fi fi-rr-shield-check"></i>
+                <h3>Secure Customization Process</h3>
+                <p>We verify all customized orders with ID verification to ensure safety and accuracy in your personalized meal preparation.</p>
+            </div>
+            
+            <div class="feature-card">
+                <i class="fi fi-rr-home"></i>
+                <h3>Hygienic & Cozy Ambience</h3>
+                <p>Our restaurant offers a clean, cozy, and welcoming environment that makes you feel right at home while enjoying your meal.</p>
+            </div>
+            
+            <div class="feature-card">
+                <i class="fi fi-rr-alarm-clock"></i>
+                <h3>Timely Notifications & Easy Pickup</h3>
+                <p>We ensure fast service and notify you 10 minutes before your order is ready, making pickup convenient and efficient.</p>
+            </div>
+            
+            <div class="feature-card">
+                <i class="fi fi-rr-money"></i>
+                <h3>Cash Payment Convenience</h3>
+                <p>We offer simple cash payment options for your convenience, making transactions hassle-free.</p>
+            </div>
+        </div>
     </div>
     
     <?php include 'includes/footer.php'; ?>
