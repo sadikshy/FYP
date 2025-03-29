@@ -1,0 +1,159 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    color: #333;
+  
+}
+
+/* Contact Container Styles */
+.contact-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    height: 75vh;
+}
+
+/* Contact Info Styles */
+.contact-info {
+    width: 45%;
+}
+
+.contact-info h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.contact-details-table {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contact-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.contact-row .label {
+    font-weight: bold;
+    color: #333;
+    width: 30%;
+}
+
+.contact-row .value {
+    color: #666;
+    width: 65%;
+}
+
+/* Restaurant Image Styles */
+.restaurant-image {
+    width: 45%;
+}
+
+.restaurant-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 30px 0 10px;
+    margin-top: 50px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.nav-footer, .contact-footer {
+    margin-bottom: 20px;
+}
+
+.nav-footer h3, .contact-footer h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #4CAF50;
+}
+
+.nav-links a {
+    color: #ddd;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #4CAF50;
+}
+
+.contact-footer p {
+    margin-bottom: 8px;
+    color: #ddd;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+    margin-top: 20px;
+}
+
+.footer-bottom p {
+    font-size: 14px;
+    color: #aaa;
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+    .contact-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .contact-info, .restaurant-image {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .contact-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .contact-row .label {
+        margin-bottom: 5px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .nav-footer, .contact-footer {
+        width: 100%;
+    }
+}

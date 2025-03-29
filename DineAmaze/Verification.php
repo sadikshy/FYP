@@ -18,11 +18,12 @@ $order = $_SESSION['takeout_order'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verification - DineAmaze</title>
-    <link rel="stylesheet" href="Homepage.css">
-    <link rel="stylesheet" href="Verification.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/Homepage.css">
+    <link rel="stylesheet" href="css/Verification.css">
 </head>
 <body>
-    <?php include 'header.php'; ?>
+    <?php include 'includes/header.php'; ?>
 
     <section class="verification-section">
         <h2>Verification to Confirm TakeOut</h2>
@@ -48,31 +49,7 @@ $order = $_SESSION['takeout_order'];
         </form>
     </section>
 
-    <footer>
-        <div class="footer-content">
-            <div class="nav-footer">
-                <h3>Navigation</h3>
-                <div class="nav-links">
-                    <a href="Homepage.php">Home</a> | 
-                    <a href="AboutUs.php">About Us</a> | 
-                    <a href="Menu.php">Menu</a> | 
-                    <a href="Customization.php">Customization</a> | 
-                    <a href="Takeout.php">TakeOut</a> | 
-                    <a href="ContactUs.php">Contact Us</a> | 
-                    <a href="account_settings.php">My Account</a>
-                </div>
-            </div>
-            <div class="contact-footer" id="contact">
-                <h3>Contact Us</h3>
-                <p>Email: DineAmaze@gmail.com</p>
-                <p>Phone: 9861050118, 016675486</p>
-                <p>Address: Srijananagar, Bhaktapur</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 DineAmaze. All rights reserved.</p>
-        </div>
-    </footer>
+    <?php include 'includes/footer.php'; ?>
 
     <script>
         // Preview uploaded ID document

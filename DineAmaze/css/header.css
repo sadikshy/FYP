@@ -1,0 +1,433 @@
+/* Header Styles */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 15px 50px;
+  color: #fff;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+
+height: fit-content;
+}
+
+.logo {
+  font-size: 1.8em;
+  font-weight: 700;
+  text-decoration: none;
+  color: #fff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.logo span {
+  color: #fff;
+}
+
+
+/* Cart icon styling - updated to be visible on all screen sizes */
+/* Cart icon styling - make it more visible */
+.cart-icon {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-size: 1.3em;
+  margin-left: 15px;
+  text-decoration: none;
+  position: relative;
+  z-index: 1001;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff6b00;
+  color: white;
+  font-size: 0.5em;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Navigation styling for horizontal layout */
+nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* Mobile menu button styling - hidden by default */
+.mobile-menu-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  display: none;
+  z-index: 1002;
+  position: absolute;
+  left: 20px;
+  top: 15px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+}
+
+nav ul li {
+  display: inline;
+}
+
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9em;
+  transition: color 0.3s ease;
+  position: relative;
+  padding: 5px 0;
+}
+
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -5px;
+  left: 0;
+  background-color: #fff;
+  transition: width 0.5s ease;
+}
+
+nav ul li a:hover::after,
+nav ul li a.active::after {
+  width: 100%;
+}
+
+nav ul li a:hover,
+nav ul li a:focus,
+nav ul li a.active {
+  color: #fff;
+}
+
+/* User actions styling */
+.user-actions {
+  display: flex;
+  align-items: center;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+  margin-right: 20px;
+}
+
+.user-profile span {
+  font-size: 1.1em;
+  font-weight: 500;
+  margin-left: 5px;
+  letter-spacing: 0.5px;
+}
+
+.user-profile ion-icon {
+  font-size: 1.8em;
+  margin-right: 8px;
+}
+
+.logout {
+  text-decoration: none;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+/* Removed hover effect */
+
+.login {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+}
+
+/* Mobile menu button styling */
+.mobile-menu-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  display: none;
+  z-index: 1002;
+  position: absolute;
+  left: 20px;
+  top: 15px;
+}
+
+/* Overlay styling */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 998;
+  display: none;
+}
+
+/* Media queries for responsive design */
+@media screen and (max-width: 992px) {
+  header {
+    padding: 15px 20px;
+    flex-wrap: wrap;
+    
+    height: auto;
+  }
+  
+  .logo {
+    margin: 0 auto;
+  }
+  
+  .mobile-menu-btn {
+    display: block !important;
+  }
+  
+  /* Updated nav styling to slide from top */
+  nav {
+    position: fixed;
+    top: -100%;
+    left: 0;
+   
+    width: 100%;
+    height: auto;
+    background-color: rgba(34, 34, 34, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 999;
+    transition: top 0.5s ease;
+    padding: 60px 0 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  nav.active {
+    top: 0;
+  }
+  
+  nav ul {
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+  
+  nav ul li {
+    width: 100%;
+  }
+  
+  nav ul li a {
+    display: block;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+  }
+  
+  .user-actions {
+    margin-left: 0;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .user-profile, .login, .logout {
+    margin: 10px 0;
+    padding: 10px 20px;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  /* Ensure cart icon is visible on mobile */
+  .cart-icon {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    z-index: 1003;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .logo {
+    font-size: 1.5em;
+  }
+}
+
+/* Profile image styling */
+.profile-image {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+/* Cart icon styling */
+/* Cart icon styling - updated for better visibility */
+.cart-icon {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+  margin-left: 15px;
+  position: relative;
+}
+
+.cart-icon i {
+  font-size: 24px;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff6b00;
+  color: white;
+  font-size: 0.7em;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* User actions styling */
+.user-actions {
+  display: flex;
+  align-items: center;
+}
+nav{
+    padding: 40px 0 10px;
+}
+
+/* Media queries for responsive design */
+@media screen and (max-width: 992px) {
+  header {
+    padding: 15px 20px;
+  }
+  
+  .logo {
+    margin: 0 auto;
+  }
+  
+  .mobile-menu-btn {
+    display: block !important;
+  }
+  
+  /* Ensure cart icon is visible on mobile */
+  .cart-icon {
+    position: fixed;
+    right: 20px;
+    top: 15px;
+    z-index: 1003;
+  }
+  
+  /* Fix user profile display on mobile */
+  .user-profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .user-profile ion-icon {
+    font-size: 1.5em;
+    margin-right: 8px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .user-actions {
+    justify-content: center;
+  }
+  
+  .profile-image {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .user-profile span {
+    font-size: 1em;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .logo {
+    font-size: 1.5em;
+  }
+  
+  .cart-icon i {
+    font-size: 22px;
+  }
+  
+  .cart-count {
+    width: 16px;
+    height: 16px;
+    font-size: 0.65em;
+  }}
+
+/* Menu icon animation */
+.mobile-menu-btn i {
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+.mobile-menu-btn i.rotate {
+  transform: rotate(90deg);
+}
+
+.icon-transition {
+  animation: iconFade 0.3s ease;
+}
+
+@keyframes iconFade {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* For the cross icon */
+@keyframes crossFade {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(90deg);
+  }
+}

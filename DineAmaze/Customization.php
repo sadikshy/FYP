@@ -8,16 +8,18 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customize Your Dish - DineAmaze</title>
-    <link rel="stylesheet" href="Homepage.css">
-    <link rel="stylesheet" href="Customization.css"> 
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/Homepage.css">
+    <link rel="stylesheet" href="css/Customization.css"> 
+  
 </head>
 <body>
-    <?php include 'header.php'; ?>
-
+    <?php include 'includes/header.php'; ?>
+    <br> <br>
     <section class="customize-dish">
         <h2>Customize Your Dish</h2>
         <div class="pizza-section">
-            <img src="pizza-image.jpg" alt="Pizza" class="pizza-image"> 
+            <img src="images/pizza-image.jpg" alt="Pizza" class="pizza-image"> 
             <div class="pizza-info">
                 <label for="portion">Number of Portion:</label>
                 <select id="portion">
@@ -44,10 +46,7 @@ session_start();
         </div>
         <button class="confirm-button">Confirm Customization</button>
     </section>
-
-    <!-- After your customize-dish section -->
-    </div>
     
-    <?php include 'footer.php'; ?>
+    <?php include 'includes/footer.php'; ?>
 </body>
 </html>

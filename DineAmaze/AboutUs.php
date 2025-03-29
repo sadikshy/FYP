@@ -9,11 +9,12 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - DineAmaze</title>
     
-    <link rel="stylesheet" href="Homepage.css">
-    <link rel="stylesheet" href="AboutUs.css">
+    <link rel="stylesheet" href="css/header.css">
+    
+    <link rel="stylesheet" href="css/AboutUs.css">
 </head>
 <body>
-    <?php include 'header.php'; ?>
+    <?php include 'includes/header.php'; ?><br> <br>
 
     <div class="container">
         <h1>Welcome to DineAmaze!</h1>
@@ -45,6 +46,6 @@ session_start();
     <!-- After your main container div -->
     </div>
     
-    <?php include 'footer.php'; ?>
+    <?php include 'includes/footer.php'; ?>
 </body>
 </html>

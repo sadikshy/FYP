@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_profile'])) {
     $sql = "UPDATE user SET name = '$name', email = '$email', phone_number = '$phone' WHERE user_id = '$userId'";
     
     if ($conn->query($sql) === TRUE) {
-        $updateMessage = "<div class='alert alert-success'>Profile updated successfully!</div>";
+        $_SESSION['profile_updated'] = true;
         // Refresh user data
         $sql = "SELECT * FROM user WHERE user_id = '$userId'";
         $result = $conn->query($sql);
@@ -79,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['change_password'])) {
             $sql = "UPDATE user SET password = '$hashedPassword' WHERE user_id = '$userId'";
             
             if ($conn->query($sql) === TRUE) {
-                $updateMessage = "<div class='alert alert-success'>Password changed successfully!</div>";
+                $_SESSION['password_updated'] = true;
             } else {
                 $updateMessage = "<div class='alert alert-danger'>Error changing password: " . $conn->error . "</div>";
             }
@@ -101,7 +101,8 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Settings - DineAmaze</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="Homepage.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/Homepage.css">
     <style>
         .account-container {
             max-width: 900px;
@@ -167,10 +168,60 @@ $conn->close();
             display: inline-block;
             width: 120px;
         }
+        
+        /* Custom alert styling */
+        .alert-dismissible {
+            position: fixed;
+            top: 80px; /* Increased from 20px to position below navigation */
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            animation: slideInRight 0.5s ease-in-out;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
-    <?php include 'header.php'; ?>
+    <?php include 'includes/header.php'; ?>
+    <br> <br>
+    <!-- Bootstrap Alert for Profile Update -->
+    <?php if(isset($_SESSION['profile_updated']) && $_SESSION['profile_updated']): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert" id="profileAlert">
+        <strong>Success!</strong> Profile updated successfully!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <?php 
+        // Clear the session variable
+        unset($_SESSION['profile_updated']);
+    ?>
+    <?php endif; ?>
+    
+    <!-- Bootstrap Alert for Password Update -->
+    <?php if(isset($_SESSION['password_updated']) && $_SESSION['password_updated']): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert" id="passwordAlert">
+        <strong>Success!</strong> Password changed successfully!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <?php 
+        // Clear the session variable
+        unset($_SESSION['password_updated']);
+    ?>
+    <?php endif; ?>
 
     <div class="account-container">
         <h2 class="text-center mb-4">Account Settings</h2>
@@ -296,11 +347,26 @@ $conn->close();
         </div>
     </div>
 
-    <?php include 'footer.php'; ?>
+    <?php include 'includes/footer.php'; ?>
     
     <!-- Add Bootstrap JS for tab functionality -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <!-- Auto-dismiss alerts after 5 seconds -->
+    <script>
+        $(document).ready(function(){
+            // Auto-dismiss profile alert
+            setTimeout(function(){
+                $("#profileAlert").alert('close');
+            }, 5000);
+            
+            // Auto-dismiss password alert
+            setTimeout(function(){
+                $("#passwordAlert").alert('close');
+            }, 5000);
+        });
+    </script>
 </body>
 </html>

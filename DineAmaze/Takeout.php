@@ -15,11 +15,11 @@ if (!isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TakeOut - DineAmaze</title>
-    <link rel="stylesheet" href="Homepage.css">
-    <link rel="stylesheet" href="Takeout.css">
+    <link rel="stylesheet" href="css/Homepage.css">
+    <link rel="stylesheet" href="css/Takeout.css">
 </head>
 <body>
-    <?php include 'header.php'; ?>
+    <?php include 'includes/header.php'; ?>
 
     <section class="takeout-section">
         <div class="takeout-info">
@@ -71,7 +71,7 @@ if (!isset($_SESSION['user_id'])) {
                     <div class="menu-items">
                         <div class="menu-item">
                             <div class="dish-image">
-                                <img src="MOMO.jpg" alt="Momo">
+                                <img src="images/Menu Photos/MOMO.jpg" alt="Momo">
                             </div>
                             <div class="dish-details">
                                 <input type="checkbox" id="item1" name="menuItems[]" value="Momo">
@@ -86,7 +86,7 @@ if (!isset($_SESSION['user_id'])) {
                         </div>
                         <div class="menu-item">
                             <div class="dish-image">
-                                <img src="Veg Khana Set.jpg" alt="Veg Khana Set">
+                                <img src="images/Menu Photos/Veg Khana Set.jpg" alt="Veg Khana Set">
                             </div>
                             <div class="dish-details">
                                 <input type="checkbox" id="item2" name="menuItems[]" value="Dal Bhat">
@@ -101,7 +101,7 @@ if (!isset($_SESSION['user_id'])) {
                         </div>
                         <div class="menu-item">
                             <div class="dish-image">
-                                <img src="Chicken Burger.jpg" alt="Chicken Burger">
+                                <img src="images/Menu Photos/Chicken Burger.jpg" alt="Chicken Burger">
                             </div>
                             <div class="dish-details">
                                 <input type="checkbox" id="item3" name="menuItems[]" value="Chicken Burger">
@@ -122,10 +122,10 @@ if (!isset($_SESSION['user_id'])) {
                     <div class="menu-items">
                         <div class="menu-item">
                             <div class="dish-image">
-                                <img src="Fruit Juice.png" alt="Fresh Juice">
+                                <img src="images/Menu Photos/Fruit Juice.png" alt="Orange Juice">
                             </div>
                             <div class="dish-details">
-                                <input type="checkbox" id="drink1" name="menuItems[]" value="Fresh Juice">
+                                <input type="checkbox" id="drink1" name="menuItems[]" value="Orange Juice">
                                 <label for="drink1">Fresh Juice - Rs. 120</label>
                                 <select name="quantity[Fresh Juice]">
                                     <option value="1">1</option>
@@ -137,11 +137,11 @@ if (!isset($_SESSION['user_id'])) {
                         </div>
                         <div class="menu-item">
                             <div class="dish-image">
-                                <img src="Milk Shake.jpg" alt="Milkshake">
+                                <img src="images/Menu Photos/Vanilla Milkshake.jpg" alt="Vanilla Milkshake">
                             </div>
                             <div class="dish-details">
-                                <input type="checkbox" id="drink2" name="menuItems[]" value="Milkshake">
-                                <label for="drink2">Milkshake - Rs. 150</label>
+                                <input type="checkbox" id="drink2" name="menuItems[]" value="Vanilla Milkshake">
+                                <label for="drink2">Vanilla Milkshake - Rs. 150</label>
                                 <select name="quantity[Milkshake]">
                                     <option value="1">1</option>
                                     <option value="2">2</option>

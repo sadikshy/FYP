@@ -9,122 +9,220 @@ if (session_status() == PHP_SESSION_NONE) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dine Time - Exquisite Dining Experience</title>
-    <link rel="stylesheet" href="Homepage.css">
+    <title>DineAmaze - Exquisite Dining Experience</title>
+    <link rel="stylesheet" href="css/Homepage.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 </head>
 <body>
-    <?php include 'header.php'; ?>
+    <?php include 'includes/header.php'; ?>
 
     <section class="hero">
         <div class="slider">
-            <img src="Sliderimage1.jpg" alt="Delicious Pasta Dish">
-            <img src="Sliderimage2.jpg" alt="Gourmet Burger with Fries">
-            <img src="Sliderimage3.jpg" alt="Fresh Salad with Grilled Chicken">
+            <img src="images/Menu Photos/Sliderimage1.jpg" alt="Delicious Pasta Dish" class="active">
+            <img src="images/Menu Photos/Sliderimage2.jpg" alt="Gourmet Burger with Fries">
+            <img src="images/Menu Photos/Sliderimage3.jpg" alt="Fresh Salad with Grilled Chicken">
         </div>
         <div class="hero-content">
-            <h1>Experience Culinary Excellence at DineAmaze</h1>
-            <p>Discover a world of flavors with our meticulously crafted dishes.</p>
-            <a href="#menu" class="cta-button">View Our Menu</a>
+            <!-- Removed the title-ribbon div -->
+            <h1 class="curved-text">DINEAMAZE</h1>
+            <p>Flavors That Feel Like Home!</p>
+            <a href="#menu" class="cta-button">VIEW DETAILS</a>
         </div>
     </section>
 
     <section class="about" id="about">
-        <h2>About DineAmaze</h2>
-        <p>Welcome to DineAmaze, where we believe in creating memorable dining experiences. Our chefs are passionate about using the freshest ingredients to craft exquisite dishes that delight your senses. We pride ourselves on our commitment to quality and exceptional service.</p>
-        <p>Our story began with a simple idea: to bring people together through the love of good food. We've grown into a beloved dining destination, known for our innovative menu and warm, inviting atmosphere. Whether you're here for a casual lunch, a romantic dinner, or a special celebration, we're dedicated to making your visit unforgettable.</p>
-    </section>
-
-    <section class="menu" id="menu">
-        <h2>Our Delectable Menu</h2>
-        <div class="menu-items">
-            <div class="item">
-                <img src="SignaturePasta.png" alt="Dish 1">
-                <h3>Signature Pasta</h3>
-                <p>Homemade pasta with rich tomato sauce and fresh basil.</p>
-                <span class="price">Rs 970</span>
+        <div class="about-container">
+            <div class="about-text">
+                <h3 class="welcome-text">Welcome!</h3>
+                <h4 class="to-text">TO</h4>
+                <h2 class="restaurant-name">DINEAMAZE</h2>
+                
+                <p class="about-description">
+                    A wonderful serenity has taken possession of our kitchen, 
+                    where we craft exquisite dishes with passion and 
+                    creativity that delight the senses.
+                </p>
             </div>
-            <div class="item">
-                <img src="GourmetBurger.jpeg" alt="Dish 2">
-                <h3>Gourmet Burger</h3>
-                <p>Juicy beef patty with caramelized onions and special sauce.</p>
-                <span class="price">Rs 830</span>
-            </div>
-            <div class="item">
-                <img src="GrilledChickenSalad.jpg" alt="Dish 3">
-                <h3>Grilled Chicken Salad</h3>
-                <p>Fresh greens with grilled chicken, avocado, and citrus dressing.</p>
-                <span class="price">Rs 740</span>
-            </div>
-            <div class="item">
-                <img src="VegetarianPizza.jpg" alt="Dish 4">
-                <h3>Vegetarian Pizza</h3>
-                <p>Thin crust pizza with seasonal vegetables and mozzarella.</p>
-                <span class="price">Rs 1200</span>
-            </div>
-            <div class="item">
-                <img src="ChocolateLavaCake.jpg" alt="Dish 5">
-                <h3>Chocolate Lava Cake</h3>
-                <p>Warm chocolate cake with molten chocolate center and vanilla ice cream.</p>
-                <span class="price">Rs 600</span>
-            </div>
-            <div class="item">
-                <img src="FreshFruitSmoothie.jpeg" alt="Dish 6">
-                <h3>Fresh Fruit Smoothie</h3>
-                <p>Blend of seasonal fruits and yogurt, perfect for a refreshing treat.</p>
-                <span class="price">Rs 500</span>
+            <div class="about-images">
+                <div class="image-container">
+                    <img src="images/Menu Photos/Coffee.jpg" alt="Coffee Cup" class="about-img img1">
+                    <img src="images/Menu Photos/DeliciousFood.jpg" alt="Indian Thali" class="about-img img2">
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="customization" id="customization">
-        <h2>Customize Your Dining Experience</h2>
-        <p>Make your meal uniquely yours! Choose from a variety of options to customize your order.</p>
-        <button class="customize-button">Customize Your Order</button>
-    </section>
-
-    <section class="offers" id="offers">
-        <h2>Special Offers & Promotions</h2>
-        <p>Don't miss out on our exciting deals and promotions!</p>
-        <div class="offer-items">
-            <div class="offer">
-                <h3>Weekday Lunch Special</h3>
-                <p>Enjoy a set lunch menu at a special price from Monday to Friday.</p>
-                <span class="offer-price">$9.99</span>
+    <section class="menu-showcase" id="menu">
+        <div class="menu-container">
+            <div class="menu-image-grid">
+                <div class="menu-overlay">
+                    <h3 class="menu-subtitle">Our</h3>
+                    <h2 class="menu-title">MENU</h2>
+                </div>
             </div>
-            <div class="offer">
-                <h3>Family Dinner Deal</h3>
-                <p>Get a family-sized meal with a variety of dishes for a discounted price.</p>
-                <span class="offer-price">$39.99</span>
-            </div>
-            <div class="offer">
-                <h3>Happy Hour Drinks</h3>
-                <p>Enjoy discounted drinks during our happy hour from 5 PM to 7 PM.</p>
-                <span class="offer-price">50% Off</span>
+            <div class="menu-text">
+                <h3 class="delicious-text">Delicious!</h3>
+                <h2 class="dishes-text">DISHES</h2>
+                
+                <p class="menu-description">
+                    A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart. I am alone, and feel the charm of existence in this spot.
+                </p>
+                
+                <a href="menu.php" class="view-menu-btn">VIEW FULL MENU</a>
             </div>
         </div>
     </section>
 
-    <section class="reviews" id="reviews">
-        <h2>What Our Customers Say</h2>
-        <div class="review-items">
-            <div class="review">
-                <p>★★★★★ - "The food was absolutely delicious! The service was top-notch and the ambiance was perfect. Highly recommend!"</p>
-                <span class="reviewer">- Sarah M.</span>
+    <section class="gallery-section" id="gallery">
+        <div class="gallery-header">
+            <h2 class="gallery-title">Our<span>Gallery</span></h2>
+            <p class="gallery-description">
+                Aenean sodales dictum augue, in faucibus nisi sollicitudin eu. Nulla semper arcu vel diam auctor condimentum.
+                Nam molestie sem eu quam fermentum a tempus nisi aliquet.
+            </p>
+        </div>
+        
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="images/gallery/bread.jpg" alt="Freshly Baked Bread">
+                <div class="gallery-overlay">
+                    <div class="overlay-content">
+                        <h3>Eat organic</h3>
+                        <p>BREAD</p>
+                    </div>
+                </div>
             </div>
-            <div class="review">
-                <p>★★★★★ - "DineAmaze is my new favorite spot! The menu is creative and the dishes are always cooked to perfection. A must-try!"</p>
-                <span class="reviewer">- John D.</span>
+            <div class="gallery-item">
+                <img src="images/gallery/GrilledChickenSalad.jpg" alt="Fresh Salad">
+                <div class="gallery-overlay">
+                    <div class="overlay-content">
+                        <h3>Fresh ingredients</h3>
+                        <p>SALAD</p>
+                    </div>
+                </div>
             </div>
-            <div class="review">
-                <p>★★★★★ - "Great experience! The staff was friendly and attentive, and the food was incredible. Will definitely be coming back."</p>
-                <span class="reviewer">- Emily L.</span>
+            <div class="gallery-item">
+                <img src="images/gallery/SignaturePasta.png" alt="Spices">
+                <div class="gallery-overlay">
+                    <div class="overlay-content">
+                        <h3>Rich flavors</h3>
+                        <p>SPICES</p>
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/gallery/Momo.jpg" alt="Hummus">
+                <div class="gallery-overlay">
+                    <div class="overlay-content">
+                        <h3>All time Favourite</h3>
+                        <p>Lunch</p>
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/gallery/Noodles.jpg" alt="Fresh Fruits">
+                <div class="gallery-overlay">
+                    <div class="overlay-content">
+                        <h3>Warm your soul with every bite!</h3>
+                        <p>Cozy Bowl</p>
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/gallery/Coffee.jpg" alt="Breakfast">
+                <div class="gallery-overlay">
+                    <div class="overlay-content">
+                        <h3>Start your day</h3>
+                        <p>Hot Drinks</p>
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/gallery/CheesePizza.jpg" alt="Pizza">
+                <div class="gallery-overlay">
+                    <div class="overlay-content">
+                        <h3>Handcrafted</h3>
+                        <p>PIZZA</p>
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="images/gallery/ChocolateLavaCake.jpg" alt="Dessert">
+                <div class="gallery-overlay">
+                    <div class="overlay-content">
+                        <h3>Sweet endings</h3>
+                        <p>DESSERT</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- At the end of your body content, before closing body tag -->
+    <section class="services-section" id="services">
+        <div class="services-header">
+            <h2 class="services-title">Our<span>Services</span></h2>
+            <p class="services-description">
+                Aenean sodales dictum augue, in faucibus nisi sollicitudin eu. Nulla semper arcu vel diam auctor condimentum.
+                Nam molestie sem eu quam fermentum a tempus nisi aliquet.
+            </p>
+        </div>
+        
+        <div class="services-container">
+            <div class="service-item">
+                <div class="service-icon">
+                    <img src="images/services-icons/Customize.png" alt="Customization">
+                </div>
+                <h3 class="service-title">Customization</h3>
+                <p class="service-description">
+                    Lorem ipsum dolor sit amet, tetur piscing elit. Suspendisse smod congue bibendum.
+                </p>
+            </div>
+            
+            <div class="service-item">
+                <div class="service-icon">
+                    <img src="images/services-icons/HotDeals.png" alt="Hot Deals">
+                </div>
+                <h3 class="service-title">Hot Deals</h3>
+                <p class="service-description">
+                    Lorem ipsum dolor sit amet, tetur piscing elit. Suspendisse smod congue bibendum.
+                </p>
+            </div>
+            
+            <div class="service-item">
+                <div class="service-icon">
+                    <img src="images/services-icons/Takeout.png" alt="Takeout">
+                </div>
+                <h3 class="service-title">Takeout</h3>
+                <p class="service-description">
+                    Lorem ipsum dolor sit amet, tetur piscing elit. Suspendisse smod congue bibendum.
+                </p>
+            </div>
+            
+           
+        </div>
+    </section>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <?php include 'includes/footer.php'; ?>
     
-    <?php include 'footer.php'; ?>
-    <script src="slider.js"></script>
+    <script>
+        // Image slider functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slider img');
+        
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+        
+        // Change slide every 5 seconds
+        setInterval(nextSlide, 5000);
+    </script>
 </body>
 </html>

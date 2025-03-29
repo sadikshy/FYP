@@ -8,12 +8,13 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - DineAmaze</title>
-    <link rel="stylesheet" href="Homepage.css">
-    <link rel="stylesheet" href="ContactUs.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/Homepage.css">
+    <link rel="stylesheet" href="css/ContactUs.css">
 </head>
 <body>
-    <?php include 'header.php'; ?>
-
+    <?php include 'includes/header.php'; ?>
+    <br> <br>
     <div class="contact-container">
         <div class="contact-info">
             <h2>Restaurant Contact Details</h2>
@@ -38,13 +39,13 @@ session_start();
         </div>
 
         <div class="restaurant-image">
-            <img src="resturant.jpeg" alt="Restaurant Image">
+            <img src="images/resturant.jpeg" alt="Restaurant Image">
         </div>
     </div>
     
     <!-- After your contact-container div -->
     </div>
     
-    <?php include 'footer.php'; ?>
+    <?php include 'includes/footer.php'; ?>
 </body>
 </html>
