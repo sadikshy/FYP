@@ -21,7 +21,7 @@ session_start();
     <div class="hero-section">
         <div class="hero-overlay">
             <h2>About Us</h2>
-            <p class="tagline">Cooking Since 2010</p>
+            <p class="tagline">Cooking Since 2023</p>
         </div>
     </div>
 

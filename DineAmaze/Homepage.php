@@ -27,7 +27,7 @@ if (session_status() == PHP_SESSION_NONE) {
             <!-- Removed the title-ribbon div -->
             <h1 class="curved-text">DINEAMAZE</h1>
             <p>Flavors That Feel Like Home!</p>
-            <a href="#menu" class="cta-button">VIEW DETAILS</a>
+            <a href="AboutUs.php" class="cta-button">VIEW DETAILS</a>
         </div>
     </section>
 

@@ -62,8 +62,6 @@ body {
   padding: 0 20px;
 }
 
-/* Removing the title-ribbon styles since we don't need it anymore */
-
 .curved-text {
   font-size: 6.5rem;
   font-weight: 800;
@@ -276,15 +274,6 @@ section h2::after {
   margin: 30px 0;
 }
 
-.about-description {
-  color: #666;
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin-bottom: 20px;
-  font-style: italic;
-  max-width: 500px;
-}
-
 .about-images {
   flex: 1;
   position: relative;
@@ -330,9 +319,7 @@ section h2::after {
     margin: 30px auto;
   }
   
-  .about-description {
-    margin: 0 auto 20px;
-  }
+ 
   
   .about-images {
     width: 100%;
@@ -489,7 +476,7 @@ footer {
   flex: 1;
   position: relative;
   min-height: 500px;
-  background-image: url('../images/menu-collage.jpg');
+  background-image: url('../images/Menu Photos/menu-collage.jpg');
   background-size: cover;
   background-position: center;
 }
