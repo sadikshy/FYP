@@ -38,11 +38,18 @@
         <div class="modal-content">
             <h2>Verification</h2>
             <button id="close-otp-modal" style="position: absolute; top: 10px; right: 10px; border: none; background: none; cursor: pointer; font-size: 30px;">&times;</button>
-            <input type="text" id="otp-email" placeholder="Enter email">
-            <button id="send-otp">Send OTP</button><br><br>
-            <input type="text" id="otp-code" placeholder="Enter OTP">
-            <button id="verify-otp">Verify</button>
-            <p id="otp-message"></p>
+            
+            <!-- Email input container - can be hidden when auto-sending OTP -->
+            <div id="email-input-container">
+                <input type="text" id="otp-email" placeholder="Enter email">
+                <button id="send-otp">Send OTP</button>
+            </div>
+            
+            <div id="otp-verification-container">
+                <input type="text" id="otp-code" placeholder="Enter OTP">
+                <button id="verify-otp">Verify</button>
+                <p id="otp-message"></p>
+            </div>
         </div>
     </div>
     <div id="reset-password-modal" style="display: none;">
@@ -56,7 +63,7 @@
         </div>
     </div>
     </div>
-    <script src="Loginscript.js"></script>
+    <script src="js/Loginscript.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
