@@ -34,123 +34,114 @@ session_start();
                     <i class="fas fa-utensils"></i>
                     <span>All Items</span>
                 </div>
-                <div class="filter-item" data-filter="nepali">
-                    <i class="fi fi-sc-plate"></i>
-                    <span>Traditional Nepali Meals & Platters</span>
-                </div>
-                <div class="filter-item" data-filter="street">
-                    <i class="fas fa-hotdog"></i>
-                    <span>Street Food & Quick Bites</span>
-                </div>
-                <div class="filter-item" data-filter="snacks">
-                    <i class="fas fa-hamburger"></i>
-                    <span>Pizza, Burger & Snacks</span>
-                </div>
-                <div class="filter-item" data-filter="noodles">
-                    <i class="fi fi-ss-bowl-chopsticks-noodles"></i>
-                    <span>Cozy Bowls & Noodles Delights</span>
-                </div>
-                <div class="filter-item" data-filter="desserts">
-                    <i class="fas fa-ice-cream"></i>
-                    <span>Desserts</span>
-                </div>
-                <div class="filter-item" data-filter="beverages">
-                    <i class="fas fa-mug-hot"></i>
-                    <span>Beverages</span>
-                </div>
+                <?php
+                // Database connection
+                $conn = new mysqli("localhost", "root", "", "dineamaze_database");
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+                
+                // Fetch categories for sidebar
+                $sidebar_sql = "SELECT * FROM menu_category ORDER BY category_id";
+                $sidebar_result = $conn->query($sidebar_sql);
+                
+                if ($sidebar_result->num_rows > 0) {
+                    while ($category = $sidebar_result->fetch_assoc()) {
+                        $cat_name = $category['category_name'];
+                        $filter_class = strtolower(trim(preg_replace('/[^a-zA-Z0-9]+/', '', $cat_name)));
+                        
+                        // Determine icon based on category name (you can customize this)
+                        $icon = "fas fa-utensils"; // default icon
+                        if (stripos($cat_name, "nepali") !== false) {
+                            $icon = "fi fi-sc-plate";
+                        } elseif (stripos($cat_name, "street") !== false) {
+                            $icon = "fas fa-hotdog";
+                        } elseif (stripos($cat_name, "pizza") !== false || stripos($cat_name, "burger") !== false) {
+                            $icon = "fas fa-hamburger";
+                        } elseif (stripos($cat_name, "noodle") !== false || stripos($cat_name, "bowl") !== false) {
+                            $icon = "fi fi-ss-bowl-chopsticks-noodles";
+                        } elseif (stripos($cat_name, "dessert") !== false) {
+                            $icon = "fas fa-ice-cream";
+                        } elseif (stripos($cat_name, "beverage") !== false) {
+                            $icon = "fas fa-mug-hot";
+                        }
+                        
+                        echo "<div class='filter-item' data-filter='{$filter_class}'>";
+                        echo "<i class='{$icon}'></i>";
+                        echo "<span>{$cat_name}</span>";
+                        echo "</div>";
+                    }
+                }
+                ?>
             </div>
         </div>
         
         <div class="menu-content">
-            <div class="menu-category" data-category="nepali">
-                <h3>1. Traditional Nepali Meals and Platters</h3>
-                <div class="dish-grid">
-                    <div class="dish-item">
-                        <img src="images/Menu Photos/Veg Khana set.jpg" alt="Veg Khana Set">
-                        <h4>Dal Bhat Tarkari - Rs. 250</h4>
-                        <p>Ingredients: Rice, Lentils (Dal), Mixed Vegetables (Carrot, Potato, Cabbage), Ghee, Spices (Turmeric, Cumin, Coriander), Papad, Salad, Pickle</p>
-                    </div>
-                    <div class="dish-item">
-                        <img src="images/Menu Photos/MOMO.jpg" alt="Momo">
-                        <h4>Momo - Rs. 150</h4>
-                        <p>Ingredients: Flour, Chicken (or Vegetable), Cabbage, Garlic, Ginger, Soy Sauce, Spices</p>
-                    </div>
-                    <div class="dish-item">
-                        <img src="images/Menu Photos/Sel Roti.jpg" alt="Sel Roti">
-                        <h4>Sel Roti - Rs. 100</h4>
-                        <p>Ingredients: Rice Flour, Sugar, Yogurt, Ghee, Cardamom</p>
-                    </div>
-                    <div class="dish-item">
-                        <img src="images/Menu Photos/Samaye Baji.jpg" alt="Newari Khaja Set">
-                        <h4>Newari Khaja Set - Rs. 350</h4>
-                        <p>Ingredients: Beaten Rice (Chiura), Buff Sukuti, Egg, Aalu Tama, Bhatmas Sadeko, Chhwela, Spinach, Pickles, Dried fish fry, Bara</p>
-                    </div>
-                    <div class="dish-item">
-                        <img src="images/Menu Photos/Non-Veg Khana Set.jpg" alt="Non-Veg Khana Set">
-                        <h4>Nepali Thali - Rs. 300</h4>
-                        <p>Ingredients: Rice, Dal, Vegetable Curry, Chicken (or Mutton), Pickle, Salad, Raita, Papad</p>
-                    </div>
-                </div>
-            </div>
+            <?php
+            // 1. Database connection already established above
+            
+            // 2. Fetch categories
+            $category_sql = "SELECT * FROM menu_category ORDER BY category_id";
+            $category_result = $conn->query($category_sql);
 
-            <div class="menu-category" data-category="street">
-                <h3>2. Street Food and Quick Bites</h3>
-                <div class="dish-grid">
-                    <div class="dish-item">
-                        <img src="images/Menu Photos/Pakoda.jpg" alt="Pakoda">
-                        <h4>Pakodi - Rs. 80</h4>
-                        <p>Ingredients: Chickpea Flour, Potatoes, Onion, Spinach, Cumin, Coriander, Turmeric</p>
-                    </div>
-                    <div class="dish-item">
-                        <img src="images/Menu Photos/Papadi Chaat.jpg" alt="Papadi Chaat">
-                        <h4>Chaat - Rs. 100</h4>
-                        <p>Ingredients: Fried Bread (Puri), Potatoes, Yogurt, Tamarind, Spices (Cumin, Chaat Masala, Salt)</p>
-                    </div>
-                    <div class="dish-item">
-                        <img src="images/Menu Photos/Pani Puri.jpg" alt="Pani Puri">
-                        <h4>Pani Puri - Rs. 85</h4>
-                        <p>Ingredients: Puffed Wheat (Puri), Tamarind Water, Potato, Chickpeas, Spices</p>
-                    </div>
-                    <div class="dish-item">
-                        <img src="images/Menu Photos/Samosa.jpg" alt="Samosa">
-                        <h4>Samosa - Rs. 60</h4>
-                        <p>Ingredients: Flour, Potatoes, Peas, Cumin, Turmeric, Coriander</p>
-                    </div>
-                    <div class="dish-item">
-                        <img src="images/Menu Photos/Pizza Roll.jpg" alt="Pizza Roll">
-                        <h4>Pizza Roll - Rs. 150</h4>
-                        <p>Ingredients: Pizza Dough, Cheese, Tomato Sauce, Chicken (or Veggies), Herbs</p>
-                    </div>
-                </div>
-            </div>
+            if ($category_result->num_rows > 0) {
+                while ($category = $category_result->fetch_assoc()) {
+                    $cat_id = $category['category_id'];
+                    $cat_name = $category['category_name'];
 
-            <div class="menu-category" data-category="snacks">
-                <h3>3. Pizza, Burgers, and Snacks</h3>
-                <div class="dish-grid">
-                    <!-- Add your pizza, burgers and snacks items here with the same structure -->
-                </div>
-            </div>
+                    // Convert category name to filter class
+                    $filter_class = strtolower(trim(preg_replace('/[^a-zA-Z0-9]+/', '', $cat_name)));
 
-            <div class="menu-category" data-category="noodles">
-                <h3>4. Cozy Bowls and Noodles Delights</h3>
-                <div class="dish-grid">
-                    <!-- Add your noodles and bowls items here with the same structure -->
-                </div>
-            </div>
+                    echo "<div class='menu-category' data-category='{$filter_class}'>";
+                    echo "<h3>{$cat_id}. {$cat_name}</h3>";
+                    echo "<div class='dish-grid'>";
 
-            <div class="menu-category" data-category="desserts">
-                <h3>5. Desserts</h3>
-                <div class="dish-grid">
-                    <!-- Add your dessert items here with the same structure -->
-                </div>
-            </div>
+                    // 3. Fetch items in this category
+                    $item_sql = "SELECT * FROM menu_item WHERE category_id = $cat_id";
+                    $item_result = $conn->query($item_sql);
 
-            <div class="menu-category" data-category="beverages">
-                <h3>6. Beverages</h3>
-                <div class="dish-grid">
-                    <!-- Add your beverage items here with the same structure -->
-                </div>
-            </div>
+                    if ($item_result->num_rows > 0) {
+                        while ($item = $item_result->fetch_assoc()) {
+                            $name = $item['item_name'];
+                            $image = $item['image_name'];
+                            $ingredients = $item['ingredients'];
+                            $is_custom = $item['is_customizable'] ? "Yes" : "No";
+                            $item_id = $item['item_id']; // Get the item ID for customization
+                            $price = number_format($item['price'], 2);
+                            $offer = $item['offer_price'] ? number_format($item['offer_price'], 2) : null;
+                            $final_price = $offer ?: $price;
+
+                            echo "<div class='dish-item'>";
+                            echo "<img src='images/Menu Photos/{$image}' alt='{$name}'>";
+                            echo "<h4>{$name} - Rs. {$final_price}</h4>";
+                            echo "<p>Ingredients: {$ingredients}</p>";
+                            
+                            // Display customization button only for customizable items
+                            if ($item['is_customizable']) {
+                                echo "<div class='item-actions'>";
+                                echo "<a href='Customization.php?item_id={$item_id}' class='customize-btn'>Customize</a>";
+                                echo "</div>";
+                            } else {
+                                echo "<p>Customizable: No</p>";
+                            }
+                            
+                            if ($offer) {
+                                echo "<p><s>Rs. {$price}</s> <strong style='color: green;'>Offer: Rs. {$offer}</strong></p>";
+                            }
+                            echo "</div>";
+                        }
+                    } else {
+                        echo "<p>No items in this category.</p>";
+                    }
+
+                    echo "</div></div>"; // Close dish-grid and category div
+                }
+            } else {
+                echo "<p>No categories found.</p>";
+            }
+
+            $conn->close();
+            ?>
         </div>
     </div>
 

@@ -219,3 +219,26 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Customize button styling */
+.customize-btn {
+    display: inline-block;
+    background-color: #6c7ae0;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.customize-btn:hover {
+    background-color: #5a66c5;
+    color: white;
+}
+
+.item-actions {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
