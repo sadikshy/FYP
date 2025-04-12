@@ -25,7 +25,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Handle image upload
     $image_name = ''; // Changed from image_path to image_name
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $target_dir = "../assets/images/menu/";
+        // Get category name for folder structure
+        $category_stmt = $conn->prepare("SELECT category_name FROM menu_category WHERE category_id = ?");
+        $category_stmt->bind_param("i", $category_id);
+        $category_stmt->execute();
+        $category_result = $category_stmt->get_result();
+        $category_data = $category_result->fetch_assoc();
+        $category_folder = $category_data['category_name'];
+        
+        // Create category-specific directory
+        $target_dir = "../assets/images/menu/{$category_folder}/";
         
         // Create directory if it doesn't exist
         if (!file_exists($target_dir)) {
@@ -38,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Upload the file
         if(move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
-            $image_name = $new_filename;
+            $image_name = $category_folder . '/' . $new_filename;
             $_SESSION['image_upload_success'] = "Image uploaded successfully!";
         } else {
             $error_message = "Failed to upload image.";
@@ -180,6 +189,13 @@ if ($result->num_rows > 0) {
             height: auto;
             display: block;
         }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -207,36 +223,39 @@ if ($result->num_rows > 0) {
                 <?php endif; ?>
                 
                 <div class="menu-form">
-                    <form method="POST" action="" enctype="multipart/form-data">
+                    <!-- In the form section -->
+                    <form method="POST" action="" enctype="multipart/form-data" id="addMenuForm" novalidate>
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="item_name">Item Name *</label>
                                 <input type="text" id="item_name" name="item_name" class="form-control" required>
+                                <div class="error-message" id="itemNameError">Item name is required and must be at least 3 characters</div>
                             </div>
-                            
                             <div class="form-group">
                                 <label for="price">Price (Rs.) *</label>
-                                <input type="number" id="price" name="price" step="0.01" min="0" class="form-control" required>
+                                <input type="number" id="price" name="price" class="form-control" step="0.01" required>
+                                <div class="error-message" id="priceError">Please enter a valid price (greater than 0)</div>
                             </div>
                         </div>
                         
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="category_id">Category *</label>
-                                <select id="category_id" name="category_id" class="form-control" required>
-                                    <option value="">Select Category</option>
-                                    <?php foreach ($categories as $category): ?>
-                                    <option value="<?php echo $category['category_id']; ?>"><?php echo $category['category_name']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="image">Image</label>
-                                <input type="file" id="image" name="image" class="form-control" accept="image/*" onchange="previewImage(this)">
-                                <div class="image-preview" id="imagePreview">
-                                    <img src="#" alt="Image Preview" id="preview-img">
-                                </div>
+                        <div class="form-group">
+                            <label for="category_id">Category *</label>
+                            <select id="category_id" name="category_id" class="form-control" required>
+                                <option value="">Select Category</option>
+                                <?php foreach ($categories as $category): ?>
+                                <option value="<?php echo $category['category_id']; ?>">
+                                    <?php echo $category['category_name']; ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <div class="error-message" id="categoryError">Please select a category</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="image">Image</label>
+                            <input type="file" id="image" name="image" class="form-control" accept="image/*" onchange="previewImage(this)">
+                            <div class="image-preview" id="imagePreview">
+                                <img src="#" alt="Image Preview" id="preview-img">
                             </div>
                         </div>
                         
@@ -266,6 +285,52 @@ if ($result->num_rows > 0) {
                             <button type="submit" class="btn btn-primary">Add Menu Item</button>
                         </div>
                     </form>
+                    <!-- Add this script before closing body tag -->
+                    <script>
+                        document.getElementById('addMenuForm').addEventListener('submit', function(e) {
+                            let isValid = true;
+                            
+                            // Item Name validation
+                            const itemName = document.getElementById('item_name').value.trim();
+                            if (itemName.length < 3) {
+                                document.getElementById('itemNameError').style.display = 'block';
+                                isValid = false;
+                            } else {
+                                document.getElementById('itemNameError').style.display = 'none';
+                            }
+                            
+                            // Price validation
+                            const price = parseFloat(document.getElementById('price').value);
+                            if (isNaN(price) || price <= 0) {
+                                document.getElementById('priceError').style.display = 'block';
+                                isValid = false;
+                            } else {
+                                document.getElementById('priceError').style.display = 'none';
+                            }
+                            
+                            // Category validation
+                            const category = document.getElementById('category_id').value;
+                            if (!category) {
+                                document.getElementById('categoryError').style.display = 'block';
+                                isValid = false;
+                            } else {
+                                document.getElementById('categoryError').style.display = 'none';
+                            }
+                            
+                            // Image validation
+                            const image = document.getElementById('image').files[0];
+                            if (!image && !document.getElementById('preview-img').src) {
+                                document.getElementById('imageError').style.display = 'block';
+                                isValid = false;
+                            } else {
+                                document.getElementById('imageError').style.display = 'none';
+                            }
+                            
+                            if (!isValid) {
+                                e.preventDefault();
+                            }
+                        });
+                    </script>
                 </div>
             </div>
         </div>

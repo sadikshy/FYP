@@ -31,7 +31,8 @@
         color: #ddd;
         text-decoration: none;
         transition: color 0.3s;
-        margin: 0 5px;
+        margin-top: 10px;
+
     }
 
     .nav-links a:hover {
@@ -54,7 +55,13 @@
         font-size: 14px;
         color: #aaa;
     }
-
+    .nav-links{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        ;
+    }
     /* Responsive Design */
     @media (max-width: 768px) {
         .footer-content {
@@ -73,12 +80,12 @@
         <div class="nav-footer">
             <h3>Navigation</h3>
             <div class="nav-links">
-                <a href="Homepage.php">Home</a> | 
-                <a href="AboutUs.php">About Us</a> | 
-                <a href="Menu.php">Menu</a> | 
-                <a href="Customization.php">Customization</a> | 
-                <a href="Takeout.php">TakeOut</a> | 
-                <a href="ContactUs.php">Contact Us</a> | 
+                <a href="Homepage.php">Home</a> 
+                <a href="AboutUs.php">About Us</a> 
+                <a href="Menu.php">Menu</a> 
+                <a href="Customization.php">Customization</a> 
+                <a href="Takeout.php">TakeOut</a> 
+                <a href="ContactUs.php">Contact Us</a> 
                 <a href="account_settings.php">My Account</a>
             </div>
         </div>

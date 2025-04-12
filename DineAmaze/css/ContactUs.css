@@ -1,19 +1,53 @@
-/* Basic Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Body and Global Styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f8f8f8;
     color: #333;
-  
 }
 
-/* Contact Container Styles */
+/* Hero Section Styles */
+.contact-hero {
+    height: 250px;
+    background-image: linear-gradient(rgba(34, 34, 34, 0.6), rgba(34, 34, 34, 0.6)), url('../images/ContactUs/contactus.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    margin-bottom: 50px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.tagline-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.tagline{
+    font-size: 1.5rem;
+    font-style: italic;
+    color: #f0f0f0;
+    font-family: 'Great Vibes', cursive;
+}
+
 .contact-container {
     display: flex;
     justify-content: space-between;
@@ -21,10 +55,10 @@ body {
     padding: 50px 20px;
     max-width: 1000px;
     margin: 0 auto;
-    height: 75vh;
+    height: auto;
+    margin-bottom: 50px;
 }
 
-/* Contact Info Styles */
 .contact-info {
     width: 45%;
 }
@@ -61,7 +95,6 @@ body {
     width: 65%;
 }
 
-/* Restaurant Image Styles */
 .restaurant-image {
     width: 45%;
 }
@@ -73,7 +106,171 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Footer Styles */
+/* Contact Form Section Styles */
+.contact-form-section {
+    padding: 50px 20px;
+    background-color: #fff;
+}
+
+.contact-form-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: space-between;
+}
+
+.contact-form-text {
+    width: 45%;
+    padding-right: 30px;
+}
+
+/* Contact heading styles to match the first image */
+.contact-heading {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.5rem;
+    color: #FF8C42;
+    margin: 0;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.contact-heading::after {
+    content: '';
+    position: absolute;
+    bottom: 30px;
+    left: 400px;
+    width: 80px;
+    height: 3px;
+    background-color: #FF8C42;
+}
+
+.details-text {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.5rem;
+    color: #333;
+    margin: 0;
+    font-weight: 400;
+    display: inline;
+}
+
+/* Let's Chat heading styles to match the second image */
+.lets-chat-heading {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin: 0 0 30px;
+    color: #0e0e0d;
+    letter-spacing: 2px;
+    position: relative;
+}
+
+/* Add an underline to the Let's Chat heading like in the second image */
+.lets-chat-heading::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50px;
+    width: 60px;
+    height: 3px;
+    background-color: #FF8C42;
+}
+
+.lets-chat-heading {
+    
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 10px 0 20px;
+    
+    
+}
+
+.chat-text {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    color: #FF8C42;
+    margin: 0;
+    font-weight: 400;
+    display: inline;
+}
+
+/* New styles for contact details in the Let's Chat section */
+.contact-details-compact {
+    margin-top: 30px;
+}
+
+.contact-details-compact .contact-row {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.contact-details-compact .label {
+    font-weight: 600;
+    color: #333;
+    width: 40%;
+    min-width: 100px;
+}
+
+.contact-details-compact .value {
+    color: #666;
+}
+
+.contact-form {
+    width: 50%;
+}
+
+.contact-description {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.contact-form {
+    width: 50%;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #FF8C42;
+    outline: none;
+}
+
+.form-group textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+.send-message-btn {
+    background-color: #FF8C42;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-transform: uppercase;
+}
+
+.send-message-btn:hover {
+    background-color: #e67e3b;
+}
+
 footer {
     background-color: #333;
     color: white;
@@ -127,25 +324,35 @@ footer {
     color: #aaa;
 }
 
-/* Mobile Responsive Design */
+/*Responsive part*/
 @media (max-width: 768px) {
-    .contact-container {
+    .contact-container,
+    .contact-form-container {
         flex-direction: column;
         text-align: center;
     }
 
-    .contact-info, .restaurant-image {
+    .contact-info, 
+    .restaurant-image,
+    .contact-form-text,
+    .contact-form {
         width: 100%;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .contact-form-text {
+        padding-right: 0;
     }
 
-    .contact-row {
+    .contact-details-compact .contact-row {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        text-align: center;
     }
 
-    .contact-row .label {
+    .contact-details-compact .label {
         margin-bottom: 5px;
+        width: 100%;
     }
     
     .footer-content {

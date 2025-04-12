@@ -31,10 +31,9 @@ session_start();
             <h2>About<span>Us</span></h2>
         </div>
         <p class="about-description">
-        Welcome to DineAmaze, your go-to place for delicious and authentic food! We offer a variety of meals, including Traditional Nepali Platters, Street Food, Pizza, Burgers, Cozy Bowls, Desserts, and Beverages.
-        </p>
-         <p>At DineAmaze, we focus on quality, taste, and hygiene in every dish. Our food customization feature lets you personalize your meal just the way you like it. To ensure safety, we verify all customized orders with a citizenship photo or national ID card before preparation.</p>
-         <p>Whether you're in the mood for a quick bite, a hearty meal, or a sweet treat, our team is here to serve you with great flavors and excellent service. Every visit to DineAmaze is a memorable dining experience!</p>
+        Welcome to DineAmaze, your go-to place for delicious and authentic food! We offer a variety of meals, including Traditional Nepali Platters, Street Food, Pizza, Burgers, Cozy Bowls, Desserts, and Beverages.<br>
+        At DineAmaze, we focus on quality, taste, and hygiene in every dish. Our food customization feature lets you personalize your meal just the way you like it. To ensure safety, we verify all customized orders with a citizenship photo or national ID card before preparation.<br>
+        Whether you're in the mood for a quick bite, a hearty meal, or a sweet treat, our team is here to serve you with great flavors and excellent service. Every visit to DineAmaze is a memorable dining experience!
     </div>
 
     <!-- Our Mission Section -->

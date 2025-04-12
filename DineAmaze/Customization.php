@@ -1,6 +1,11 @@
 <?php
 // Start the session
 session_start();
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to login page if not logged in
+    header("Location: Login.php");
+    exit();
+}
 
 // Check if item_id is provided
 $item_id = isset($_GET['item_id']) ? $_GET['item_id'] : null;
@@ -58,21 +63,80 @@ $available_toppings = [
     <link rel="stylesheet" href="css/Homepage.css">
     <link rel="stylesheet" href="css/Customization.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .empty-selection-notification {
+            text-align: center;
+            padding: 40px;
+            background-color: #fff8f3;
+            border-radius: 8px;
+            margin: 50px auto;
+            max-width: 600px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: none; /* Hidden by default */
+        }
+        
+        .empty-selection-notification.show {
+            display: block;
+        }
+        
+        .empty-selection-notification i {
+            font-size: 48px;
+            color: #ff6b00;
+            margin-bottom: 20px;
+        }
+        
+        .browse-menu-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #ff6b00;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .browse-menu-btn:hover {
+            background-color: #e55f00;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);
+        }
+        
+        .customize-container {
+            display: <?php echo (!$item_id) ? 'none' : 'block'; ?>;
+        }
+    </style>
 </head>
 <body>
     <?php include 'includes/header.php'; ?>
     
     
-    <br>
-    <br>
+    
+    
+   
+    <div class="customization-hero">
+        <div class="hero-overlay">
+            <h1>Customize Your <?php echo $item_name; ?></h1>
+            <p>Make it exactly how you like it</p>
+        </div>
+    </div>
+    <?php if (!$item_id): ?>
+    <div class="empty-selection-notification show">
+        <i class="fas fa-utensils"></i>
+        <h3>No Item Selected!</h3>
+        <p>Please select a dish from our menu first to customize your order.</p>
+        <a href="Menu.php" class="browse-menu-btn">Browse Menu</a>
+    </div>
+    <?php endif; ?>
     <div class="customize-container">
+   
         <div class="customize-header">
             <h2>Customize Your Order</h2>
         </div>
         
         <div class="customize-content">
             <div class="item-preview">
-                <img src="images/Menu Photos/<?php echo $item_image; ?>" alt="<?php echo $item_name; ?>">
+                <img src="assets/images/menu/<?php echo $item_image; ?>" alt="<?php echo $item_name; ?>">
                 <div class="item-details">
                     <h3 class="item-name"><?php echo $item_name; ?></h3>
                     <p class="item-ingredients"><?php echo $item_ingredients; ?></p>
@@ -153,7 +217,7 @@ $available_toppings = [
             
             <div class="action-buttons">
                 <a href="Menu.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Menu</a>
-                <button type="button" class="add-to-cart-btn" onclick="addToCart()"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                <button type="button" class="add-to-cart-btn" id="addToCartBtn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
             </div>
         </div>
     </div>
@@ -248,6 +312,96 @@ $available_toppings = [
             // Redirect back to menu
             window.location.href = 'Menu.php';
         }
-    </script>
+    
+    
+    // Add this at the end of your file, before the closing </body> tag
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get elements
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        const portionInput = document.getElementById('portion');
+        const basePrice = parseFloat(document.getElementById('base_price').value);
+        const itemId = document.getElementById('item_id').value;
+        const itemName = document.querySelector('.item-name').textContent;
+        const itemImage = document.querySelector('.item-preview img').getAttribute('src').split('/').pop();
+        
+        // Add to cart functionality
+        addToCartBtn.addEventListener('click', function() {
+            // Get quantity
+            const quantity = parseInt(portionInput.value);
+            
+            // Get selected toppings
+            const toppings = [];
+            const toppingCheckboxes = document.querySelectorAll('input[name="toppings[]"]:checked');
+            let toppingsTotal = 0;
+            
+            toppingCheckboxes.forEach(function(checkbox) {
+                const toppingName = checkbox.nextElementSibling.textContent.trim();
+                const toppingPrice = parseFloat(checkbox.getAttribute('data-price'));
+                toppings.push({
+                    name: toppingName,
+                    price: toppingPrice
+                });
+                toppingsTotal += toppingPrice;
+            });
+            
+            // Get removed ingredients
+            const removedIngredients = [];
+            const ingredientCheckboxes = document.querySelectorAll('input[name="remove[]"]:checked');
+            
+            ingredientCheckboxes.forEach(function(checkbox) {
+                removedIngredients.push(checkbox.nextElementSibling.textContent.trim());
+            });
+            
+            // Get special instructions
+            const specialInstructions = document.getElementById('special_instructions').value;
+            
+            // Calculate total price
+            const totalPrice = (basePrice + toppingsTotal);
+            
+            // Create cart item
+            const cartItem = {
+                id: itemId,
+                name: itemName,
+                image: itemImage,
+                quantity: quantity,
+                price: totalPrice,
+                toppings: toppings,
+                removed_ingredients: removedIngredients,
+                special_instructions: specialInstructions
+            };
+            
+            // Send AJAX request to add item to cart
+            fetch('add_to_cart.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(cartItem)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update cart count in header
+                    const cartCount = document.querySelector('.cart-count');
+                    cartCount.textContent = data.cartCount;
+                    
+                    // Show success message
+                    alert(data.message);
+                    
+                    // Redirect to cart page or stay on current page
+                    if (confirm('View your cart?')) {
+                        window.location.href = 'cart.php';
+                    }
+                } else {
+                    alert('Error adding item to cart: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while adding the item to cart.');
+            });
+        });
+    });
+</script>
 </body>
 </html>

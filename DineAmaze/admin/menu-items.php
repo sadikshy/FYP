@@ -213,7 +213,21 @@ if ($result->num_rows > 0) {
                                 <?php foreach ($menu_items as $item): ?>
                                 <tr>
                                     <td>
-                                        <img src="../<?php echo $item['image_name'] ? 'assets/images/menu/'.$item['image_name'] : 'assets/images/default-food.jpg'; ?>" alt="<?php echo $item['item_name']; ?>" class="menu-image">
+                                        <?php 
+                                        if (!empty($item['image_name'])) {
+                                            // Check if image_name already contains a path separator
+                                            if (strpos($item['image_name'], '/') !== false) {
+                                                // For images with category folders
+                                                echo '<img src="../assets/images/menu/' . $item['image_name'] . '" alt="' . $item['item_name'] . '" class="menu-image">';
+                                            } else {
+                                                // For images without category folders, use the new directory structure
+                                                echo '<img src="../assets/images/menu/' . $item['image_name'] . '" alt="' . $item['item_name'] . '" class="menu-image">';
+                                            }
+                                        } else {
+                                            // Default image if no image is specified
+                                            echo '<img src="../assets/images/default-food.jpg" alt="' . $item['item_name'] . '" class="menu-image">';
+                                        }
+                                        ?>
                                     </td>
                                     <td><?php echo $item['item_name']; ?></td>
                                     <td class="price">Rs. <?php echo number_format($item['price'], 2); ?></td>

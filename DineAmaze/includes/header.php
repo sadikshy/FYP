@@ -48,10 +48,10 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             <a href="Login.php" class="login" <?php echo ($currentPage == 'Login.php') ? 'class="active"' : ''; ?>>LOGIN</a>
         <?php endif; ?>
         
-        <!-- Add cart icon -->
+        <!-- Add cart icon with correct count -->
         <a href="cart.php" class="cart-icon">
-        <i class="fi fi-rr-cart-shopping-fast"></i>
-            <span class="cart-count">0</span>
+            <i class="fi fi-rr-cart-shopping-fast"></i>
+            <span class="cart-count"><?php echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : '0'; ?></span>
         </a>
     </div>
     

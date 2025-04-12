@@ -18,11 +18,11 @@
         <form method="POST" action="login_progress.php">  
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                 <a href="#" class="float-right" id="forgot-password">Forget Password?</a>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Login</button>

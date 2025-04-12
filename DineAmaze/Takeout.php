@@ -8,6 +8,9 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: Login.php");
     exit();
 }
+
+// Check if cart is empty
+$cart_is_empty = !isset($_SESSION['cart']) || empty($_SESSION['cart']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,211 +20,209 @@ if (!isset($_SESSION['user_id'])) {
     <title>TakeOut - DineAmaze</title>
     <link rel="stylesheet" href="css/Homepage.css">
     <link rel="stylesheet" href="css/Takeout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <?php include 'includes/header.php'; ?>
-
-    <section class="takeout-section">
-        <div class="takeout-info">
-            <h1>TakeOut are available</h1>
-            <p>Mon-Sun: 10AM-10PM</p>
-        </div>
-
-        <!-- Filter Section -->
-        <div class="filter-section">
-            <h3>Filter Menu Items</h3>
-            <div class="filter-options">
-                <div class="filter-group">
-                    <label>Category:</label>
-                    <select id="categoryFilter">
-                        <option value="all">All Categories</option>
-                        <option value="popular">Popular Items</option>
-                        <option value="beverages">Beverages</option>
-                        <option value="nepali">Nepali Cuisine</option>
-                        <option value="fast-food">Fast Food</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Price Range:</label>
-                    <select id="priceFilter">
-                        <option value="all">All Prices</option>
-                        <option value="under100">Under Rs. 100</option>
-                        <option value="100-200">Rs. 100 - Rs. 200</option>
-                        <option value="above200">Above Rs. 200</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Dietary:</label>
-                    <select id="dietaryFilter">
-                        <option value="all">All Types</option>
-                        <option value="veg">Vegetarian</option>
-                        <option value="non-veg">Non-Vegetarian</option>
-                    </select>
-                </div>
-                <button id="applyFilter" class="filter-button">Apply Filter</button>
+    <div class="takeout-hero">
+        <div class="hero-content">
+            <h1>TAKEOUT</h1>
+            <div class="tagline-container">
+                <span class="tagline">Order & Enjoy</span> <br> <br>
+                <span class="tagline1">TakeOut are available</span> <br> <br>
+                <span class="tagline1">Mon-Sun: 11AM-10PM</span>
+            
+        
             </div>
         </div>
-
+    </div>
+    <section class="takeout-section">
+        <?php if($cart_is_empty): ?>
+        <!-- Empty Cart Notification -->
+        <div class="empty-cart-notification">
+            <i class="fas fa-shopping-cart"></i>
+            <h3>Your cart is empty!</h3>
+            <p>Please add some dishes to your cart before proceeding with takeout.</p>
+            <a href="Menu.php" class="browse-menu-btn">Browse Menu</a>
+        </div>
+        <?php else: ?>
+           
         <!-- Menu Selection Section -->
         <div class="menu-selection">
-            <h2>Select Items for Takeout</h2>
-            <div class="menu-categories">
-                <div class="category">
-                    <h3>Popular Items</h3>
-                    <div class="menu-items">
-                        <div class="menu-item">
-                            <div class="dish-image">
-                                <img src="images/Menu Photos/MOMO.jpg" alt="Momo">
-                            </div>
-                            <div class="dish-details">
-                                <input type="checkbox" id="item1" name="menuItems[]" value="Momo">
-                                <label for="item1">Momo - Rs. 150</label>
-                                <select name="quantity[Momo]">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="menu-item">
-                            <div class="dish-image">
-                                <img src="images/Menu Photos/Veg Khana Set.jpg" alt="Veg Khana Set">
-                            </div>
-                            <div class="dish-details">
-                                <input type="checkbox" id="item2" name="menuItems[]" value="Dal Bhat">
-                                <label for="item2">Veg Khana Set - Rs. 250</label>
-                                <select name="quantity[Dal Bhat]">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="menu-item">
-                            <div class="dish-image">
-                                <img src="images/Menu Photos/Chicken Burger.jpg" alt="Chicken Burger">
-                            </div>
-                            <div class="dish-details">
-                                <input type="checkbox" id="item3" name="menuItems[]" value="Chicken Burger">
-                                <label for="item3">Chicken Burger - Rs. 200</label>
-                                <select name="quantity[Chicken Burger]">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="category">
-                    <h3>Beverages</h3>
-                    <div class="menu-items">
-                        <div class="menu-item">
-                            <div class="dish-image">
-                                <img src="images/Menu Photos/Fruit Juice.png" alt="Orange Juice">
-                            </div>
-                            <div class="dish-details">
-                                <input type="checkbox" id="drink1" name="menuItems[]" value="Orange Juice">
-                                <label for="drink1">Fresh Juice - Rs. 120</label>
-                                <select name="quantity[Fresh Juice]">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="menu-item">
-                            <div class="dish-image">
-                                <img src="images/Menu Photos/Vanilla Milkshake.jpg" alt="Vanilla Milkshake">
-                            </div>
-                            <div class="dish-details">
-                                <input type="checkbox" id="drink2" name="menuItems[]" value="Vanilla Milkshake">
-                                <label for="drink2">Vanilla Milkshake - Rs. 150</label>
-                                <select name="quantity[Milkshake]">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="browse-menu-message">
+                <i class="fas fa-utensils"></i>
+                <h3>Select Items for Takeout</h3>
+                <p>Please browse our menu and select items you'd like to order for takeout.</p>
+                <a href="Menu.php" class="browse-menu-btn">Browse Menu</a>
             </div>
         </div>
 
-        <!-- After the menu selection section, add a cart summary -->
+        
         </div>
         </div>
         
         <!-- Add an order summary section -->
-        <div class="order-summary" id="orderSummary">
-        <h3>Order Summary</h3>
-        <div id="selectedItems">
-            <p class="empty-cart-message">No items selected yet</p>
-        </div>
-        <div class="total-section">
-            <p>Total: <span id="orderTotal">Rs. 0</span></p>
-        </div>
+        <!-- Add this section to display cart items -->
+        <div class="order-summary">
+            <h2>Order Summary</h2>
+            <table class="order-items-table">
+                <tbody>
+                    <?php 
+                    $total = 0;
+                    foreach ($_SESSION['cart'] as $item): 
+                        $subtotal = $item['price'] * $item['quantity'];
+                        $total += $subtotal;
+                    ?>
+                    <tr>
+                        <td class="item-name"><?php echo $item['name']; ?></td>
+                        <td class="item-quantity">x<?php echo $item['quantity']; ?></td>
+                        <td class="item-price">Rs. <?php echo number_format($item['price'], 2); ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <tr class="total-row">
+                        <td colspan="2">Total:</td>
+                        <td>Rs. <?php echo number_format($total, 2); ?></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
-        <form class="takeout-form" id="takeoutForm" method="POST" action="takeout_process.php">
+        <form class="takeout-form" id="takeoutForm" method="POST" action="takeout_process.php" novalidate>
             <div class="form-row">
                 <div class="form-group">
                     <label for="fullName">Full Name</label>
                     <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                    <div class="error-message" id="fullNameError">Name must be at least 3 characters long</div>
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="contactNumber">Contact Number</label>
                     <input type="tel" id="contactNumber" name="contactNumber" placeholder="Enter your contact number" required>
+                    <div class="error-message" id="contactNumberError">Please enter a valid 10-digit phone number</div>
                 </div>
                 <div class="form-group">
                     <label for="time">Time</label>
                     <input type="time" id="time" name="time" required>
+                    <div class="error-message" id="timeError">Please select a valid time between 11 AM and 10 PM</div>
                 </div>
             </div>
             <button type="submit">Verify</button>
         </form>
+        <!-- Add this script before the closing body tag -->
+        <script>
+            document.getElementById('takeoutForm').addEventListener('submit', function(e) {
+                let isValid = true;
+                
+                // Full Name validation
+                const fullName = document.getElementById('fullName').value.trim();
+                if (fullName.length < 3) {
+                    document.getElementById('fullNameError').style.display = 'block';
+                    isValid = false;
+                } else {
+                    document.getElementById('fullNameError').style.display = 'none';
+                }
+                
+                // Email validation
+                const email = document.getElementById('email').value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    document.getElementById('emailError').style.display = 'block';
+                    isValid = false;
+                } else {
+                    document.getElementById('emailError').style.display = 'none';
+                }
+                
+                // Contact Number validation
+                const contactNumber = document.getElementById('contactNumber').value.trim();
+                const phoneRegex = /^\d{10}$/;
+                if (!phoneRegex.test(contactNumber)) {
+                    document.getElementById('contactNumberError').style.display = 'block';
+                    isValid = false;
+                } else {
+                    document.getElementById('contactNumberError').style.display = 'none';
+                }
+                
+                // Time validation
+                const time = document.getElementById('time').value;
+                const selectedTime = new Date(`2000-01-01T${time}`);
+                const openTime = new Date(`2000-01-01T11:00`);
+                const closeTime = new Date(`2000-01-01T22:00`);
+                
+                if (!time || selectedTime < openTime || selectedTime > closeTime) {
+                    document.getElementById('timeError').style.display = 'block';
+                    isValid = false;
+                } else {
+                    document.getElementById('timeError').style.display = 'none';
+                }
+                
+                if (!isValid) {
+                    e.preventDefault();
+                }
+            });
+        </script>
+        <?php endif; ?>
     </section>
 
-    <footer>
-        <div class="footer-content">
-            <div class="nav-footer">
-                <h3>Navigation</h3>
-                <div class="nav-links">
-                    <a href="Homepage.php">Home</a> | 
-                    <a href="AboutUs.php">About Us</a> | 
-                    <a href="Menu.php">Menu</a> | 
-                    <a href="Customization.php">Customization</a> | 
-                    <a href="Takeout.php">TakeOut</a> | 
-                    <a href="ContactUs.php">Contact Us</a> | 
-                    <a href="account_settings.php">My Account</a>
-                </div>
-            </div>
-            <div class="contact-footer" id="contact">
-                <h3>Contact Us</h3>
-                <p>Email: DineAmaze@gmail.com</p>
-                <p>Phone: 9861050118, 016675486</p>
-                <p>Address: Srijananagar, Bhaktapur</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 DineAmaze. All rights reserved.</p>
-        </div>
-    </footer>
+    <?php include 'includes/footer.php';?>
 
     <style>
+        /* Empty cart notification styling */
+        .empty-cart-notification {
+            background-color: linear-gradient(to right, #fff8f3, #fff1e6);;
+            border-left: 4px solid #ff6b00;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .empty-cart-notification i {
+            font-size: 48px;
+            color: #ff6b00;
+            margin-bottom: 15px;
+        }
+        
+        .empty-cart-notification h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .empty-cart-notification p {
+            color: #856404;
+            margin-bottom: 20px;
+        }
+        
+        .browse-menu-btn {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .browse-menu-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Existing styles */
         .filter-section {
             background-color: #f0f8f0;
             padding: 15px;
@@ -577,3 +578,21 @@ if (!isset($_SESSION['user_id'])) {
             font-style: italic;
         }
     </style>
+<?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Store form data in session
+    $_SESSION['takeout_order'] = [
+        'fullName' => $_POST['fullName'],
+        'email' => $_POST['email'],
+        'contactNumber' => $_POST['contactNumber'],
+        'pickupTime' => $_POST['pickupTime'],
+        'specialInstructions' => $_POST['specialInstructions'],
+        // Store cart items in the takeout order
+        'cartItems' => $_SESSION['cart']
+    ];
+    
+    // Redirect to verification page
+    header("Location: Verification.php");
+    exit();
+}
+?>

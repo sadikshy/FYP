@@ -42,10 +42,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $price = $_POST['price'];
     $ingredients = $_POST['ingredients']; // Changed from description to ingredients
     $category_id = $_POST['category_id'];
+    $is_customizable = isset($_POST['customizable']) ? $_POST['customizable'] : 0;
     
     // Handle image upload
     $image_name = $menu_item['image_name']; // Keep existing image by default
-    
+
     if(isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $allowed = ['jpg', 'jpeg', 'png', 'gif'];
         $filename = $_FILES['image']['name'];
@@ -53,9 +54,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Check if the file type is allowed
         if(in_array(strtolower($filetype), $allowed)) {
+            // Get category name for folder structure
+            $category_stmt = $conn->prepare("SELECT category_name FROM menu_category WHERE category_id = ?");
+            $category_stmt->bind_param("i", $category_id);
+            $category_stmt->execute();
+            $category_result = $category_stmt->get_result();
+            $category_data = $category_result->fetch_assoc();
+            $category_folder = $category_data['category_name'];
+            
             // Create unique filename
             $new_filename = uniqid() . '.' . $filetype;
-            $upload_dir = "../assets/images/menu/";
+            $upload_dir = "../assets/images/menu/{$category_folder}/";
             
             // Create directory if it doesn't exist
             if (!file_exists($upload_dir)) {
@@ -63,9 +72,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             
             // Upload file
-            // After successful image upload
             if(move_uploaded_file($_FILES['image']['tmp_name'], $upload_dir . $new_filename)) {
-                $image_name = $new_filename;
+                $image_name = $category_folder . '/' . $new_filename;
                 $_SESSION['image_upload_success'] = "Image uploaded successfully!";
             } else {
                 $error_message = "Failed to upload image.";
@@ -76,8 +84,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     // Update menu item
-    $stmt = $conn->prepare("UPDATE menu_item SET item_name = ?, price = ?, ingredients = ?, category_id = ?, image_name = ? WHERE item_id = ?");
-    $stmt->bind_param("sdsssi", $item_name, $price, $ingredients, $category_id, $image_name, $item_id);
+    // Update the SQL query to include is_customizable
+    $stmt = $conn->prepare("UPDATE menu_item SET 
+        item_name = ?, 
+        price = ?, 
+        ingredients = ?, 
+        category_id = ?, 
+        image_name = ?,
+        is_customizable = ? 
+        WHERE item_id = ?");
+    
+    // Change bind_param types from "sdssiii" to "sdsssii"
+    $stmt->bind_param("sdsssii", 
+        $item_name, 
+        $price, 
+        $ingredients, 
+        $category_id, 
+        $image_name,  // Changed from integer (i) to string (s)
+        $is_customizable,
+        $item_id
+    );
     
     if ($stmt->execute()) {
         $success_message = "Menu item updated successfully!";
@@ -247,16 +273,29 @@ if ($result->num_rows > 0) {
                 <?php endif; ?>
                 
                 <div class="menu-form">
-                    <form method="POST" action="" enctype="multipart/form-data">
+                    <head>
+                        <style>
+                            .error-message {
+                                color: #dc3545;
+                                font-size: 0.875em;
+                                margin-top: 5px;
+                                display: none;
+                            }
+                        </style>
+                    </head>
+                    
+                    <!-- In the form section -->
+                    <form method="POST" action="" enctype="multipart/form-data" id="editMenuForm" novalidate>
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="item_name">Item Name *</label>
-                                <input type="text" id="item_name" name="item_name" class="form-control" value="<?php echo $menu_item['item_name']; ?>" required>
+                                <input type="text" id="item_name" name="item_name" class="form-control" value="<?php echo htmlspecialchars($menu_item['item_name']); ?>" required>
+                                <div class="error-message" id="itemNameError">Item name is required and must be at least 3 characters</div>
                             </div>
-                            
                             <div class="form-group">
                                 <label for="price">Price (Rs.) *</label>
-                                <input type="number" id="price" name="price" step="0.01" min="0" class="form-control" value="<?php echo $menu_item['price']; ?>" required>
+                                <input type="number" id="price" name="price" class="form-control" step="0.01" value="<?php echo $menu_item['price']; ?>" required>
+                                <div class="error-message" id="priceError">Please enter a valid price (greater than 0)</div>
                             </div>
                         </div>
                         
@@ -275,20 +314,36 @@ if ($result->num_rows > 0) {
                             
                             <div class="form-group">
                                 <label for="image">Image</label>
-                                <?php if (!empty($item['image_name'])): ?>
+                                <?php if (!empty($menu_item['image_name'])): ?>
                                 <div>
                                     <p>Current image:</p>
-                                    <img src="../assets/images/menu/<?php echo $item['image_name']; ?>" alt="<?php echo $item['item_name']; ?>" class="current-image">
+                                    <img src="../assets/images/menu/<?php echo htmlspecialchars($menu_item['image_name']); ?>" 
+                                         alt="<?php echo htmlspecialchars($menu_item['item_name']); ?>" 
+                                         class="current-image" 
+                                         style="max-width: 200px;">
                                 </div>
                                 <?php endif; ?>
                                 <input type="file" id="image" name="image" class="form-control" accept="image/*">
                                 <small>Leave empty to keep current image</small>
-                            </div>
+                                </div>
                         </div>
                         
                         <div class="form-group">
                             <label for="ingredients">Ingredients</label>
                             <textarea id="ingredients" name="ingredients" class="form-control"><?php echo $menu_item['ingredients']; ?></textarea>
+                        </div>
+                        
+                        <!-- Add customization option -->
+                        <div class="form-group">
+                            <label>Customizable</label>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customizable-yes" name="customizable" value="1" class="custom-control-input" <?php echo ($menu_item['is_customizable'] == 1) ? 'checked' : ''; ?>>
+                                <label class="custom-control-label" for="customizable-yes">Yes</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customizable-no" name="customizable" value="0" class="custom-control-input" <?php echo ($menu_item['is_customizable'] == 0) ? 'checked' : ''; ?>>
+                                <label class="custom-control-label" for="customizable-no">No</label>
+                            </div>
                         </div>
                         
                         <div class="btn-container">
@@ -297,7 +352,58 @@ if ($result->num_rows > 0) {
                             </a>
                             <button type="submit" class="btn btn-primary">Update Menu Item</button>
                         </div>
+                        
+                        <!-- Add this style to match the add menu form -->
+                        <style>
+                            .custom-control {
+                                margin-bottom: 10px;
+                            }
+                            .custom-control-input {
+                                margin-right: 10px;
+                            }
+                            .custom-control-label {
+                                cursor: pointer;
+                            }
+                        </style>
                     </form>
+                    
+                    <!-- Add this script before closing body tag -->
+                    <script>
+                        document.getElementById('editMenuForm').addEventListener('submit', function(e) {
+                            let isValid = true;
+                            
+                            // Item Name validation
+                            const itemName = document.getElementById('item_name').value.trim();
+                            if (itemName.length < 3) {
+                                document.getElementById('itemNameError').style.display = 'block';
+                                isValid = false;
+                            } else {
+                                document.getElementById('itemNameError').style.display = 'none';
+                            }
+                            
+                            // Price validation
+                            const price = parseFloat(document.getElementById('price').value);
+                            if (isNaN(price) || price <= 0) {
+                                document.getElementById('priceError').style.display = 'block';
+                                isValid = false;
+                            } else {
+                                document.getElementById('priceError').style.display = 'none';
+                            }
+                            
+                            // Category validation
+                            const category = document.getElementById('category_id').value;
+                            if (!category) {
+                                document.getElementById('categoryError').style.display = 'block';
+                                isValid = false;
+                            } else {
+                                document.getElementById('categoryError').style.display = 'none';
+                            }
+                            
+                            if (!isValid) {
+                                e.preventDefault();
+                            }
+                        });
+                    </script>
                 </div>
             </div>
         </div>
