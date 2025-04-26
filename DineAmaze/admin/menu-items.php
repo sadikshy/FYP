@@ -37,12 +37,46 @@ if (isset($_SESSION['image_upload_success'])) {
     unset($_SESSION['image_upload_success']); // Clear the message after displaying
 }
 
-// Get all menu items with category names
-$sql = "SELECT m.*, c.category_name 
-        FROM menu_item m 
-        LEFT JOIN menu_category c ON m.category_id = c.category_id 
-        ORDER BY m.item_name";
-$result = $conn->query($sql);
+// Search functionality
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+$category_filter = isset($_GET['category']) ? $_GET['category'] : '';
+
+// Build the query based on search and filter
+$query = "SELECT m.*, c.category_name 
+          FROM menu_item m 
+          LEFT JOIN menu_category c ON m.category_id = c.category_id 
+          WHERE 1=1";
+
+// Add search condition if search term is provided
+if (!empty($search)) {
+    // Remove the percentage signs from the display value but keep them for the query
+    $searchQuery = "%" . $search . "%";
+    $query .= " AND (m.item_name LIKE ? OR m.ingredients LIKE ?)";
+}
+
+// Add category filter if selected
+if (!empty($category_filter)) {
+    $query .= " AND m.category_id = ?";
+}
+
+$query .= " ORDER BY m.item_name";
+
+// Prepare and execute the query
+$stmt = $conn->prepare($query);
+
+// Bind parameters based on conditions
+if (!empty($search) && !empty($category_filter)) {
+    $searchQuery = "%" . $search . "%";
+    $stmt->bind_param("ssi", $searchQuery, $searchQuery, $category_filter);
+} elseif (!empty($search)) {
+    $searchQuery = "%" . $search . "%";
+    $stmt->bind_param("ss", $searchQuery, $searchQuery);
+} elseif (!empty($category_filter)) {
+    $stmt->bind_param("i", $category_filter);
+}
+
+$stmt->execute();
+$result = $stmt->get_result();
 $menu_items = [];
 
 if ($result->num_rows > 0) {
@@ -50,6 +84,7 @@ if ($result->num_rows > 0) {
         $menu_items[] = $row;
     }
 }
+$stmt->close();
 
 // Get all categories for the dropdown
 $sql = "SELECT * FROM menu_category ORDER BY category_name";
@@ -143,6 +178,9 @@ if ($result->num_rows > 0) {
         .btn-cancel:hover {
             background-color: #e0e0e0;
         }
+        a{
+            text-decoration: none;
+        }
         
         .menu-image {
             width: 60px;
@@ -164,6 +202,57 @@ if ($result->num_rows > 0) {
             border-radius: 30px;
             font-size: 12px;
             font-weight: 500;
+        }
+        
+        /* Search form styles */
+        .search-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .search-select {
+            width: 200px;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .search-btn {
+            background-color: #6a5acd;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .search-btn:hover {
+            background-color: #5a49c0;
+        }
+        
+        .reset-btn {
+            background-color: #f0f0f0;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .reset-btn:hover {
+            background-color: #e0e0e0;
         }
     </style>
 </head>
@@ -192,8 +281,35 @@ if ($result->num_rows > 0) {
                 <?php endif; ?>
                 
                 <div class="menu-form">
-                    <h3>Add New Menu Item</h3>
-                    <p>To add a new menu item, please use the <a href="add-menu-item.php" style="color: #6a5acd; text-decoration: none; font-weight: 600;">Add Menu Item</a> page.</p>
+                    <h3>Add New Menu Item</h3> <br>
+                    <p>To add a new menu item, please use the add menu button below.</p> <br>
+                    
+                    <!-- Search form -->
+                    <form action="" method="GET" class="search-container">
+                        <!-- In the search form -->
+                        <input type="text" name="search" placeholder="Search by name or ingredients" class="search-input" value="<?php echo htmlspecialchars($search); ?>">
+                        
+                        <select name="category" class="search-select">
+                            <option value="">All Categories</option>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?php echo $category['category_id']; ?>" <?php echo ($category_filter == $category['category_id']) ? 'selected' : ''; ?>>
+                                    <?php echo $category['category_name']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        
+                        <button type="submit" class="search-btn">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                        
+                        <a href="menu-items.php" class="reset-btn">
+                            <i class="fas fa-redo"></i> Reset
+                        </a>
+                    </form>
+                    
+                    <a href="add-menu-item.php" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Menu Item
+                    </a>
                 </div>
                 
                 <div class="table-responsive">
@@ -229,10 +345,11 @@ if ($result->num_rows > 0) {
                                         }
                                         ?>
                                     </td>
-                                    <td><?php echo $item['item_name']; ?></td>
+                                   
+                                    <td><?php echo htmlspecialchars($item['item_name']); ?></td>
                                     <td class="price">Rs. <?php echo number_format($item['price'], 2); ?></td>
-                                    <td><span class="category-badge"><?php echo $item['category_name']; ?></span></td>
-                                    <td><?php echo strlen($item['ingredients']) > 50 ? substr($item['ingredients'], 0, 50) . '...' : $item['ingredients']; ?></td>
+                                    <td><span class="category-badge"><?php echo htmlspecialchars($item['category_name']); ?></span></td>
+                                    <td><?php echo strlen($item['ingredients']) > 50 ? htmlspecialchars(substr($item['ingredients'], 0, 50)) . '...' : htmlspecialchars($item['ingredients']); ?></td>
                                     <td class="actions">
                                         <a href="edit-menu-item.php?id=<?php echo $item['item_id']; ?>" class="edit-btn">
                                             <i class="fas fa-edit"></i>

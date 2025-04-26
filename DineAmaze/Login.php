@@ -13,24 +13,27 @@
     <link rel="stylesheet" href="css/Login.css"> 
 </head>
 <body>
-    <div class="form-container">
-        <h2>Welcome Back</h2>
-        <form method="POST" action="login_progress.php">  
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+    <div class="login-container">
+        <div class="login-image"></div>
+        <div class="form-container">
+            <h2>Welcome Back</h2>
+            <form method="POST" action="login_progress.php">  
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                    <a href="#" class="float-right" id="forgot-password">Forget Password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+            <div class="text-center mt-3">
+                <p>OR</p>
+                <p>Don't have an account?</p>
+                <a href="signup.php">Create account</a>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                <a href="#" class="float-right" id="forgot-password">Forget Password?</a>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
-        </form>
-        <div class="text-center mt-3">
-            <p>OR</p>
-            <p>Don't have an account?</p>
-            <a href="signup.php">Create account</a>
         </div>
     </div>
 
@@ -61,7 +64,6 @@
             <button id="reset-password-btn">Reset Password</button>
             <p id="reset-message"></p>
         </div>
-    </div>
     </div>
     <script src="js/Loginscript.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

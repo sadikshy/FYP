@@ -1,5 +1,5 @@
 console.log("Script executed!");
-console.log("upated 4")
+
 
 // Show OTP modal when "Forget Password" is clicked
 document.getElementById('forgot-password').addEventListener('click', function(event) {

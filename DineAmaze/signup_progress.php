@@ -44,8 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Close the connection (optional, as the script will end here anyway)
 $conn->close();
-?>
 
+?>
 <style>
 .success-message {
     color: rgb(23, 34, 26);
@@ -85,3 +85,11 @@ $conn->close();
     font-family: Arial, sans-serif;
 }
 </style>
+<?php
+
+$_SESSION['signup_success'] = true;
+
+// Redirect to success page
+header("Location: signup_success.php");
+exit();
+?>

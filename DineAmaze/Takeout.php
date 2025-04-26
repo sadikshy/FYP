@@ -9,6 +9,22 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+// Get user's email for the form
+$conn = new mysqli("localhost", "root", "", "dineamaze_database");
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$userId = $_SESSION['user_id'];
+$sql = "SELECT email FROM user WHERE user_id = '$userId'";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $user = $result->fetch_assoc();
+    $_SESSION['user_email'] = $user['email'];
+}
+$conn->close();
+
 // Check if cart is empty
 $cart_is_empty = !isset($_SESSION['cart']) || empty($_SESSION['cart']);
 ?>
@@ -104,7 +120,7 @@ $cart_is_empty = !isset($_SESSION['cart']) || empty($_SESSION['cart']);
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($_SESSION['user_email'] ?? ''); ?>" placeholder="Enter your email" required readonly>
                     <div class="error-message" id="emailError">Please enter a valid email address</div>
                 </div>
             </div>
@@ -136,7 +152,7 @@ $cart_is_empty = !isset($_SESSION['cart']) || empty($_SESSION['cart']);
                     document.getElementById('fullNameError').style.display = 'none';
                 }
                 
-                // Email validation
+                // Email validation - now readonly but still validate format
                 const email = document.getElementById('email').value.trim();
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(email)) {

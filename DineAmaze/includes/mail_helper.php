@@ -67,4 +67,105 @@ function sendOTPEmail($recipientEmail, $otp) {
         return false;
     }
 }
+
+/**
+ * Send order pickup notification email
+ * 
+ * @param string $recipientEmail Email address of the recipient
+ * @param string $userName Name of the user
+ * @param string $orderId Order ID
+ * @param array $orderDetails Order details array
+ * @param string $orderStatus Current order status
+ * @return bool True if email sent successfully, false otherwise
+ */
+function sendOrderPickupNotification($recipientEmail, $userName, $orderId, $orderDetails, $orderStatus) {
+    // Check if order is verified
+    if ($orderStatus !== 'verified') {
+        error_log("Order #$orderId is not verified. Email not sent.");
+        return false;
+    }
+    
+    // Calculate time difference
+    $orderTime = strtotime($orderDetails['order_date']);
+    $currentTime = time();
+    $timeDifference = $orderTime - $currentTime;
+    
+    // Only send notification if it's 10 minutes before order time
+    if ($timeDifference < 600 || $timeDifference > 660) { // Between 10-11 minutes before pickup
+        error_log("Order #$orderId notification not sent - not within 10-minute window. Time difference: " . ($timeDifference/60) . " minutes");
+        return false;
+    }
+    
+    $mail = new PHPMailer(true); // Enable exceptions
+    
+    try {
+        // Server settings - reusing the same settings as OTP email
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'sadikshyamunankarmi7@gmail.com';
+        $mail->Password   = 'vavdcnxrimfmtwxb';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
+        
+        // Recipients
+        $mail->setFrom('sadikshyamunankarmi7@gmail.com', 'DineAmaze');
+        $mail->addAddress($recipientEmail, $userName);
+        
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = 'DineAmaze - Your Order #' . $orderId . ' is Ready for Pickup!';
+        
+        // Format order time
+        $pickupTime = date('h:i A', $orderTime);
+        
+        // HTML layout for order pickup notification
+        $mail->Body = '
+        <div style="font-family: \'Poppins\', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); background: linear-gradient(to right, #f8f9fa, #e9ecef);">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h1 style="color: #764ba2; margin-bottom: 5px;">DineAmaze</h1>
+                <p style="color: #4CAF50; font-size: 18px; margin-top: 0;">Order Ready for Pickup</p>
+            </div>
+            
+            <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <p style="color: #333; font-size: 16px; line-height: 1.5;">Hello ' . $userName . ',</p>
+                <p style="color: #333; font-size: 16px; line-height: 1.5;">Your order is verified and ready for pickup! Please collect your order within 10 minutes of your scheduled time.</p>
+                
+                <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="color: #764ba2; margin-top: 0;">Order Details</h3>
+                    <p><strong>Order ID:</strong> #' . $orderId . '</p>
+                    <p><strong>Item:</strong> ' . $orderDetails['item_name'] . '</p>
+                    <p><strong>Quantity:</strong> ' . $orderDetails['quantity'] . '</p>
+                    <p><strong>Price:</strong> Rs. ' . $orderDetails['price'] . '</p>
+                    <p><strong>Pickup Time:</strong> ' . $pickupTime . '</p>
+                </div>
+                
+                <div style="text-align: center; margin: 30px 0;">
+                    <div style="font-size: 18px; font-weight: bold; padding: 15px; background-color: #4CAF50; color: white; border-radius: 8px; display: inline-block;">
+                        Please arrive at ' . $pickupTime . ' to collect your order
+                    </div>
+                </div>
+                
+                <p style="color: #333; font-size: 16px; line-height: 1.5;">Thank you for choosing DineAmaze. We hope you enjoy your meal!</p>
+            </div>
+            
+            <div style="text-align: center; color: #666; font-size: 14px;">
+                <p>© 2024 DineAmaze. All rights reserved.</p>
+                <p>Srijananagar, Bhaktapur</p>
+            </div>
+        </div>
+        ';
+        
+        $mail->AltBody = 'Your order #' . $orderId . ' is ready for pickup at ' . $pickupTime . '. Please collect your order within 10 minutes of your scheduled time. Item: ' . $orderDetails['item_name'] . ', Quantity: ' . $orderDetails['quantity'] . ', Price: Rs. ' . $orderDetails['price'];
+        
+        $mail->send();
+        error_log("Pickup notification sent for order #$orderId");
+        return true;
+    } catch (Exception $e) {
+        // Log the error for debugging
+        error_log("Order pickup notification email failed: " . $mail->ErrorInfo);
+        return false;
+    }
+}
 ?>

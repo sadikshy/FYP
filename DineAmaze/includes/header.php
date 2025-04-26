@@ -39,9 +39,13 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <div class="user-actions">
        
         <?php if($isLoggedIn): ?>
-            <a href="account_settings.php" class="user-profile" <?php echo ($currentPage == 'account_settings.php') ? 'class="active"' : ''; ?>>
-            <img src="images/gallery/profile.png" alt="Profile" class="profile-image">   
-            <span><?php echo htmlspecialchars($userName); ?></span>
+            <a href="account_settings.php" class="user-profile">
+                <?php if(isset($_SESSION['profile_image']) && file_exists($_SESSION['profile_image'])): ?>
+                    <img src="<?php echo htmlspecialchars($_SESSION['profile_image']); ?>" alt="Profile" class="profile-image" id="profile-image">
+                <?php else: ?>
+                    <img src="images/profile/default-profile.png" alt="Profile" class="profile-image">
+                <?php endif; ?>
+                <span><?php echo htmlspecialchars($userName); ?></span>
             </a>
             <a href="logout.php" class="logout">LOGOUT</a>
         <?php else: ?>
@@ -63,3 +67,5 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
 <script src="js/header.js"></script>
+
+<!-- Remove the entire duplicate user profile section below -->

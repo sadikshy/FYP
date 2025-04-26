@@ -242,3 +242,13 @@
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+/* Add these styles to your Menu.css file */
+.dish-item.diet-filtered-out,
+.dish-item.search-filtered-out {
+    display: none !important;
+}
+
+.menu-category.empty-after-filter {
+    display: none !important;
+}

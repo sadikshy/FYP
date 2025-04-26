@@ -1,0 +1,219 @@
+.account-container {
+    max-width: 900px; /* Changed from 200px to 900px */
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile image styling - with unique class names */
+.account-container .account-profile-image-container {
+    text-align: center;
+    margin-bottom: 30px;
+    max-width: 200px; /* Reduced from 350px to 200px */
+    margin-left: auto;
+    width: 40%;
+    margin-right: auto;
+}
+
+/* Add styling for the file input preview */
+.file-preview-container {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.file-preview-image {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 50%;
+    border: 3px solid #764ba2;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    display: none; /* Hidden by default, shown via JS */
+    margin: 10px auto;
+}
+
+.file-name {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.account-container .account-profile-image {
+    max-width: 120px;
+    height: auto;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #764ba2;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* Profile image in user info section */
+.account-container .user-info .account-profile-image-container {
+    max-width: 120px;
+}
+
+/* Profile image preview styling */
+.account-container #account-profile-preview {
+    width: 200px;
+    height: auto;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 6px solid #764ba2;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    margin: 0 auto 25px;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.account-container #account-profile-preview:hover {
+    transform: scale(1.05);
+}
+
+/* Remove the conflicting rule at the bottom */
+/* .profile-image-container img {
+    width: 100%;
+} */
+
+
+/* Profile upload styling */
+.profile-upload {
+    margin-top: 15px;
+}
+
+.profile-upload label {
+    cursor: pointer;
+    color: #764ba2;
+    font-weight: 500;
+    padding: 8px 15px;
+    background-color: rgba(118, 75, 162, 0.1);
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.profile-upload label:hover {
+    background-color: rgba(118, 75, 162, 0.2);
+}
+
+.profile-upload input[type="file"] {
+    display: none;
+}
+
+/* Disabled input styling */
+.disabled-input {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+
+/* Add this new class for cancelled status */
+.text-cancelled {
+    color: #FF5733;
+    font-weight: bold;
+}
+
+.nav-tabs .nav-link {
+    color: #555;
+    font-weight: 500;
+}
+
+.nav-tabs .nav-link.active {
+    color: #764ba2;
+    font-weight: 600;
+}
+
+.tab-content {
+    padding: 30px 15px;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #555;
+}
+
+.btn-primary {
+    background: linear-gradient(to right, #667eea, #764ba2);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(to right, #764ba2, #667eea);
+}
+
+.alert {
+    margin-top: 20px;
+}
+
+.user-info {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.user-info h4 {
+    color: #764ba2;
+    margin-bottom: 15px;
+}
+
+.user-info p {
+    margin-bottom: 10px;
+}
+
+.user-info strong {
+    display: inline-block;
+    width: 120px;
+}
+
+/* Custom alert styling */
+.alert-dismissible {
+    position: fixed;
+    top: 80px; /* Increased from 20px to position below navigation */
+    right: 20px;
+    z-index: 9999;
+    min-width: 300px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    animation: slideInRight 0.5s ease-in-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+
+/* Improved profile upload button styling */
+.change-profile-btn {
+    display: inline-block;
+    background: linear-gradient(to right, #667eea, #764ba2);
+    color: white !important;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 30px;
+    box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.change-profile-btn:hover {
+    background: linear-gradient(to right, #764ba2, #667eea);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(118, 75, 162, 0.4);
+}
+
+.change-profile-btn i {
+    margin-right: 8px;
+}

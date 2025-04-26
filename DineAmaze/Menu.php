@@ -58,6 +58,87 @@ session_start();
             padding: 8px 12px;
             color: #6c757d;
         }
+        
+        /* Hero search and filter styles */
+        .hero-search-filters {
+            margin-top: 30px;
+            width: 80%;
+            max-width: 800px;
+        }
+        
+        .search-container {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        #dish-search {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        #search-button {
+            background-color: #ff8c00; /* Orange color */
+            color: #000; /* Black color for icon */
+            border: none;
+            border-radius: 0 30px 30px 0;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        #search-button:hover {
+            background-color: #e67e00;
+        }
+        
+        .dietary-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .diet-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .diet-btn:hover, .diet-btn.active {
+            background-color: #ff8c00;
+            color: #000;
+            border-color: #ff8c00;
+        }
+        
+        /* Diet type indicators */
+        .diet-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .vegetarian-indicator {
+            background-color: #4CAF50;
+        }
+        
+        .ovo-vegetarian-indicator {
+            background-color: #FFC107;
+        }
+        
+        .non-vegetarian-indicator {
+            background-color: #F44336;
+        }
     </style>
 </head>
 <body>
@@ -67,6 +148,20 @@ session_start();
         <h1 class="hero-title">Our Menu</h1>
         <div>
             <span class="hero-subtitle">Select your desire items</span>
+        </div>
+        
+        <!-- Search and filter options moved to hero section -->
+        <div class="hero-search-filters">
+            <div class="search-container">
+                <input type="text" id="dish-search" placeholder="Search dishes...">
+                <button id="search-button"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="dietary-filter">
+                <button class="diet-btn active" data-diet="all">All</button>
+                <button class="diet-btn" data-diet="vegetarian">Vegetarian</button>
+                <button class="diet-btn" data-diet="ovo-vegetarian">Ovo-Vegetarian</button>
+                <button class="diet-btn" data-diet="non-vegetarian">Non-Vegetarian</button>
+            </div>
         </div>
     </div>
 
@@ -121,25 +216,7 @@ session_start();
         </div>
         
         <div class="menu-content">
-            <!-- Search and filter options -->
-            <div class="menu-search-filters">
-                <div class="search-container">
-                    <input type="text" id="dish-search" placeholder="Search dishes...">
-                    <button id="search-button"><i class="fas fa-search"></i></button>
-                </div>
-                <div class="additional-filters">
-                    <label class="filter-checkbox">
-                        <input type="checkbox" id="customizable-filter">
-                        <span class="checkmark"></span>
-                        Customizable Items
-                    </label>
-                    <label class="filter-checkbox">
-                        <input type="checkbox" id="offer-filter">
-                        <span class="checkmark"></span>
-                        Special Offers
-                    </label>
-                </div>
-            </div>
+            <!-- Search and filter options removed from here -->
             
             <?php
             // 1. Database connection already established above
@@ -194,8 +271,19 @@ session_start();
                             // Add data attributes for filtering
                             $customizable_attr = $item['is_customizable'] ? 'true' : 'false';
                             $offer_attr = $offer ? 'true' : 'false';
+                            
+                            // Determine diet type based on ingredients (simplified logic)
+                            $diet_type = "non-vegetarian"; // Default
+                            $ingredients_lower = strtolower($ingredients);
+                            if (!preg_match('/(chicken|beef|pork|mutton|fish|seafood|meat)/i', $ingredients_lower)) {
+                                if (preg_match('/(egg)/i', $ingredients_lower)) {
+                                    $diet_type = "ovo-vegetarian";
+                                } else {
+                                    $diet_type = "vegetarian";
+                                }
+                            }
 
-                            echo "<div class='dish-item' data-customizable='{$customizable_attr}' data-offer='{$offer_attr}' data-name='{$name}' data-ingredients='{$ingredients}'>";
+                            echo "<div class='dish-item' data-customizable='{$customizable_attr}' data-offer='{$offer_attr}' data-name='{$name}' data-ingredients='{$ingredients}' data-diet='{$diet_type}'>";
                             // Check if image exists and display from the correct directory
                             if (!empty($image)) {
                                 echo "<img src='assets/images/menu/{$image}' alt='{$name}'>";
@@ -284,93 +372,6 @@ session_start();
     <?php include 'includes/footer.php'; ?>
     
     <!-- JavaScript for filtering -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const filterItems = document.querySelectorAll('.filter-item');
-            const menuCategories = document.querySelectorAll('.menu-category');
-            
-            filterItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    // Remove active class from all filter items
-                    filterItems.forEach(filter => filter.classList.remove('active'));
-                    
-                    // Add active class to clicked filter
-                    this.classList.add('active');
-                    
-                    const filterValue = this.getAttribute('data-filter');
-                    
-                    // Show/hide menu categories based on filter
-                    if (filterValue === 'all') {
-                        menuCategories.forEach(category => {
-                            category.style.display = 'block';
-                        });
-                    } else {
-                        menuCategories.forEach(category => {
-                            if (category.getAttribute('data-category') === filterValue) {
-                                category.style.display = 'block';
-                            } else {
-                                category.style.display = 'none';
-                            }
-                        });
-                    }
-                });
-            });
-        });
-    
-
-   
-   
-    document.addEventListener('DOMContentLoaded', function() {
-        // Add to cart functionality for direct add buttons
-        const addToCartButtons = document.querySelectorAll('.add-to-cart-direct');
-        
-        addToCartButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const itemId = this.getAttribute('data-id');
-                const itemName = this.getAttribute('data-name');
-                const itemPrice = parseFloat(this.getAttribute('data-price'));
-                const itemImage = this.getAttribute('data-image');
-                
-                // Create cart item
-                const cartItem = {
-                    id: itemId,
-                    name: itemName,
-                    image: itemImage,
-                    quantity: 1,
-                    price: itemPrice,
-                    toppings: [],
-                    removed_ingredients: [],
-                    special_instructions: ''
-                };
-                
-                // Send AJAX request to add item to cart
-                fetch('add_to_cart.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(cartItem)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Update cart count in header
-                        const cartCount = document.querySelector('.cart-count');
-                        cartCount.textContent = data.cartCount;
-                        
-                        // Show success message
-                        alert(data.message);
-                    } else {
-                        alert('Error adding item to cart: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while adding the item to cart.');
-                });
-            });
-        });
-    });
-    </script>
+    <script src="js/menu-filter.js"></script>
     </body>
     </html>
