@@ -24,7 +24,9 @@ if (isset($_GET['clear'])) {
 // Calculate cart total
 $cartTotal = 0;
 foreach ($_SESSION['cart'] as $item) {
-    $cartTotal += $item['price'] * $item['quantity'];
+    $itemPrice = $item['price'];
+    $itemQuantity = $item['quantity'];
+    $cartTotal += ($itemPrice * $itemQuantity);
 }
 ?>
 <!DOCTYPE html>
@@ -56,31 +58,36 @@ foreach ($_SESSION['cart'] as $item) {
                 <?php foreach ($_SESSION['cart'] as $index => $item): ?>
                 <div class="cart-item">
                     <div class="item-image">
-                        <img src="images/Menu Photos/<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>">
+                        <?php if (!empty($item['image'])): ?>
+                            <img src="assets/images/menu/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
+                        <?php else: ?>
+                            <img src="assets/images/default-food.jpg" alt="<?php echo htmlspecialchars($item['name']); ?>">
+                        <?php endif; ?>
                     </div>
                     <div class="item-details">
-                        <h3><?php echo $item['name']; ?></h3>
-                        <p class="item-price">Rs. <?php echo number_format($item['price'], 2); ?></p>
+                        <h3><?php echo htmlspecialchars($item['name']); ?></h3>
+                        
                         <?php if (!empty($item['toppings'])): ?>
-                        <p class="item-toppings">
-                            <strong>Extra Toppings:</strong> 
-                            <?php echo implode(', ', array_map(function($topping) {
-                                return $topping['name'];
-                            }, $item['toppings'])); ?>
-                        </p>
+                            <p class="toppings">
+                                <strong>Toppings:</strong> 
+                                <?php 
+                                $toppingNames = array_map(function($topping) {
+                                    return $topping['name'];
+                                }, $item['toppings']);
+                                echo htmlspecialchars(implode(', ', $toppingNames)); 
+                                ?>
+                            </p>
                         <?php endif; ?>
-                        <?php if (!empty($item['special_instructions'])): ?>
-                        <p class="item-instructions">
-                            <strong>Special Instructions:</strong> 
-                            <?php echo $item['special_instructions']; ?>
-                        </p>
-                        <?php endif; ?>
-                    </div>
-                    <div class="item-quantity">
-                        <span>Quantity: <?php echo $item['quantity']; ?></span>
-                    </div>
-                    <div class="item-total">
-                        <span>Rs. <?php echo number_format($item['price'] * $item['quantity'], 2); ?></span>
+                        
+                        <div class="item-price">
+                            <span>Rs. <?php echo number_format($item['price'] * $item['quantity'], 2); ?></span>
+                        </div>
+                        
+                        <div class="quantity-controls">
+                            <button class="quantity-btn minus" data-index="<?php echo $index; ?>">-</button>
+                            <input type="number" class="quantity-input" value="<?php echo $item['quantity']; ?>" min="1" max="10" data-index="<?php echo $index; ?>" data-price="<?php echo $item['price']; ?>">
+                            <button class="quantity-btn plus" data-index="<?php echo $index; ?>">+</button>
+                        </div>
                     </div>
                     <div class="item-actions">
                         <a href="cart.php?remove=<?php echo $index; ?>" class="remove-btn">
@@ -94,7 +101,7 @@ foreach ($_SESSION['cart'] as $item) {
             <div class="cart-summary">
                 <div class="summary-row">
                     <span>Total:</span>
-                    <span>Rs. <?php echo number_format($cartTotal, 2); ?></span>
+                    <span class="cart-total-amount">Rs. <?php echo number_format($cartTotal, 2); ?></span>
                 </div>
                 
                 <div class="cart-actions">
@@ -106,5 +113,95 @@ foreach ($_SESSION['cart'] as $item) {
     </div>
 
     <?php include 'includes/footer.php'; ?>
+
+    <!-- Add this JavaScript at the end of the file, before the closing body tag -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all quantity buttons
+        const minusButtons = document.querySelectorAll('.quantity-btn.minus');
+        const plusButtons = document.querySelectorAll('.quantity-btn.plus');
+        const quantityInputs = document.querySelectorAll('.quantity-input');
+        
+        // Add event listeners to minus buttons
+        minusButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const index = this.getAttribute('data-index');
+                const input = document.querySelector(`.quantity-input[data-index="${index}"]`);
+                let value = parseInt(input.value);
+                
+                if (value > 1) {
+                    value--;
+                    input.value = value;
+                    updateQuantity(index, value);
+                }
+            });
+        });
+        
+        // Add event listeners to plus buttons
+        plusButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const index = this.getAttribute('data-index');
+                const input = document.querySelector(`.quantity-input[data-index="${index}"]`);
+                let value = parseInt(input.value);
+                
+                if (value < 10) {
+                    value++;
+                    input.value = value;
+                    updateQuantity(index, value);
+                }
+            });
+        });
+        
+        // Add event listeners to quantity inputs
+        quantityInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const index = this.getAttribute('data-index');
+                let value = parseInt(this.value);
+                
+                // Ensure value is between 1 and 10
+                if (value < 1) value = 1;
+                if (value > 10) value = 10;
+                
+                this.value = value;
+                updateQuantity(index, value);
+            });
+        });
+        
+        // Function to update quantity via AJAX
+        function updateQuantity(index, quantity) {
+            fetch('update_cart_quantity.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    index: index,
+                    quantity: quantity
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the price display
+                    const priceElement = document.querySelector(`.quantity-input[data-index="${index}"]`).closest('.cart-item').querySelector('.item-price span');
+                    const unitPrice = parseFloat(document.querySelector(`.quantity-input[data-index="${index}"]`).getAttribute('data-price'));
+                    priceElement.textContent = 'Rs. ' + (unitPrice * quantity).toFixed(2);
+                    
+                    // Update the cart total
+                    document.querySelector('.cart-total-amount').textContent = 'Rs. ' + data.cartTotal.toFixed(2);
+                    
+                    // Update cart count in header if it exists
+                    const cartCountElement = document.querySelector('.cart-count');
+                    if (cartCountElement) {
+                        cartCountElement.textContent = data.cartCount;
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error updating quantity:', error);
+            });
+        }
+    });
+    </script>
 </body>
 </html>

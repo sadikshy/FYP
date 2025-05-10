@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_profile'])) {
     // Handle profile image upload
     if(isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] == 0) {
         // Create profile directory if it doesn't exist
-        $uploadDir = 'images/profile/';
+        $uploadDir = 'assets/images/profile/';
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
@@ -74,12 +74,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_profile'])) {
             // Move uploaded file
             if(move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetFile)) {
                 // Delete old profile image if exists
-                if(!empty($user['profile_image']) && file_exists($user['profile_image'])) {
+                if(!empty($user['profile_image']) && file_exists($user['profile_image']) && strpos($user['profile_image'], 'default-profile.png') === false) {
                     unlink($user['profile_image']);
                 }
                 
                 // Add profile image to SQL update
                 $sql .= ", profile_image = '$targetFile'";
+                
+                // Update session with new profile image path
+                $_SESSION['profile_image'] = $targetFile;
             } else {
                 $updateMessage = "<div class='alert alert-danger'>Error uploading profile image.</div>";
             }
@@ -93,10 +96,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_profile'])) {
     
     if ($conn->query($sql) === TRUE) {
         $_SESSION['profile_updated'] = true;
-        // Update profile image in session if it was changed
-        if(isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] == 0) {
-            $_SESSION['profile_image'] = $targetFile;
-        }
         // Refresh user data
         $sql = "SELECT * FROM user WHERE user_id = '$userId'";
         $result = $conn->query($sql);
@@ -352,6 +351,7 @@ $conn->close();
                 $orderSql = "SELECT * FROM takeout_order_items WHERE email = '$userEmail' ORDER BY order_date DESC";
                 $orderResult = $conn->query($orderSql);
                 
+                // Remove the debug messages and directly display orders
                 if ($orderResult && $orderResult->num_rows > 0) {
                     while ($order = $orderResult->fetch_assoc()) {
                         $statusClass = '';
@@ -368,6 +368,7 @@ $conn->close();
                                 if ($timeDifference >= 600 && $timeDifference <= 660) {
                                     // Send pickup notification
                                     $notificationSent = sendOrderPickupNotification($userEmail, $user['name'], $order['order_id'], $order, $order['status']);
+                                }
                             }
                         } else if ($order['status'] == 'pending') {
                             $statusClass = 'text-warning';
@@ -434,7 +435,7 @@ $conn->close();
                             </div>';
                     }
                 } 
-} 
+
 else {
                     echo '<p>You haven\'t placed any orders yet.</p>';
                 }

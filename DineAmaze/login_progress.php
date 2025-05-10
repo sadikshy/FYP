@@ -134,6 +134,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['action'])) {
             $_SESSION['user_email'] = $row['email']; // This is correct
             $_SESSION['logged_in'] = true;
             
+            // Add profile image to session if it exists
+            if(!empty($row['profile_image']) && file_exists($row['profile_image'])) {
+                $_SESSION['profile_image'] = $row['profile_image'];
+            }
+            
             // Redirect to success page
             header("Location: login_success.php");
             exit(); // Important to prevent further code execution
