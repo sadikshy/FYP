@@ -73,10 +73,9 @@
     transform: scale(1.05);
 }
 
-/* Remove the conflicting rule at the bottom */
-/* .profile-image-container img {
-    width: 100%;
-} */
+
+
+
 
 
 /* Profile upload styling */
@@ -216,4 +215,7 @@
 
 .change-profile-btn i {
     margin-right: 8px;
+}
+.profile-image-container img {
+    width: 150px;
 }

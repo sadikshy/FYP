@@ -202,6 +202,59 @@ if (session_status() == PHP_SESSION_NONE) {
            
         </div>
     </section>
+    <section class="offer-section" id="offers">
+        <div class="offer-header">
+            <h2 class="offer-title">Our<span>Offers</span></h2>
+            <p class="offer-description">
+                Discover our exclusive deals and promotions designed to enhance your dining experience at DineAmaze.
+                Don't miss out on these limited-time offers!
+            </p>
+        </div>
+        
+        <div class="offer-container">
+            <div class="offer-card">
+                <div class="offer-badge">20% OFF</div>
+                <div class="offer-image">
+                    <img src="images/offers/family-meal.jpg" alt="Family Meal Deal">
+                </div>
+                <div class="offer-content">
+                    <h3>Family Meal Deal</h3>
+                    <p>Order any 4 main courses and get 20% off your total bill. Perfect for family gatherings!</p>
+                    <p class="offer-validity">Valid until: Dec 31, 2024</p>
+                
+                </div>
+            </div>
+            
+            <div class="offer-card">
+                <div class="offer-badge">FREE</div>
+                <div class="offer-image">
+                    <img src="images/offers/free-dessert.jpg" alt="Free Dessert">
+                </div>
+                <div class="offer-content">
+                    <h3>Free Dessert</h3>
+                    <p>Spend over Rs. 1500 on your meal and receive a complimentary dessert of your choice.</p>
+                    <p class="offer-validity">Valid until: Nov 30, 2024</p>
+                    
+                </div>
+            </div>
+            
+            <div class="offer-card">
+                <div class="offer-badge">HAPPY HOUR</div>
+                <div class="offer-image">
+                    <img src="images/offers/happy-hour.png" alt="Happy Hour Special">
+                </div>
+                <div class="offer-content">
+                    <h3>Happy Hour Special</h3>
+                    <p>Enjoy 15% off on all beverages between 4PM and 6PM, Monday and  Thursday.</p>
+                    <p class="offer-validity">Ongoing</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="view-all-offers">
+            <a href="Offers.php" class="view-all-btn">View All Offers</a>
+        </div>
+    </section>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <?php include 'includes/footer.php'; ?>

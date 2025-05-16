@@ -237,7 +237,7 @@ $conn->close();
                 <form method="POST" action="" enctype="multipart/form-data">
                     <div class="profile-image-container">
                         <?php if(!empty($user['profile_image']) && file_exists($user['profile_image'])): ?>
-                            <img src="<?php echo htmlspecialchars($user['profile_image']); ?>" alt="Profile" class="profile-image" id="profile-preview">
+                            <img src="<?php echo htmlspecialchars($user['profile_image']); ?>" alt="Profile" class="profile-image" id="profile-preview" width="150px">
                         <?php else: ?>
                             <img src="images/profile/default-profile.png" alt="Default Profile" class="profile-image" id="profile-preview">
                         <?php endif; ?>
