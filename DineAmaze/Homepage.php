@@ -78,8 +78,7 @@ if (session_status() == PHP_SESSION_NONE) {
         <div class="gallery-header">
             <h2 class="gallery-title">Our<span>Gallery</span></h2>
             <p class="gallery-description">
-                Aenean sodales dictum augue, in faucibus nisi sollicitudin eu. Nulla semper arcu vel diam auctor condimentum.
-                Nam molestie sem eu quam fermentum a tempus nisi aliquet.
+                A feast for the eyes before the first bite.Explore our gallery and discover the artistry behind every dish. From sizzling street food to elegant platters, each photo captures the passion, color, and creativity that define the DineAmaze experience. Let your cravings begin here.
             </p>
         </div>
         
@@ -88,8 +87,8 @@ if (session_status() == PHP_SESSION_NONE) {
                 <img src="images/gallery/bread.jpg" alt="Freshly Baked Bread">
                 <div class="gallery-overlay">
                     <div class="overlay-content">
-                        <h3>Eat organic</h3>
-                        <p>BREAD</p>
+                        <h3>Fuel Your Morning</h3>
+                        <p>BREAKFAST</p>
                     </div>
                 </div>
             </div>
@@ -97,7 +96,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 <img src="images/gallery/GrilledChickenSalad.jpg" alt="Fresh Salad">
                 <div class="gallery-overlay">
                     <div class="overlay-content">
-                        <h3>Fresh ingredients</h3>
+                        <h3>Freshness in Every Bite</h3>
                         <p>SALAD</p>
                     </div>
                 </div>
@@ -106,8 +105,8 @@ if (session_status() == PHP_SESSION_NONE) {
                 <img src="images/gallery/SignaturePasta.png" alt="Spices">
                 <div class="gallery-overlay">
                     <div class="overlay-content">
-                        <h3>Rich flavors</h3>
-                        <p>SPICES</p>
+                        <h3>Infused with Flavor</h3>
+                        <p>SIGNATURE PASTA</p>
                     </div>
                 </div>
             </div>
@@ -115,8 +114,8 @@ if (session_status() == PHP_SESSION_NONE) {
                 <img src="images/gallery/Momo.jpg" alt="Hummus">
                 <div class="gallery-overlay">
                     <div class="overlay-content">
-                        <h3>All time Favourite</h3>
-                        <p>Lunch</p>
+                        <h3>All-Time Favourite</h3>
+                        <p>LUNCH</p>
                     </div>
                 </div>
             </div>
@@ -124,8 +123,8 @@ if (session_status() == PHP_SESSION_NONE) {
                 <img src="images/gallery/Noodles.jpg" alt="Fresh Fruits">
                 <div class="gallery-overlay">
                     <div class="overlay-content">
-                        <h3>Warm your soul with every bite!</h3>
-                        <p>Cozy Bowl</p>
+                        <h3>Warm your soul </h3>
+                        <p>COZY BOWLS</p>
                     </div>
                 </div>
             </div>
@@ -133,8 +132,8 @@ if (session_status() == PHP_SESSION_NONE) {
                 <img src="images/gallery/Coffee.jpg" alt="Breakfast">
                 <div class="gallery-overlay">
                     <div class="overlay-content">
-                        <h3>Start your day</h3>
-                        <p>Hot Drinks</p>
+                        <h3>Start your day with</h3>
+                        <p>HOT DRINKS</p>
                     </div>
                 </div>
             </div>
@@ -142,7 +141,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 <img src="images/gallery/CheesePizza.jpg" alt="Pizza">
                 <div class="gallery-overlay">
                     <div class="overlay-content">
-                        <h3>Handcrafted</h3>
+                        <h3>Handcrafted to Perfection</h3>
                         <p>PIZZA</p>
                     </div>
                 </div>
@@ -163,8 +162,7 @@ if (session_status() == PHP_SESSION_NONE) {
         <div class="services-header">
             <h2 class="services-title">Our<span>Services</span></h2>
             <p class="services-description">
-                Aenean sodales dictum augue, in faucibus nisi sollicitudin eu. Nulla semper arcu vel diam auctor condimentum.
-                Nam molestie sem eu quam fermentum a tempus nisi aliquet.
+                At DineAmaze, you can customize your meals just the way you like with fresh, tasty ingredients. Enjoy great deals and special offers while savoring your favorites. Whether dining in or taking out, we prepare your order with care to make every meal easy and delicious.
             </p>
         </div>
         
@@ -175,7 +173,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 </div>
                 <h3 class="service-title">Customization</h3>
                 <p class="service-description">
-                    Lorem ipsum dolor sit amet, tetur piscing elit. Suspendisse smod congue bibendum.
+                    Customize your meal your way — fresh ingredients, flavors you love, made just for you.
                 </p>
             </div>
             
@@ -185,7 +183,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 </div>
                 <h3 class="service-title">Hot Deals</h3>
                 <p class="service-description">
-                    Lorem ipsum dolor sit amet, tetur piscing elit. Suspendisse smod congue bibendum.
+                    Discover sizzling hot deals that make every bite even more delicious!
                 </p>
             </div>
             
@@ -195,7 +193,7 @@ if (session_status() == PHP_SESSION_NONE) {
                 </div>
                 <h3 class="service-title">Takeout</h3>
                 <p class="service-description">
-                    Lorem ipsum dolor sit amet, tetur piscing elit. Suspendisse smod congue bibendum.
+                    Hot, fresh, and ready when you are — takeout made simple and satisfying!
                 </p>
             </div>
             
