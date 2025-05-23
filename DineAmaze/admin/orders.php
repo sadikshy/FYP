@@ -200,4 +200,3 @@ $stmt->close();
     </div>
 </body>
 </html>
-<?php $conn->close(); ?>

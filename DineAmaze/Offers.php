@@ -180,25 +180,33 @@ $conn->close();
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/Homepage.css">
     <link rel="stylesheet" href="css/offers.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>
     
-    <div class="offers-hero">
-        <div class="hero-content">
-            <h1>SPECIAL OFFERS</h1>
-            <div class="tagline-container">
-                <span class="tagline">Exclusive Deals & Discounts</span> <br> <br>
-                <span class="tagline1">Save more on your favorite meals</span>
-            </div>
+    <section class="offers-hero">
+        <div class="slider">
+            <img src="images/offers/offers-hero.jpg" alt="Special Offers" class="active">
+            <img src="images/offers/offers-slider2.jpg" alt="Food Discounts">
+            <img src="images/offers/offers-slider3.jpg" alt="Meal Deals">
         </div>
-    </div>
+        <div class="hero-content">
+            <h1 class="curved-text">SPECIAL OFFERS</h1>
+            <p>Exclusive Deals & Discounts</p>
+            <a href="#current-offers" class="cta-button">VIEW OFFERS</a>
+        </div>
+    </section>
     
-    <section class="offers-section">
+    <section class="offer-section" id="current-offers">
         <div class="container">
-            <div class="section-title">
-                <h2>Current Offers</h2>
-                <p>Discover our amazing deals and save on your next meal</p>
+            <div class="offer-header">
+                <h2 class="offer-title">Our<span>Offers</span></h2>
+                <p class="offer-description">
+                    Discover our exclusive deals and promotions designed to enhance your dining experience at DineAmaze.
+                    Don't miss out on these limited-time offers!
+                </p>
             </div>
             
             <div class="offer-categories">
@@ -228,21 +236,19 @@ $conn->close();
                         <p><?php echo $category['description']; ?></p>
                     </div>
                     
-                    <div class="offers-grid">
+                    <div class="offer-container">
                         <?php foreach ($category['offers'] as $offer): ?>
                         <div class="offer-card">
+                            <div class="offer-badge"><?php echo $offer['discount']; ?></div>
                             <div class="offer-image">
-                                <div class="discount-badge"><?php echo $offer['discount']; ?></div>
                                 <img src="<?php echo $offer['image']; ?>" alt="<?php echo $offer['title']; ?>" onerror="this.src='images/offers/default-offer.jpg'">
                             </div>
-                            <div class="offer-details">
-                                <h4><?php echo $offer['title']; ?></h4>
+                            <div class="offer-content">
+                                <h3><?php echo $offer['title']; ?></h3>
                                 <p><?php echo $offer['description']; ?></p>
-                                <div class="offer-meta">
-                                    <span class="promo-code">Code: <strong><?php echo $offer['code']; ?></strong></span>
-                                    <span class="valid-until">Valid until: <?php echo date('d M Y', strtotime($offer['valid_until'])); ?></span>
-                                </div>
-                                <a href="Menu.php" class="btn btn-primary">Order Now</a>
+                                <p class="offer-validity">Valid until: <?php echo date('d M Y', strtotime($offer['valid_until'])); ?></p>
+                                <p class="promo-code">Code: <strong><?php echo $offer['code']; ?></strong></p>
+                                <a href="Menu.php" class="view-all-btn">Order Now</a>
                             </div>
                         </div>
                         <?php endforeach; ?>
@@ -255,9 +261,11 @@ $conn->close();
     
     <section class="how-to-use">
         <div class="container">
-            <div class="section-title">
-                <h2>How to Use Our Offers</h2>
-                <p>Follow these simple steps to redeem your offers</p>
+            <div class="offer-header">
+                <h2 class="offer-title">How to<span>Redeem</span></h2>
+                <p class="offer-description">
+                    Follow these simple steps to enjoy our exclusive deals and make the most of your dining experience
+                </p>
             </div>
             
             <div class="steps-container">
@@ -298,9 +306,11 @@ $conn->close();
     
     <section class="offers-faq">
         <div class="container">
-            <div class="section-title">
-                <h2>Frequently Asked Questions</h2>
-                <p>Get answers to common questions about our offers</p>
+            <div class="offer-header">
+                <h2 class="offer-title">FAQ<span>About Offers</span></h2>
+                <p class="offer-description">
+                    Get answers to common questions about our special deals and promotions
+                </p>
             </div>
             
             <div class="accordion" id="offersFAQ">
@@ -372,5 +382,38 @@ $conn->close();
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        // Image slider functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const sliderImages = document.querySelectorAll('.slider img');
+            let currentImageIndex = 0;
+            
+            function showNextImage() {
+                // Hide current image
+                sliderImages[currentImageIndex].classList.remove('active');
+                
+                // Update index to next image
+                currentImageIndex = (currentImageIndex + 1) % sliderImages.length;
+                
+                // Show next image
+                sliderImages[currentImageIndex].classList.add('active');
+            }
+            
+            // Change image every 5 seconds
+            setInterval(showNextImage, 5000);
+            
+            // Add animation classes to hero content elements
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent) {
+                setTimeout(() => {
+                    const ctaButton = heroContent.querySelector('.cta-button');
+                    if (ctaButton) {
+                        ctaButton.style.opacity = '1';
+                    }
+                }, 600);
+            }
+        });
+    </script>
 </body>
 </html>

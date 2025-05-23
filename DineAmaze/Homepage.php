@@ -11,8 +11,10 @@ if (session_status() == PHP_SESSION_NONE) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DineAmaze - Exquisite Dining Experience</title>
     <link rel="stylesheet" href="css/Homepage.css">
+    <link rel="stylesheet" href="css/reviews.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>
@@ -252,7 +254,84 @@ if (session_status() == PHP_SESSION_NONE) {
         <div class="view-all-offers">
             <a href="Offers.php" class="view-all-btn">View All Offers</a>
         </div>
+    <!-- After the offer section and before the footer include -->
+    <section class="reviews-section" id="reviews">
+        <div class="reviews-header">
+            <h2 class="reviews-title">Our<span>Reviews</span></h2>
+            <p class="reviews-description">
+                Discover what our valued customers have to say about their dining experiences at DineAmaze.
+                We appreciate all feedback that helps us serve you better.
+            </p>
+        </div>
+        
+        <div class="reviews-slider-container">
+            <div class="reviews-slider">
+                <!-- Review 1 -->
+                <div class="review-card">
+                    <div class="review-profile">
+                        <img src="images/reviews/review1.jpg" alt="Client Profile">
+                    </div>
+                    <div class="review-content">
+                        <div class="review-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3 class="reviewer-name">Samir Shrestha</h3>
+                        <p class="review-text">I have been looking for authentic Nepali cuisine for a long time. The flavors at DineAmaze are incredible! The momos and thali sets are absolutely delicious. I am so glad to have found this place!</p>
+                    </div>
+                </div>
+                
+                <!-- Review 2 -->
+                <div class="review-card">
+                    <div class="review-profile">
+                        <img src="images/reviews/review2.jpeg" alt="Client Profile">
+                    </div>
+                    <div class="review-content">
+                        <div class="review-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <h3 class="reviewer-name">Sadikshya Munankarmi</h3>
+                        <p class="review-text">The customization options are what make DineAmaze special. I was able to adjust the spice level to my preference, and the staff was incredibly accommodating. The food was fresh and flavorful!</p>
+                    </div>
+                </div>
+                
+                <!-- Review 3 -->
+                <div class="review-card">
+                    <div class="review-profile">
+                        <img src="images/reviews/review3.jpeg" alt="Client Profile">
+                    </div>
+                    <div class="review-content">
+                        <div class="review-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3 class="reviewer-name">Nijal Shankar</h3>
+                        <p class="review-text">The Sel Roti was absolutely perfect! Crispy on the outside, soft on the inside. The service was excellent and the ambiance was warm and inviting. Will definitely be coming back with friends!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slider-controls">
+                <button class="prev-review"><i class="fas fa-chevron-left"></i></button>
+                <button class="next-review"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+        
+        <div class="view-all-reviews">
+            <a href="ClientReview.php" class="view-all-btn">Review Us</a>
+        </div>
     </section>
+    
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <?php include 'includes/footer.php'; ?>
@@ -274,6 +353,53 @@ if (session_status() == PHP_SESSION_NONE) {
         
         // Change slide every 5 seconds
         setInterval(nextSlide, 5000);
+        
+        // Reviews slider functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const reviewCards = document.querySelectorAll('.review-card');
+            const prevButton = document.querySelector('.prev-review');
+            const nextButton = document.querySelector('.next-review');
+            
+            // Show only the first review initially
+            reviewCards.forEach((card, index) => {
+                if (index === 0) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            let currentReview = 0;
+            const totalReviews = reviewCards.length;
+            
+            function showReview(index) {
+                if (index < 0) index = totalReviews - 1;
+                if (index >= totalReviews) index = 0;
+                
+                reviewCards.forEach((card, i) => {
+                    if (i === index) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                currentReview = index;
+            }
+            
+            prevButton.addEventListener('click', function() {
+                showReview(currentReview - 1);
+            });
+            
+            nextButton.addEventListener('click', function() {
+                showReview(currentReview + 1);
+            });
+            
+            // Auto change review every 7 seconds
+            setInterval(function() {
+                showReview(currentReview + 1);
+            }, 7000);
+        });
     </script>
 </body>
 </html>

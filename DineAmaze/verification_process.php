@@ -154,6 +154,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             // Get the last inserted order ID
                             $orderId = $conn->insert_id;
                             
+                            // Update user verification status
+                            if (isset($_SESSION['user_id'])) {
+                                $userId = $_SESSION['user_id'];
+                                $updateSql = "UPDATE user SET is_verified = 1 WHERE user_id = '$userId'";
+                                $conn->query($updateSql);
+                            }
+                            
                             // Redirect to confirmation page
                             header("Location: takeout_confirmation.php?order_id=$orderId&status=pending");
                             exit();

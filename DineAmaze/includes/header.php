@@ -31,8 +31,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             <li><a href="AboutUs.php" <?php echo ($currentPage == 'AboutUs.php') ? 'class="active"' : ''; ?>>ABOUT US</a></li>
             <li><a href="Menu.php" <?php echo ($currentPage == 'Menu.php') ? 'class="active"' : ''; ?>>MENU</a></li>
             <li><a href="Customization.php" <?php echo ($currentPage == 'Customization.php') ? 'class="active"' : ''; ?>>CUSTOMIZATION</a></li>
-            <li><a href="Offers.php" <?php echo ($currentPage == 'Offers.php') ? 'class="active"' : ''; ?>>OFFERS</a></li>
             <li><a href="Takeout.php" <?php echo ($currentPage == 'Takeout.php') ? 'class="active"' : ''; ?>>TAKEOUT</a></li>
+            <li><a href="ClientReview.php" <?php echo ($currentPage == 'ClientReview.php') ? 'class="active"' : ''; ?>>REVIEWS</a></li>
             <li><a href="ContactUs.php" <?php echo ($currentPage == 'ContactUs.php') ? 'class="active"' : ''; ?>>CONTACT US</a></li>
         </ul>
     </nav>
@@ -69,4 +69,3 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
 <script src="js/header.js"></script>
 
-<!-- Remove the entire duplicate user profile section below -->

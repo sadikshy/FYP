@@ -1,39 +1,98 @@
 /* Offers Page Styling */
 
 .offers-hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/offers/offers-hero.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 400px;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: white;
-    margin-bottom: 50px;
+    margin-bottom: 0;
+}
+
+.offers-hero .slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.offers-hero .slider img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.offers-hero .slider img.active {
+    opacity: 1;
+}
+
+.offers-hero .slider::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .offers-hero .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
     max-width: 800px;
     padding: 0 20px;
 }
 
-.offers-hero h1 {
-    font-size: 3.5rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+.offers-hero h1.curved-text {
+    font-size: 6.5rem;
+    font-weight: 800;
+    letter-spacing: 8px;
+    margin: 0 0 20px;
+    text-transform: uppercase;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    display: inline-block;
+    transform: perspective(400px) rotateX(-8deg);
+    position: relative;
+    text-shadow: 
+        2px 2px 0px rgba(0,0,0,0.2),
+        -1px -1px 0px rgba(255,255,255,0.3);
+    display: inline-block;
+    transform-origin: 50% 50%;
+    transform: rotateZ(-8deg) scale(1.2, 1);
+    text-shadow: 0 1px 0 #ccc,
+                0 2px 0 #c9c9c9,
+                0 3px 0 #bbb,
+                0 4px 0 #b9b9b9,
+                0 5px 0 #aaa,
+                0 6px 1px rgba(0,0,0,.1),
+                0 0 5px rgba(0,0,0,.1),
+                0 1px 3px rgba(0,0,0,.3),
+                0 3px 5px rgba(0,0,0,.2),
+                0 5px 10px rgba(0,0,0,.25),
+                0 10px 10px rgba(0,0,0,.2),
+                0 20px 20px rgba(0,0,0,.15);
 }
 
-.offers-hero .tagline {
-    font-size: 1.8rem;
-    font-weight: 300;
-}
-
-.offers-hero .tagline1 {
-    font-size: 1.4rem;
-    font-weight: 300;
-    opacity: 0.9;
+.offers-hero .hero-content p {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    margin: 20px 0 40px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .section-title {
@@ -41,35 +100,56 @@
     margin-bottom: 40px;
 }
 
-.section-title h2 {
+.section-title .welcome-text {
+    font-family: 'Great Vibes', cursive;
     font-size: 2.5rem;
+    color: #764ba2;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+.section-title .to-text {
+    font-size: 1.2rem;
     font-weight: 600;
+    color: #666;
+    letter-spacing: 2px;
+    margin: 5px 0;
+}
+
+.section-title .restaurant-name {
+    font-size: 2.5rem;
+    font-weight: 700;
     color: #333;
     margin-bottom: 10px;
+    letter-spacing: 2px;
     position: relative;
     display: inline-block;
 }
 
-.section-title h2:after {
-    content: '';
+.offer-badge {
     position: absolute;
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(to right, #764ba2, #667eea);
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 20px;
+    right: 20px;
+    background-color: #FF6B00;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    z-index: 1;
 }
 
-.section-title p {
+.section-title .about-description {
     color: #666;
     font-size: 1.1rem;
     max-width: 700px;
     margin: 20px auto 0;
+    line-height: 1.6;
 }
 
-.offers-section {
-    padding: 50px 0;
+/* Using the homepage offer section styling */
+.offer-section {
+    padding: 80px 0;
     background-color: #f9f9f9;
 }
 
@@ -101,13 +181,13 @@
 }
 
 .nav-tabs .nav-link:hover {
-    color: #764ba2;
-    background-color: rgba(118, 75, 162, 0.05);
+    color: #FF6B00;
+    background-color: rgba(255, 107, 0, 0.05);
 }
 
 .nav-tabs .nav-link.active {
-    color: #764ba2;
-    border-bottom: 2px solid #764ba2;
+    color: #FF6B00;
+    border-bottom: 2px solid #FF6B00;
     background-color: transparent;
 }
 
@@ -128,24 +208,30 @@
     margin: 0 auto;
 }
 
-.offers-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+/* Using the homepage offer container styling */
+
+.offer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 30px;
-    margin-top: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .offer-card {
-    background-color: white;
+    background-color: #fff;
     border-radius: 10px;
-    overflow: hidden;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 350px;
+    position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .offer-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
 .offer-image {
@@ -165,62 +251,54 @@
     transform: scale(1.05);
 }
 
-.discount-badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: linear-gradient(to right, #764ba2, #667eea);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+.offer-content {
+    padding: 25px;
 }
 
-.offer-details {
-    padding: 20px;
-}
-
-.offer-details h4 {
-    font-size: 1.3rem;
-    margin-bottom: 10px;
+.offer-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
     color: #333;
 }
 
-.offer-details p {
+.offer-content p {
     color: #666;
     margin-bottom: 15px;
     line-height: 1.5;
 }
 
-.offer-meta {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
+.offer-validity {
     font-size: 0.9rem;
-    color: #777;
+    color: #888;
+    font-style: italic;
+    margin-bottom: 15px;
 }
 
 .promo-code strong {
-    color: #764ba2;
+    color: #FF6B00;
 }
 
-.valid-until {
-    font-style: italic;
+.promo-code {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+    color: #666;
 }
 
-.offer-details .btn {
-    background: linear-gradient(to right, #764ba2, #667eea);
-    border: none;
-    padding: 8px 20px;
+.view-all-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: transparent;
+    color: #FF6B00;
+    border: 2px solid #FF6B00;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 600;
     transition: all 0.3s ease;
 }
 
-.offer-details .btn:hover {
-    background: linear-gradient(to right, #667eea, #764ba2);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+.view-all-btn:hover {
+    background-color: #FF6B00;
+    color: white;
 }
 
 /* How to use section */
@@ -255,7 +333,7 @@
 .step-icon {
     width: 80px;
     height: 80px;
-    background: linear-gradient(to right, #764ba2, #667eea);
+    background-color: #FF6B00;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -263,7 +341,7 @@
     margin: 0 auto 20px;
     color: white;
     font-size: 2rem;
-    box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
+    box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);
 }
 
 .step h4 {
@@ -307,7 +385,7 @@
 }
 
 .accordion .btn-link:hover {
-    color: #764ba2;
+    color: #FF6B00;
 }
 
 .accordion .btn-link:after {
@@ -347,22 +425,23 @@
 
 @media (max-width: 768px) {
     .offers-hero {
-        height: 300px;
+        height: 80vh;
     }
     
-    .offers-hero h1 {
-        font-size: 2.2rem;
+    .offers-hero h1.curved-text {
+        font-size: 4.5rem;
+        letter-spacing: 5px;
     }
     
-    .offers-hero .tagline {
-        font-size: 1.2rem;
+    .offers-hero .hero-content p {
+        font-size: 1.8rem;
     }
     
-    .offers-hero .tagline1 {
-        font-size: 1rem;
+    .section-title .restaurant-name {
+        font-size: 2rem;
     }
     
-    .section-title h2 {
+    .section-title .welcome-text {
         font-size: 2rem;
     }
     
@@ -387,5 +466,24 @@
     
     .nav-tabs .nav-link i {
         margin-right: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .offers-hero h1.curved-text {
+        font-size: 3rem;
+        letter-spacing: 3px;
+    }
+    
+    .offers-hero .hero-content p {
+        font-size: 1.5rem;
+    }
+    
+    .section-title .welcome-text {
+        font-size: 1.8rem;
+    }
+    
+    .section-title .restaurant-name {
+        font-size: 1.8rem;
     }
 }

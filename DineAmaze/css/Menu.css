@@ -229,7 +229,7 @@
     border-radius: 4px;
     text-decoration: none;
     font-size: 14px;
-    margin-top: 10px;
+    
     transition: background-color 0.3s;
 }
 
@@ -251,4 +251,19 @@
 
 .menu-category.empty-after-filter {
     display: none !important;
+}
+.add-to-cart-direct {
+    background-color: #5b8fd9;
+    color: #fff;
+    padding: 10px 15px; 
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.card-components{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }

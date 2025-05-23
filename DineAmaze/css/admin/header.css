@@ -24,6 +24,39 @@
     align-items: center;
 }
 
+/* Notification Bell Styles */
+.notification-bell {
+    position: relative;
+    margin-right: 20px;
+}
+
+.notification-link {
+    color: #555;
+    font-size: 20px;
+    transition: color 0.3s;
+}
+
+.notification-link:hover {
+    color: #6a5acd;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
 .user-avatar {
     width: 45px;
     height: 45px;

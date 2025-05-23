@@ -1,11 +1,29 @@
 <?php
 // Start the session
 session_start();
+
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
     header("Location: Login.php");
     exit();
 }
+
+// Get user's verification status
+$conn = new mysqli("localhost", "root", "", "dineamaze_database");
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$userId = $_SESSION['user_id'];
+$sql = "SELECT is_verified FROM user WHERE user_id = '$userId'";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $user = $result->fetch_assoc();
+    $_SESSION['is_verified'] = $user['is_verified'] ?? 0;
+}
+$conn->close();
 
 // Check if item_id is provided
 $item_id = isset($_GET['item_id']) ? $_GET['item_id'] : null;
@@ -63,6 +81,7 @@ $available_toppings = [
     <link rel="stylesheet" href="css/Homepage.css">
     <link rel="stylesheet" href="css/Customization.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         .empty-selection-notification {
             text-align: center;
@@ -217,6 +236,14 @@ $available_toppings = [
             
             <div class="action-buttons">
                 <a href="Menu.php" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Menu</a>
+                <div class="customization-buttons">
+                    <button id="save-customization-btn" class="customization-btn save-customization-btn" data-item-id="<?php echo $item_id; ?>" data-item-name="<?php echo $item_name; ?>">
+                        <i class="fas fa-save"></i> Save Custom
+                    </button>
+                    <button id="load-customization-btn" class="customization-btn load-customization-btn" data-item-id="<?php echo $item_id; ?>" data-item-name="<?php echo $item_name; ?>">
+                        <i class="fas fa-history"></i> My Customs
+                    </button>
+                </div>
                 <button type="button" class="add-to-cart-btn" id="addToCartBtn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
             </div>
         </div>
@@ -226,182 +253,736 @@ $available_toppings = [
     <input type="hidden" id="base_price" value="<?php echo $item_price; ?>">
     
     <?php include 'includes/footer.php'; ?>
+   
     
+    <!-- Initialize notification container for food customization -->
+    <div id="notification-container"></div>
+    
+    <!-- Add this script at the bottom of your Customization.php file -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const minusBtn = document.querySelector('.minus-btn');
-            const plusBtn = document.querySelector('.plus-btn');
-            const portionInput = document.getElementById('portion');
-            const quantityDisplay = document.getElementById('quantity-display');
-            const basePrice = parseFloat(document.getElementById('base_price').value);
-            const toppingCheckboxes = document.querySelectorAll('input[name="toppings[]"]');
-            const toppingsPriceDisplay = document.getElementById('toppings-price');
-            const totalPriceDisplay = document.getElementById('total-price');
+    // Add to cart functionality
+    document.getElementById('addToCartBtn').addEventListener('click', function() {
+        const itemId = document.getElementById('item_id').value;
+        const itemName = document.querySelector('.dish-name').textContent;
+        const basePrice = parseFloat(document.getElementById('base_price').value);
+        
+        // Get the image path
+        let itemImage = document.querySelector('.pizza-image').getAttribute('src');
+        
+        // Fix image path if needed
+        if (itemImage) {
+            // Extract just the filename if it's a full path
+            if (itemImage.includes('/')) {
+                const parts = itemImage.split('/');
+                itemImage = parts[parts.length - 1];
+            }
             
-            // Quantity buttons
-            minusBtn.addEventListener('click', function() {
-                let currentValue = parseInt(portionInput.value);
-                if (currentValue > 1) {
-                    portionInput.value = currentValue - 1;
-                    quantityDisplay.textContent = currentValue - 1;
-                    updateTotalPrice();
-                }
+            // Make sure it has the correct path prefix
+            if (!itemImage.includes('assets/images/menu/')) {
+                itemImage = 'assets/images/menu/' + itemImage;
+            }
+        }
+        
+        // Get customization details
+        const customizationData = collectCustomizationDetails();
+        
+        // Calculate final price with customizations
+        let finalPrice = basePrice;
+        let toppingsText = '';
+        
+        if (customizationData && customizationData.details.toppings.length > 0) {
+            // Add topping prices
+            customizationData.details.toppings.forEach(topping => {
+                finalPrice += parseFloat(topping.price || 0);
+                toppingsText += topping.name + ', ';
             });
             
-            plusBtn.addEventListener('click', function() {
-                let currentValue = parseInt(portionInput.value);
-                if (currentValue < 10) {
-                    portionInput.value = currentValue + 1;
-                    quantityDisplay.textContent = currentValue + 1;
-                    updateTotalPrice();
-                }
-            });
-            
-            // Topping checkboxes
-            toppingCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', updateTotalPrice);
-            });
-            
-            // Update total price
-            function updateTotalPrice() {
-                const quantity = parseInt(portionInput.value);
-                
-                // Calculate toppings price
-                let toppingsTotal = 0;
-                toppingCheckboxes.forEach(checkbox => {
-                    if (checkbox.checked) {
-                        toppingsTotal += parseFloat(checkbox.dataset.price);
+            // Remove trailing comma and space
+            toppingsText = toppingsText.slice(0, -2);
+        }
+        
+        // Add special instructions if any
+        if (customizationData && customizationData.details.special_instructions) {
+            if (toppingsText) {
+                toppingsText += ' | ';
+            }
+            toppingsText += 'Instructions: ' + customizationData.details.special_instructions;
+        }
+        
+        // Add to cart via AJAX
+        $.ajax({
+            url: 'add_to_cart.php',
+            type: 'POST',
+            data: {
+                id: itemId,
+                name: itemName,
+                price: finalPrice,
+                quantity: 1,
+                image: itemImage,
+                toppings: toppingsText
+            },
+            success: function(response) {
+                try {
+                    const result = JSON.parse(response);
+                    if (result.success) {
+                        // Update cart count in header
+                        updateCartCount();
+                        showNotification('Item added to cart!', 'success');
+                    } else {
+                        showNotification('Error adding item to cart', 'error');
                     }
-                });
-                
-                // Update toppings price display
-                toppingsPriceDisplay.textContent = 'Rs. ' + toppingsTotal.toFixed(2);
-                
-                // Calculate total
-                const total = (basePrice + toppingsTotal) * quantity;
-                
-                // Update total price display
-                totalPriceDisplay.textContent = 'Rs. ' + total.toFixed(2);
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    showNotification('Error adding item to cart', 'error');
+                }
+            },
+            error: function() {
+                showNotification('Error adding item to cart', 'error');
+            }
+        });
+    });
+    
+    // Function to update cart count in header
+    function updateCartCount() {
+        $.ajax({
+            url: 'get_cart_count.php',
+            type: 'GET',
+            success: function(response) {
+                try {
+                    const result = JSON.parse(response);
+                    const cartCountElement = document.querySelector('.cart-count');
+                    if (cartCountElement) {
+                        cartCountElement.textContent = result.count;
+                    }
+                } catch (e) {
+                    console.error('Error updating cart count:', e);
+                }
+            }
+        });
+    }
+    
+    // Function to collect all customization details
+    function collectCustomizationDetails() {
+        const itemId = document.getElementById('item_id').value;
+        const quantity = parseInt(document.getElementById('portion').value) || 1;
+        const specialInstructions = document.getElementById('special_instructions').value.trim();
+        
+        // Get selected toppings
+        const selectedToppings = [];
+        const toppingCheckboxes = document.querySelectorAll('input[name="toppings[]"]:checked');
+        toppingCheckboxes.forEach(checkbox => {
+            selectedToppings.push({
+                id: checkbox.value,
+                name: checkbox.parentElement.querySelector('label').textContent,
+                price: parseFloat(checkbox.dataset.price)
+            });
+        });
+        
+        // Get removed ingredients
+        const removedIngredients = [];
+        const removeCheckboxes = document.querySelectorAll('input[name="remove[]"]:checked');
+        removeCheckboxes.forEach(checkbox => {
+            removedIngredients.push(checkbox.value);
+        });
+        
+        // Create customization object
+        return {
+            item_id: itemId,
+            quantity: quantity,
+            details: {
+                toppings: selectedToppings,
+                removed_ingredients: removedIngredients,
+                special_instructions: specialInstructions
+            }
+        };
+    }
+    
+    // Function to save customization
+    document.getElementById('save-customization-btn').addEventListener('click', function() {
+        const itemId = this.getAttribute('data-item-id');
+        const itemName = this.getAttribute('data-item-name');
+        
+        // Get customization details
+        const customizationData = collectCustomizationDetails();
+        
+        // Prompt user for a name for this customization
+        const customName = prompt('Give a name to your customization:', itemName + ' Custom');
+        
+        if (customName) {
+            // Save customization to database
+            $.ajax({
+                url: 'save_customization.php',
+                type: 'POST',
+                data: {
+                    item_id: itemId,
+                    custom_name: customName,
+                    customization_data: JSON.stringify(customizationData)
+                },
+                success: function(response) {
+                    try {
+                        const result = JSON.parse(response);
+                        if (result.success) {
+                            showNotification('Customization saved successfully!', 'success');
+                        } else {
+                            showNotification(result.message || 'Error saving customization', 'error');
+                        }
+                    } catch (e) {
+                        console.error('Error parsing response:', e);
+                        showNotification('Error saving customization', 'error');
+                    }
+                },
+                error: function() {
+                    showNotification('Error saving customization', 'error');
+                }
+            });
+        }
+    });
+    
+    // Function to load saved customizations
+    document.getElementById('load-customization-btn').addEventListener('click', function() {
+        const itemId = this.getAttribute('data-item-id');
+        
+        // Load saved customizations for this item
+        $.ajax({
+            url: 'get_saved_customizations.php',
+            type: 'GET',
+            data: {
+                item_id: itemId
+            },
+            success: function(response) {
+                try {
+                    const result = JSON.parse(response);
+                    if (result.success && result.customizations.length > 0) {
+                        // Show modal with saved customizations
+                        showCustomizationsModal(result.customizations);
+                    } else {
+                        showNotification('No saved customizations found', 'info');
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    showNotification('Error loading customizations', 'error');
+                }
+            },
+            error: function() {
+                showNotification('Error loading customizations', 'error');
+            }
+        });
+    });
+    
+    // Function to show customizations modal
+    function showCustomizationsModal(customizations) {
+        // Create modal container
+        const modalContainer = document.createElement('div');
+        modalContainer.className = 'customization-modal';
+        
+        // Create modal content
+        let modalContent = `
+            <div class="customization-modal-content">
+                <span class="close-modal">&times;</span>
+                <h3>Your Saved Customizations</h3>
+                <div class="saved-customizations-list">
+        `;
+        
+        // Add each customization
+        customizations.forEach(custom => {
+            modalContent += `
+                <div class="saved-customization-item" data-id="${custom.id}">
+                    <div class="custom-info">
+                        <h4>${custom.custom_name}</h4>
+                        <p>${formatCustomizationSummary(custom.customization_data)}</p>
+                    </div>
+                    <div class="custom-actions">
+                        <button class="load-custom-btn" data-id="${custom.id}">Load</button>
+                        <button class="delete-custom-btn" data-id="${custom.id}">Delete</button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        modalContent += `
+                </div>
+            </div>
+        `;
+        
+        // Add modal to page
+        modalContainer.innerHTML = modalContent;
+        document.body.appendChild(modalContainer);
+        
+        // Show modal
+        setTimeout(() => {
+            modalContainer.classList.add('show');
+        }, 10);
+        
+        // Close modal when clicking on X
+        modalContainer.querySelector('.close-modal').addEventListener('click', function() {
+            closeCustomizationsModal(modalContainer);
+        });
+        
+        // Close modal when clicking outside
+        modalContainer.addEventListener('click', function(e) {
+            if (e.target === modalContainer) {
+                closeCustomizationsModal(modalContainer);
             }
         });
         
-        function addToCart() {
-            // Get form values
-            const itemId = document.getElementById('item_id').value;
-            const portion = document.getElementById('portion').value;
-            
-            // Get selected toppings
-            const selectedToppings = [];
-            document.querySelectorAll('input[name="toppings[]"]:checked').forEach(checkbox => {
-                selectedToppings.push(checkbox.value);
-            });
-            
-            // Get ingredients to remove
-            const removeIngredients = [];
-            document.querySelectorAll('input[name="remove[]"]:checked').forEach(checkbox => {
-                removeIngredients.push(checkbox.value);
-            });
-            
-            // Get special instructions
-            const specialInstructions = document.getElementById('special_instructions').value;
-            
-            // Here you would typically send this data to the server via AJAX
-            // For now, we'll just show an alert
-            alert('Item added to cart!');
-            
-            // Redirect back to menu
-            window.location.href = 'Menu.php';
-        }
-    
-    
-    // Add this at the end of your file, before the closing </body> tag
-    document.addEventListener('DOMContentLoaded', function() {
-        // Get elements
-        const addToCartBtn = document.getElementById('addToCartBtn');
-        const portionInput = document.getElementById('portion');
-        const basePrice = parseFloat(document.getElementById('base_price').value);
-        const itemId = document.getElementById('item_id').value;
-        const itemName = document.querySelector('.item-name').textContent;
-        const itemImage = document.querySelector('.item-preview img').getAttribute('src').split('/').pop();
-        
-        // Add to cart functionality
-        addToCartBtn.addEventListener('click', function() {
-            // Get quantity
-            const quantity = parseInt(portionInput.value);
-            
-            // Get selected toppings
-            const toppings = [];
-            const toppingCheckboxes = document.querySelectorAll('input[name="toppings[]"]:checked');
-            let toppingsTotal = 0;
-            
-            toppingCheckboxes.forEach(function(checkbox) {
-                const toppingName = checkbox.nextElementSibling.textContent.trim();
-                const toppingPrice = parseFloat(checkbox.getAttribute('data-price'));
-                toppings.push({
-                    name: toppingName,
-                    price: toppingPrice
-                });
-                toppingsTotal += toppingPrice;
-            });
-            
-            // Get removed ingredients
-            const removedIngredients = [];
-            const ingredientCheckboxes = document.querySelectorAll('input[name="remove[]"]:checked');
-            
-            ingredientCheckboxes.forEach(function(checkbox) {
-                removedIngredients.push(checkbox.nextElementSibling.textContent.trim());
-            });
-            
-            // Get special instructions
-            const specialInstructions = document.getElementById('special_instructions').value;
-            
-            // Calculate total price
-            const totalPrice = (basePrice + toppingsTotal);
-            
-            // Create cart item
-            const cartItem = {
-                id: itemId,
-                name: itemName,
-                image: itemImage,
-                quantity: quantity,
-                price: totalPrice,
-                toppings: toppings,
-                removed_ingredients: removedIngredients,
-                special_instructions: specialInstructions
-            };
-            
-            // Send AJAX request to add item to cart
-            fetch('add_to_cart.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(cartItem)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Update cart count in header
-                    const cartCount = document.querySelector('.cart-count');
-                    cartCount.textContent = data.cartCount;
-                    
-                    // Show success message
-                    alert(data.message);
-                    
-                    // Redirect to cart page or stay on current page
-                    if (confirm('View your cart?')) {
-                        window.location.href = 'cart.php';
-                    }
-                } else {
-                    alert('Error adding item to cart: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while adding the item to cart.');
+        // Load customization when clicking Load button
+        modalContainer.querySelectorAll('.load-custom-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const customId = this.getAttribute('data-id');
+                loadCustomization(customId);
+                closeCustomizationsModal(modalContainer);
             });
         });
+        
+        // Delete customization when clicking Delete button
+        modalContainer.querySelectorAll('.delete-custom-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const customId = this.getAttribute('data-id');
+                if (confirm('Are you sure you want to delete this customization?')) {
+                    deleteCustomization(customId, this.closest('.saved-customization-item'));
+                }
+            });
+        });
+    }
+    
+    // Function to close customizations modal
+    function closeCustomizationsModal(modalContainer) {
+        modalContainer.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(modalContainer);
+        }, 300);
+    }
+    
+    // Function to format customization summary
+    function formatCustomizationSummary(customData) {
+        if (typeof customData === 'string') {
+            customData = JSON.parse(customData);
+        }
+        
+        let summary = '';
+        
+        // Add toppings
+        if (customData.details.toppings && customData.details.toppings.length > 0) {
+            summary += 'Toppings: ' + customData.details.toppings.map(t => t.name).join(', ');
+        }
+        
+        // Add removed ingredients
+        if (customData.details.removed_ingredients && customData.details.removed_ingredients.length > 0) {
+            if (summary) summary += ' | ';
+            summary += 'Removed: ' + customData.details.removed_ingredients.join(', ');
+        }
+        
+        // Add quantity
+        if (customData.quantity && customData.quantity > 1) {
+            if (summary) summary += ' | ';
+            summary += 'Quantity: ' + customData.quantity;
+        }
+        
+        return summary || 'Standard customization';
+    }
+    
+    // Function to load a customization
+    function loadCustomization(customId) {
+        $.ajax({
+            url: 'get_customization.php',
+            type: 'GET',
+            data: {
+                customization_id: customId
+            },
+            success: function(response) {
+                try {
+                    const result = JSON.parse(response);
+                    if (result.success) {
+                        applyCustomization(result.customization);
+                        showNotification('Customization loaded!', 'success');
+                    } else {
+                        showNotification('Error loading customization', 'error');
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    showNotification('Error loading customization', 'error');
+                }
+            },
+            error: function() {
+                showNotification('Error loading customization', 'error');
+            }
+        });
+    }
+    
+    // Function to apply a customization to the form
+    function applyCustomization(customization) {
+        const customData = typeof customization.customization_data === 'string' 
+            ? JSON.parse(customization.customization_data) 
+            : customization.customization_data;
+        
+        // Reset current selections
+        document.querySelectorAll('input[name="toppings[]"]:checked').forEach(cb => cb.checked = false);
+        document.querySelectorAll('input[name="remove[]"]:checked').forEach(cb => cb.checked = false);
+        document.getElementById('special_instructions').value = '';
+        
+        // Set quantity
+        const portionInput = document.getElementById('portion');
+        portionInput.value = customData.quantity || 1;
+        document.getElementById('quantity-display').textContent = portionInput.value;
+        
+        // Set toppings
+        if (customData.details.toppings && customData.details.toppings.length > 0) {
+            customData.details.toppings.forEach(topping => {
+                const toppingCheckbox = document.querySelector(`input[name="toppings[]"][value="${topping.id}"]`);
+                if (toppingCheckbox) {
+                    toppingCheckbox.checked = true;
+                }
+            });
+        }
+        
+        // Set removed ingredients
+        if (customData.details.removed_ingredients && customData.details.removed_ingredients.length > 0) {
+            customData.details.removed_ingredients.forEach(ingredient => {
+                const ingredientSelector = `input[name="remove[]"][value="${ingredient.replace(/"/g, '\"')}"]`;
+                const ingredientCheckbox = document.querySelector(ingredientSelector);
+                if (ingredientCheckbox) {
+                    ingredientCheckbox.checked = true;
+                }
+            });
+        }
+        
+        // Set special instructions
+        if (customData.details.special_instructions) {
+            document.getElementById('special_instructions').value = customData.details.special_instructions;
+        }
+        
+        // Update price calculation
+        updateTotalPrice();
+    }
+    
+    // Function to delete a customization
+    function deleteCustomization(customId, element) {
+        $.ajax({
+            url: 'delete_customization.php',
+            type: 'POST',
+            data: {
+                customization_id: customId
+            },
+            success: function(response) {
+                try {
+                    const result = JSON.parse(response);
+                    if (result.success) {
+                        // Remove element from DOM
+                        element.remove();
+                        showNotification('Customization deleted!', 'success');
+                        
+                        // If no more customizations, close modal
+                        const list = document.querySelector('.saved-customizations-list');
+                        if (list && list.children.length === 0) {
+                            const modal = document.querySelector('.customization-modal');
+                            if (modal) {
+                                closeCustomizationsModal(modal);
+                            }
+                            showNotification('No more saved customizations', 'info');
+                        }
+                    } else {
+                        showNotification('Error deleting customization', 'error');
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    showNotification('Error deleting customization', 'error');
+                }
+            },
+            error: function() {
+                showNotification('Error deleting customization', 'error');
+            }
+        });
+    }
+    
+    // Function to show notification
+    function showNotification(message, type) {
+        const notificationContainer = document.getElementById('notification-container');
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+        
+        notificationContainer.appendChild(notification);
+        
+        // Show notification
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10);
+        
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notificationContainer.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
+    
+    // Function to update total price
+    function updateTotalPrice() {
+        const basePrice = parseFloat(document.getElementById('base_price').value);
+        const quantity = parseInt(document.getElementById('portion').value) || 1;
+        
+        // Calculate toppings price
+        let toppingsPrice = 0;
+        const selectedToppings = document.querySelectorAll('input[name="toppings[]"]:checked');
+        selectedToppings.forEach(topping => {
+            toppingsPrice += parseFloat(topping.dataset.price || 0);
+        });
+        
+        // Update toppings price display
+        document.getElementById('toppings-price').textContent = 'Rs. ' + toppingsPrice.toFixed(2);
+        
+        // Calculate total price
+        const totalPrice = (basePrice + toppingsPrice) * quantity;
+        
+        // Update total price display
+        document.getElementById('total-price').textContent = 'Rs. ' + totalPrice.toFixed(2);
+    }
+    
+    // Add event listeners for quantity buttons
+    document.querySelector('.minus-btn').addEventListener('click', function() {
+        const portionInput = document.getElementById('portion');
+        if (parseInt(portionInput.value) > 1) {
+            portionInput.value = parseInt(portionInput.value) - 1;
+            document.getElementById('quantity-display').textContent = portionInput.value;
+            updateTotalPrice();
+        }
     });
-</script>
+    
+    document.querySelector('.plus-btn').addEventListener('click', function() {
+        const portionInput = document.getElementById('portion');
+        if (parseInt(portionInput.value) < 10) {
+            portionInput.value = parseInt(portionInput.value) + 1;
+            document.getElementById('quantity-display').textContent = portionInput.value;
+            updateTotalPrice();
+        }
+    });
+    
+    // Add event listeners for topping checkboxes
+    document.querySelectorAll('input[name="toppings[]"]').forEach(checkbox => {
+        checkbox.addEventListener('change', updateTotalPrice);
+    });
+    
+    // Initialize price calculation
+    updateTotalPrice();
+    </script>
+    
+    <style>
+    /* Styles for customization modal */
+    .customization-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .customization-modal.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .customization-modal-content {
+        background-color: white;
+        border-radius: 8px;
+        padding: 20px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+        position: relative;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+    }
+    
+    .customization-modal.show .customization-modal-content {
+        transform: translateY(0);
+    }
+    
+    .close-modal {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 24px;
+        cursor: pointer;
+        color: #777;
+        transition: color 0.3s ease;
+    }
+    
+    .close-modal:hover {
+        color: #ff6b00;
+    }
+    
+    .saved-customizations-list {
+        margin-top: 20px;
+    }
+    
+    .saved-customization-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        transition: background-color 0.3s ease;
+    }
+    
+    .saved-customization-item:hover {
+        background-color: #f9f9f9;
+    }
+    
+    .saved-customization-item:last-child {
+        border-bottom: none;
+    }
+    
+    .custom-info {
+        flex: 1;
+    }
+    
+    .custom-info h4 {
+        margin: 0 0 5px 0;
+        color: #333;
+    }
+    
+    .custom-info p {
+        margin: 0;
+        color: #777;
+        font-size: 14px;
+    }
+    
+    .custom-actions {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .load-custom-btn, .delete-custom-btn {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .load-custom-btn {
+        background-color: #ff6b00;
+        color: white;
+    }
+    
+    .load-custom-btn:hover {
+        background-color: #e55f00;
+    }
+    
+    .delete-custom-btn {
+        background-color: #f2f2f2;
+        color: #777;
+    }
+    
+    .delete-custom-btn:hover {
+        background-color: #ff3b30;
+        color: white;
+    }
+    
+    /* Notification styles */
+    #notification-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+    
+    .notification {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        margin-bottom: 10px;
+        padding: 15px;
+        width: 300px;
+        transform: translateX(100%);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .notification.show {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    
+    .notification-content {
+        display: flex;
+        align-items: center;
+    }
+    
+    .notification-content i {
+        margin-right: 10px;
+        font-size: 20px;
+    }
+    
+    .notification.success i {
+        color: #4cd964;
+    }
+    
+    .notification.error i {
+        color: #ff3b30;
+    }
+    
+    .notification.info i {
+        color: #007aff;
+    }
+    
+    /* Customization buttons styles */
+    .customization-buttons {
+        display: flex;
+        gap: 10px;
+        margin: 10px 0;
+    }
+    
+    .customization-btn {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    
+    .customization-btn i {
+        margin-right: 8px;
+    }
+    
+    .save-customization-btn {
+        background-color: #4cd964;
+        color: white;
+    }
+    
+    .save-customization-btn:hover {
+        background-color: #3cc153;
+    }
+    
+    .load-customization-btn {
+        background-color: #007aff;
+        color: white;
+    }
+    
+    .load-customization-btn:hover {
+        background-color: #0066cc;
+    }
+    </style>
 </body>
 </html>

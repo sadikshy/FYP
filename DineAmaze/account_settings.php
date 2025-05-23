@@ -408,7 +408,7 @@ $conn->close();
                                         <div class="col-md-6">
                                             <p><strong>Email:</strong> ' . $order['email'] . '</p>
                                             <p><strong>Status:</strong> ' . ucfirst($order['status']) . '</p>
-                                            <p><strong>Order Time:</strong> ' . date('h:i A', strtotime($order['order_date'])) . '</p>';
+                                            <p><strong>Pickup Time:</strong> ' . (isset($order['pickup_time']) && !empty($order['pickup_time']) ? date('H:i A', strtotime($order['pickup_time'])) : 'Not specified') . '</p>';
                         
                         // Add cancel button if order is pending or verified
                         if ($order['status'] == 'pending' || $order['status'] == 'verified') {
@@ -417,7 +417,7 @@ $conn->close();
                             
                             if ($canCancel) {
                                 echo '<button type="submit" name="cancel_order" class="btn btn-danger btn-sm">Cancel Order</button>';
-                                echo '<p class="text-muted mt-2 small">You can cancel this order until ' . date('h:i A', $cutoffTime) . ' (order scheduled for ' . date('h:i A', $orderTime) . ').</p>';
+                                echo '<p class="text-muted mt-2 small">You can cancel this order until ' . date('H:i A', $cutoffTime) . ' (order scheduled for ' . date('H:i A', $orderTime) . ').</p>';
                                 
                                 // Add countdown timer with data attribute for JavaScript
                                 echo '<p class="cancel-timer small text-danger" data-time-left="' . $timeLeftSeconds . '">Time remaining: ' . floor($timeLeftMinutes) . ':' . str_pad(($timeLeftSeconds % 60), 2, '0', STR_PAD_LEFT) . '</p>';

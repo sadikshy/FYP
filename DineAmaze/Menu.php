@@ -10,6 +10,7 @@ session_start();
     <title>Menu - DineAmaze</title>
     <link rel="stylesheet" href="css/Homepage.css">
     <link rel="stylesheet" href="css/Menu.css">
+    <link rel="stylesheet" href="css/food-customization.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-straight/css/uicons-solid-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-chubby/css/uicons-solid-chubby.css'>
@@ -293,16 +294,17 @@ session_start();
                             echo "<h4>{$name} - Rs. {$final_price}</h4>";
                             echo "<p>Ingredients: {$ingredients}</p>";
                             
-                            // Display customization button only for customizable items
+                            echo "<div class='card-components'>";
                             if ($item['is_customizable']) {
                                 echo "<div class='item-actions'>";
                                 echo "<a href='Customization.php?item_id={$item_id}' class='customize-btn'>Customize</a>";
                                 echo "</div>";
-                            } else {
+                            } 
+
                                 echo "<div class='item-actions'>";
                                 echo "<button class='add-to-cart-direct' data-id='{$item_id}' data-name='{$name}' data-price='{$final_price}' data-image='{$image}'>Add to Cart</button>";
                                 echo "</div>";
-                            }
+                            echo "</div>"; // Close card-components
                             
                             if ($offer) {
                                 echo "<p><s>Rs. {$price}</s> <strong style='color: green;'>Offer: Rs. {$offer}</strong></p>";
@@ -371,7 +373,8 @@ session_start();
 
     <?php include 'includes/footer.php'; ?>
     
-    <!-- JavaScript for filtering -->
+    <!-- JavaScript for filtering and customization -->
     <script src="js/menu-filter.js"></script>
-    </body>
-    </html>
+    <script src="js/food-customization.js"></script>
+</body>
+</html>

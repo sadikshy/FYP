@@ -24,6 +24,9 @@ if (!isset($_GET['id']) && !isset($_GET['group_id'])) {
     exit;
 }
 
+// Define base URL for assets
+define('BASE_URL', 'http://localhost/dashboard/Kachuwafyp/Development/DineAmaze/');
+
 // Database connection
 $conn = new mysqli("localhost", "root", "", "dineamaze_database");
 if ($conn->connect_error) {
@@ -515,7 +518,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                             <?php foreach ($order_items as $item): ?>
                             <tr>
                                 <td>
-                                    <img src="../images/Menu Photos/<?php echo $item['image_name']; ?>" alt="<?php echo $item['item_name']; ?>" class="item-image">
+                                    <?php if (!empty($item['image_name'])): ?>
+                                        <img src="<?php echo BASE_URL; ?>assets/images/menu/<?php echo $item['image_name']; ?>" alt="<?php echo $item['item_name']; ?>" class="item-image" onerror="this.src='<?php echo BASE_URL; ?>assets/images/default-food.jpg'; this.onerror=null;">
+                                    <?php else: ?>
+                                        <img src="<?php echo BASE_URL; ?>assets/images/default-food.jpg" alt="No Image Available" class="item-image">
+                                    <?php endif; ?>
                                 </td>
                                 <td>
                                     <?php echo !empty($item['item_name']) ? $item['item_name'] : 'Unknown Item'; ?>
@@ -540,10 +547,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                     <div class="document-gallery">
                         <?php foreach ($id_documents as $doc): ?>
                         <div class="document-item">
-                            <img src="../<?php echo $doc['document_path']; ?>" alt="ID Document" class="document-image" onclick="openModal('<?php echo '../' . $doc['document_path']; ?>')">
+                            <?php 
+                            // Get the document path from database
+                            $docPath = $doc['document_path'];
+                            
+                            // Make sure the path is correct
+                            if (strpos($docPath, 'uploads/') === 0) {
+                                // Path already has uploads/ prefix
+                                $imgPath = "../" . $docPath;
+                            } else {
+                                // Add uploads/ prefix if missing
+                                $imgPath = "../" . basename($docPath);
+                            }
+                            ?>
+                            <img src="<?php echo $imgPath; ?>" alt="ID Document" class="document-image" onclick="openModal('<?php echo $imgPath; ?>')">
                             <div class="document-info">
                                 <span class="document-date">Uploaded: <?php echo date("d M Y H:i", strtotime($doc['upload_date'])); ?></span>
-                                <button class="zoom-btn" onclick="openModal('<?php echo '../' . $doc['document_path']; ?>')">
+                                <button class="zoom-btn" onclick="openModal('<?php echo $imgPath; ?>')">
                                     <i class="fas fa-search-plus"></i> View Full Size
                                 </button>
                             </div>
@@ -602,4 +622,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
     </script>
 </body>
 </html>
-<?php $conn->close(); ?>

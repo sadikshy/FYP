@@ -1,0 +1,151 @@
+[2025-05-18 11:12:41] Starting order notification check...
+[2025-05-18 11:12:41] Added preparation_notification_sent column to takeout_order_items table
+[2025-05-18 11:12:41] Added ready_notification_sent column to takeout_order_items table
+[2025-05-18 11:12:41] Found 2 orders to check for preparation notifications
+[2025-05-18 11:12:41] Sending preparation notification for order #1
+[2025-05-18 11:17:17] Starting order notification check...
+[2025-05-18 11:17:17] Found 3 orders to check for preparation notifications
+[2025-05-18 11:17:17] Sending preparation notification for order #1
+[2025-05-18 11:17:27] Starting order notification check...
+[2025-05-18 11:17:27] Found 3 orders to check for preparation notifications
+[2025-05-18 11:17:27] Sending preparation notification for order #1
+[2025-05-18 11:17:28] Starting order notification check...
+[2025-05-18 11:17:28] Found 3 orders to check for preparation notifications
+[2025-05-18 11:17:28] Sending preparation notification for order #1
+[2025-05-18 11:17:28] Starting order notification check...
+[2025-05-18 11:17:28] Found 3 orders to check for preparation notifications
+[2025-05-18 11:17:28] Sending preparation notification for order #1
+[2025-05-18 11:17:28] Starting order notification check...
+[2025-05-18 11:17:28] Found 3 orders to check for preparation notifications
+[2025-05-18 11:17:28] Sending preparation notification for order #1
+[2025-05-18 11:17:28] Starting order notification check...
+[2025-05-18 11:17:28] Found 3 orders to check for preparation notifications
+[2025-05-18 11:17:28] Sending preparation notification for order #1
+[2025-05-18 11:17:28] Starting order notification check...
+[2025-05-18 11:17:28] Found 3 orders to check for preparation notifications
+[2025-05-18 11:17:28] Sending preparation notification for order #1
+[2025-05-18 11:17:28] Starting order notification check...
+[2025-05-18 11:17:28] Found 3 orders to check for preparation notifications
+[2025-05-18 11:17:28] Sending preparation notification for order #1
+[2025-05-18 11:17:28] Starting order notification check...
+[2025-05-18 11:17:28] Found 3 orders to check for preparation notifications
+[2025-05-18 11:17:28] Sending preparation notification for order #1
+[2025-05-18 11:18:20] Starting order notification check...
+[2025-05-18 11:18:20] Found 3 orders to check for preparation notifications
+[2025-05-18 11:18:20] Sending preparation notification for order #1
+[2025-05-18 11:21:01] Starting order notification check...
+[2025-05-18 11:21:01] Found 3 orders to check for preparation notifications
+[2025-05-18 11:21:01] Sending preparation notification for order #1
+[2025-05-18 11:21:01] Failed to send preparation notification for order #1
+[2025-05-18 11:21:01] Sending preparation notification for order #2
+[2025-05-18 11:21:01] Failed to send preparation notification for order #2
+[2025-05-18 11:21:01] Sending preparation notification for order #3
+[2025-05-18 11:21:01] Failed to send preparation notification for order #3
+[2025-05-18 11:21:01] Order notification check completed
+[2025-05-18 11:23:38] Starting order notification check...
+[2025-05-18 11:23:38] Found 3 orders to check for preparation notifications
+[2025-05-18 11:23:38] Sending preparation notification for order #1
+[2025-05-18 11:23:38] Failed to send preparation notification for order #1
+[2025-05-18 11:23:38] Sending preparation notification for order #2
+[2025-05-18 11:23:38] Failed to send preparation notification for order #2
+[2025-05-18 11:23:38] Sending preparation notification for order #3
+[2025-05-18 11:23:38] Failed to send preparation notification for order #3
+[2025-05-18 11:23:38] Order notification check completed
+[2025-05-18 11:23:39] Starting order notification check...
+[2025-05-18 11:23:39] Found 3 orders to check for preparation notifications
+[2025-05-18 11:23:39] Sending preparation notification for order #1
+[2025-05-18 11:23:39] Failed to send preparation notification for order #1
+[2025-05-18 11:23:39] Sending preparation notification for order #2
+[2025-05-18 11:23:39] Failed to send preparation notification for order #2
+[2025-05-18 11:23:39] Sending preparation notification for order #3
+[2025-05-18 11:23:39] Failed to send preparation notification for order #3
+[2025-05-18 11:23:39] Order notification check completed
+[2025-05-18 11:23:39] Starting order notification check...
+[2025-05-18 11:23:39] Found 3 orders to check for preparation notifications
+[2025-05-18 11:23:39] Sending preparation notification for order #1
+[2025-05-18 11:23:39] Failed to send preparation notification for order #1
+[2025-05-18 11:23:39] Sending preparation notification for order #2
+[2025-05-18 11:23:39] Failed to send preparation notification for order #2
+[2025-05-18 11:23:39] Sending preparation notification for order #3
+[2025-05-18 11:23:39] Failed to send preparation notification for order #3
+[2025-05-18 11:23:39] Order notification check completed
+[2025-05-18 11:23:39] Starting order notification check...
+[2025-05-18 11:23:39] Found 3 orders to check for preparation notifications
+[2025-05-18 11:23:39] Sending preparation notification for order #1
+[2025-05-18 11:23:39] Failed to send preparation notification for order #1
+[2025-05-18 11:23:39] Sending preparation notification for order #2
+[2025-05-18 11:23:39] Failed to send preparation notification for order #2
+[2025-05-18 11:23:39] Sending preparation notification for order #3
+[2025-05-18 11:23:39] Failed to send preparation notification for order #3
+[2025-05-18 11:23:39] Order notification check completed
+[2025-05-18 11:23:39] Starting order notification check...
+[2025-05-18 11:23:39] Found 3 orders to check for preparation notifications
+[2025-05-18 11:23:39] Sending preparation notification for order #1
+[2025-05-18 11:23:39] Failed to send preparation notification for order #1
+[2025-05-18 11:23:39] Sending preparation notification for order #2
+[2025-05-18 11:23:39] Failed to send preparation notification for order #2
+[2025-05-18 11:23:39] Sending preparation notification for order #3
+[2025-05-18 11:23:39] Failed to send preparation notification for order #3
+[2025-05-18 11:23:39] Order notification check completed
+[2025-05-18 11:23:39] Starting order notification check...
+[2025-05-18 11:23:39] Found 3 orders to check for preparation notifications
+[2025-05-18 11:23:39] Sending preparation notification for order #1
+[2025-05-18 11:23:39] Failed to send preparation notification for order #1
+[2025-05-18 11:23:39] Sending preparation notification for order #2
+[2025-05-18 11:23:39] Failed to send preparation notification for order #2
+[2025-05-18 11:23:39] Sending preparation notification for order #3
+[2025-05-18 11:23:39] Failed to send preparation notification for order #3
+[2025-05-18 11:23:39] Order notification check completed
+[2025-05-18 11:23:39] Starting order notification check...
+[2025-05-18 11:23:39] Found 3 orders to check for preparation notifications
+[2025-05-18 11:23:39] Sending preparation notification for order #1
+[2025-05-18 11:23:39] Failed to send preparation notification for order #1
+[2025-05-18 11:23:39] Sending preparation notification for order #2
+[2025-05-18 11:23:39] Failed to send preparation notification for order #2
+[2025-05-18 11:23:39] Sending preparation notification for order #3
+[2025-05-18 11:23:39] Failed to send preparation notification for order #3
+[2025-05-18 11:23:39] Order notification check completed
+[2025-05-18 11:23:40] Starting order notification check...
+[2025-05-18 11:23:40] Found 3 orders to check for preparation notifications
+[2025-05-18 11:23:40] Sending preparation notification for order #1
+[2025-05-18 11:23:40] Failed to send preparation notification for order #1
+[2025-05-18 11:23:40] Sending preparation notification for order #2
+[2025-05-18 11:23:40] Failed to send preparation notification for order #2
+[2025-05-18 11:23:40] Sending preparation notification for order #3
+[2025-05-18 11:23:40] Failed to send preparation notification for order #3
+[2025-05-18 11:23:40] Order notification check completed
+[2025-05-18 11:25:53] Starting order notification check...
+[2025-05-18 11:25:53] Found 3 orders to check for preparation notifications
+[2025-05-18 11:25:53] Sending preparation notification for order #1
+[2025-05-18 11:25:53] Updated order #1 status to preparation
+[2025-05-18 11:25:53] Sending preparation notification for order #2
+[2025-05-18 11:25:53] Updated order #2 status to preparation
+[2025-05-18 11:25:53] Sending preparation notification for order #3
+[2025-05-18 11:25:53] Updated order #3 status to preparation
+[2025-05-18 11:25:53] Order notification check completed
+[2025-05-18 11:25:53] Starting order notification check...
+[2025-05-18 11:25:53] Order notification check completed
+[2025-05-18 11:25:54] Starting order notification check...
+[2025-05-18 11:25:54] Order notification check completed
+[2025-05-18 11:25:56] Starting order notification check...
+[2025-05-18 11:25:56] Order notification check completed
+[2025-05-18 11:26:22] Starting order notification check...
+[2025-05-18 11:26:22] Order notification check completed
+[2025-05-18 11:28:12] Starting order notification check...
+[2025-05-18 11:28:12] Found 1 orders to check for preparation notifications
+[2025-05-18 11:28:12] Sending preparation notification for order #4
+[2025-05-18 11:28:12] Updated order #4 status to preparation
+[2025-05-18 11:28:12] Order notification check completed
+[2025-05-18 11:48:17] Starting order notification check...
+[2025-05-18 11:48:17] Found 1 orders to check for preparation notifications
+[2025-05-18 11:48:17] Sending preparation notification for order #5
+[2025-05-18 11:48:17] Updated order #5 status to preparation
+[2025-05-18 11:48:17] Order notification check completed
+[2025-05-18 11:48:18] Starting order notification check...
+[2025-05-18 11:48:18] Order notification check completed
+[2025-05-18 11:48:19] Starting order notification check...
+[2025-05-18 11:48:19] Order notification check completed
+[2025-05-18 11:48:20] Starting order notification check...
+[2025-05-18 11:48:20] Order notification check completed
+[2025-05-18 11:48:20] Starting order notification check...
+[2025-05-18 11:48:20] Order notification check completed

@@ -168,4 +168,82 @@ function sendOrderPickupNotification($recipientEmail, $userName, $orderId, $orde
         return false;
     }
 }
+
+/**
+ * Send notification email when admin responds to a contact message
+ * 
+ * @param string $recipientEmail Email address of the recipient
+ * @param string $userName Name of the user
+ * @param string $originalMessage User's original message
+ * @param string $adminResponse Admin's response to the message
+ * @return bool True if email sent successfully, false otherwise
+ */
+function sendContactResponseNotification($recipientEmail, $userName, $originalMessage, $adminResponse) {
+    $mail = new PHPMailer(true); // Enable exceptions
+    
+    try {
+        // Server settings
+        $mail->SMTPDebug = 0;                      // Enable verbose debug output (set to 2 for debugging)
+        $mail->isSMTP();                           // Send using SMTP
+        $mail->Host       = 'smtp.gmail.com';      // Set the SMTP server to send through
+        $mail->SMTPAuth   = true;                  // Enable SMTP authentication
+        $mail->Username   = 'sadikshyamunankarmi7@gmail.com'; // SMTP username
+        $mail->Password   = 'vavdcnxrimfmtwxb';    // SMTP password (app password)
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Enable TLS encryption
+        $mail->Port       = 587;                   // TCP port to connect to
+        
+        // Recipients
+        $mail->setFrom('sadikshyamunankarmi7@gmail.com', 'DineAmaze');
+        $mail->addAddress($recipientEmail);        // Add a recipient
+        
+        // Content
+        $mail->isHTML(true);                       // Set email format to HTML
+        $mail->Subject = 'DineAmaze - Response to Your Inquiry';
+        
+        // Format the original message and response for display
+        $formattedOriginalMessage = nl2br(htmlspecialchars($originalMessage));
+        $formattedAdminResponse = nl2br(htmlspecialchars($adminResponse));
+        
+        // Sweet HTML layout for response notification email
+        $mail->Body = '
+        <div style="font-family: \'Poppins\', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); background: linear-gradient(to right, #f8f9fa, #e9ecef);">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h1 style="color: #764ba2; margin-bottom: 5px;">DineAmaze</h1>
+                <p style="color: #4CAF50; font-size: 18px; margin-top: 0;">Message Response</p>
+            </div>
+            
+            <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <p style="color: #333; font-size: 16px; line-height: 1.5;">Hello ' . htmlspecialchars($userName) . ',</p>
+                <p style="color: #333; font-size: 16px; line-height: 1.5;">Thank you for contacting us. We have responded to your message:</p>
+                
+                <div style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-left: 4px solid #ccc; border-radius: 4px;">
+                    <p style="color: #666; font-size: 14px; margin-bottom: 5px;"><strong>Your message:</strong></p>
+                    <p style="color: #333; font-size: 15px;">' . $formattedOriginalMessage . '</p>
+                </div>
+                
+                <div style="margin: 20px 0; padding: 15px; background-color: #f0f7ff; border-left: 4px solid #764ba2; border-radius: 4px;">
+                    <p style="color: #666; font-size: 14px; margin-bottom: 5px;"><strong>Our response:</strong></p>
+                    <p style="color: #333; font-size: 15px;">' . $formattedAdminResponse . '</p>
+                </div>
+                
+                <p style="color: #333; font-size: 16px; line-height: 1.5;">If you have any further questions, please don\'t hesitate to contact us again.</p>
+            </div>
+            
+            <div style="text-align: center; color: #666; font-size: 14px;">
+                <p>© 2024 DineAmaze. All rights reserved.</p>
+                <p>Srijananagar, Bhaktapur</p>
+            </div>
+        </div>
+        ';
+        
+        $mail->AltBody = "Hello $userName,\n\nThank you for contacting us. We have responded to your message:\n\nYour message: $originalMessage\n\nOur response: $adminResponse\n\nIf you have any further questions, please don't hesitate to contact us again.\n\nBest regards,\nDineAmaze Team";
+        
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        // Log the error for debugging
+        error_log("Contact response email sending failed: " . $mail->ErrorInfo);
+        return false;
+    }
+}
 ?>

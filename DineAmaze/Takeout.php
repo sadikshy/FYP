@@ -9,19 +9,20 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Get user's email for the form
+// Get user's email and verification status for the form
 $conn = new mysqli("localhost", "root", "", "dineamaze_database");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
 $userId = $_SESSION['user_id'];
-$sql = "SELECT email FROM user WHERE user_id = '$userId'";
+$sql = "SELECT email, is_verified FROM user WHERE user_id = '$userId'";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
     $_SESSION['user_email'] = $user['email'];
+    $_SESSION['is_verified'] = $user['is_verified'] ?? 0;
 }
 $conn->close();
 
@@ -136,7 +137,18 @@ $cart_is_empty = !isset($_SESSION['cart']) || empty($_SESSION['cart']);
                     <div class="error-message" id="timeError">Please select a valid time between 11 AM and 10 PM</div>
                 </div>
             </div>
+            <?php if (isset($_SESSION['is_verified']) && $_SESSION['is_verified'] == 1): ?>
+            <!-- User is already verified, show proceed button -->
+            <div class="verified-user-notice">
+                <i class="fas fa-check-circle"></i>
+                <p>Your account has been verified. You can proceed with your order.</p>
+            </div>
+            <button type="submit">Proceed with Order</button>
+            <input type="hidden" name="skip_verification" value="1">
+            <?php else: ?>
+            <!-- User is not verified, show verify button -->
             <button type="submit">Verify</button>
+            <?php endif; ?>
         </form>
         <!-- Add this script before the closing body tag -->
         <script>

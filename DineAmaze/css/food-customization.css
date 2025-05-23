@@ -1,0 +1,411 @@
+/* 
+ * Food Customization Styles for DineAmaze
+ * Styles for customization buttons, modals, and related UI components
+ */
+
+/* Customization Button Styles */
+.customization-buttons {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.customization-btn {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    font-size: 14px;
+}
+
+.save-customization-btn {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.save-customization-btn:hover {
+    background-color: #ffb300;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.load-customization-btn {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.load-customization-btn:hover {
+    background-color: #d5d5d5;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.customization-btn i {
+    margin-right: 8px;
+}
+
+/* Modal Styles */
+.customization-modal {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.customization-modal-content {
+    background-color: #fff;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 8px;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.customization-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.customization-modal-close:hover {
+    color: #000;
+}
+
+.customization-modal h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 20px;
+}
+
+.customization-modal p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+/* Customization Summary Styles */
+.customization-summary {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.customization-list {
+    margin: 0;
+    padding: 0 0 0 20px;
+}
+
+.customization-list li {
+    margin-bottom: 5px;
+}
+
+/* Saved Customizations Styles */
+.saved-customizations-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.saved-customization {
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.saved-customization:hover {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.customization-header {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.customization-header h4 {
+    margin: 0 0 8px 0;
+    color: #333;
+}
+
+.customization-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.customization-details {
+    padding: 15px;
+    background-color: white;
+}
+
+.customization-actions {
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    text-align: right;
+}
+
+/* Notification Styles */
+#notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1100;
+    max-width: 350px;
+}
+
+.notification {
+    background-color: white;
+    color: #333;
+    padding: 15px 20px;
+    margin-top: 10px;
+    border-radius: 4px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: notificationFadeIn 0.3s;
+}
+
+@keyframes notificationFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.notification-success {
+    border-left: 4px solid #28a745;
+}
+
+.notification-error {
+    border-left: 4px solid #dc3545;
+}
+
+.notification-info {
+    border-left: 4px solid #17a2b8;
+}
+
+.notification-message {
+    margin-right: 15px;
+}
+
+.notification-close {
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    color: #aaa;
+    transition: color 0.2s;
+}
+
+.notification-close:hover {
+    color: #333;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .customization-modal-content {
+        margin: 15px auto;
+        padding: 20px;
+        width: calc(100% - 30px);
+    }
+    
+    .customization-meta {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .customization-buttons {
+        flex-direction: column;
+    }
+    
+    #notification-container {
+        left: 20px;
+        right: 20px;
+        max-width: none;
+    }
+}
+
+
+/* Customization Modal Styles */
+.customization-modal {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.customization-modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.customization-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #777;
+}
+
+.customization-modal-close:hover {
+    color: #333;
+}
+
+.customization-summary {
+    margin: 20px 0;
+    background-color: #f9f9f9;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+.btn-primary:hover {
+    background-color: #ff5252;
+}
+
+.btn-secondary:hover {
+    background-color: #e0e0e0;
+}
