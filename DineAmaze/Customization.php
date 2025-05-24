@@ -263,22 +263,23 @@ $available_toppings = [
     // Add to cart functionality
     document.getElementById('addToCartBtn').addEventListener('click', function() {
         const itemId = document.getElementById('item_id').value;
-        const itemName = document.querySelector('.dish-name').textContent;
+        const itemName = document.querySelector('.item-name').textContent;
         const basePrice = parseFloat(document.getElementById('base_price').value);
         
         // Get the image path
-        let itemImage = document.querySelector('.pizza-image').getAttribute('src');
+        let itemImage = document.querySelector('.item-preview img').getAttribute('src');
         
         // Fix image path if needed
         if (itemImage) {
-            // Extract just the filename if it's a full path
-            if (itemImage.includes('/')) {
-                const parts = itemImage.split('/');
-                itemImage = parts[parts.length - 1];
-            }
-            
-            // Make sure it has the correct path prefix
+            // If the image path contains 'assets/images/menu/', keep it as is
             if (!itemImage.includes('assets/images/menu/')) {
+                // Extract just the filename if it's a full path
+                if (itemImage.includes('/')) {
+                    const parts = itemImage.split('/');
+                    itemImage = parts[parts.length - 1];
+                }
+                
+                // Add the correct path prefix
                 itemImage = 'assets/images/menu/' + itemImage;
             }
         }
@@ -287,7 +288,7 @@ $available_toppings = [
         const customizationData = collectCustomizationDetails();
         
         // Calculate final price with customizations
-        let finalPrice = basePrice;
+        let finalPrice = basePrice * customizationData.quantity;
         let toppingsText = '';
         
         if (customizationData && customizationData.details.toppings.length > 0) {
@@ -313,20 +314,29 @@ $available_toppings = [
         $.ajax({
             url: 'add_to_cart.php',
             type: 'POST',
-            data: {
+            contentType: 'application/json',
+            data: JSON.stringify({
                 id: itemId,
                 name: itemName,
                 price: finalPrice,
-                quantity: 1,
+                quantity: customizationData.quantity,
                 image: itemImage,
-                toppings: toppingsText
-            },
+                toppings: customizationData.details.toppings,
+                special_instructions: customizationData.details.special_instructions || '',
+                removed_ingredients: customizationData.details.removed_ingredients || []
+            }),
             success: function(response) {
                 try {
                     const result = JSON.parse(response);
                     if (result.success) {
-                        // Update cart count in header
-                        updateCartCount();
+                        // Update cart count in header directly from the response
+                        const cartCountElement = document.querySelector('.cart-count');
+                        if (cartCountElement && result.cartCount) {
+                            cartCountElement.textContent = result.cartCount;
+                        } else {
+                            // Fallback to AJAX update if count not in response
+                            updateCartCount();
+                        }
                         showNotification('Item added to cart!', 'success');
                     } else {
                         showNotification('Error adding item to cart', 'error');
@@ -347,6 +357,7 @@ $available_toppings = [
         $.ajax({
             url: 'get_cart_count.php',
             type: 'GET',
+            cache: false,
             success: function(response) {
                 try {
                     const result = JSON.parse(response);
@@ -899,7 +910,7 @@ $available_toppings = [
     /* Notification styles */
     #notification-container {
         position: fixed;
-        top: 20px;
+        top: 80px;
         right: 20px;
         z-index: 1000;
     }

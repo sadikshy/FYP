@@ -219,20 +219,21 @@ nav ul li a.active {
     position: fixed;
     top: -100%;
     left: 0;
-   
     width: 100%;
     height: auto;
-    background-color: rgba(34, 34, 34, 0.9);
+    background-color: rgba(34, 34, 34, 0.95);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 999;
     transition: top 0.5s ease;
     padding: 60px 0 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    pointer-events: none; /* Disable pointer events when hidden */
   }
   
   nav.active {
     top: 0;
+    pointer-events: auto; /* Enable pointer events when visible */
   }
   
   nav ul {
@@ -537,5 +538,6 @@ header {
         position: fixed;
         width: 80%;
         max-width: 300px;
+        z-index: 1000;
     }
 }

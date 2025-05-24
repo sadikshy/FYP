@@ -266,59 +266,98 @@ if (session_status() == PHP_SESSION_NONE) {
         
         <div class="reviews-slider-container">
             <div class="reviews-slider">
-                <!-- Review 1 -->
-                <div class="review-card">
-                    <div class="review-profile">
-                        <img src="images/reviews/review1.jpg" alt="Client Profile">
-                    </div>
-                    <div class="review-content">
-                        <div class="review-stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <h3 class="reviewer-name">Samir Shrestha</h3>
-                        <p class="review-text">I have been looking for authentic Nepali cuisine for a long time. The flavors at DineAmaze are incredible! The momos and thali sets are absolutely delicious. I am so glad to have found this place!</p>
-                    </div>
-                </div>
+                <?php
+                // Connect to the database
+                $servername = "localhost";
+                $username = "root";
+                $password = "";
+                $dbname = "dineamaze_database";
                 
-                <!-- Review 2 -->
-                <div class="review-card">
-                    <div class="review-profile">
-                        <img src="images/reviews/review2.jpeg" alt="Client Profile">
-                    </div>
-                    <div class="review-content">
-                        <div class="review-stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                        <h3 class="reviewer-name">Sadikshya Munankarmi</h3>
-                        <p class="review-text">The customization options are what make DineAmaze special. I was able to adjust the spice level to my preference, and the staff was incredibly accommodating. The food was fresh and flavorful!</p>
-                    </div>
-                </div>
+                // Create connection
+                $conn = new mysqli($servername, $username, $password, $dbname);
                 
-                <!-- Review 3 -->
-                <div class="review-card">
-                    <div class="review-profile">
-                        <img src="images/reviews/review3.jpeg" alt="Client Profile">
-                    </div>
-                    <div class="review-content">
-                        <div class="review-stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <h3 class="reviewer-name">Nijal Shankar</h3>
-                        <p class="review-text">The Sel Roti was absolutely perfect! Crispy on the outside, soft on the inside. The service was excellent and the ambiance was warm and inviting. Will definitely be coming back with friends!</p>
-                    </div>
-                </div>
+                // Check connection
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+                
+                // Query to fetch reviews along with user information
+                $sql = "SELECT r.review_id, r.user_id, r.rating, r.review_text, r.review_date, 
+                        u.name, u.profile_image 
+                        FROM review r 
+                        JOIN user u ON r.user_id = u.user_id 
+                        WHERE r.isHidden = 'No' 
+                        ORDER BY r.review_date DESC 
+                        LIMIT 10";
+                
+                $result = $conn->query($sql);
+                
+                if ($result && $result->num_rows > 0) {
+                    // Loop through each review and display it
+                    while ($review = $result->fetch_assoc()) {
+                        // Determine profile image path
+                        $profileImage = !empty($review['profile_image']) ? $review['profile_image'] : 'images/reviews/default-profile.jpg';
+                        
+                        // Make sure the profile image path exists
+                        if (!file_exists($profileImage) && strpos($profileImage, 'assets/') === 0) {
+                            // Try without assets prefix
+                            $profileImage = str_replace('assets/', '', $profileImage);
+                        }
+                        
+                        // If still doesn't exist, use default
+                        if (!file_exists($profileImage)) {
+                            $profileImage = 'images/reviews/default-profile.jpg';
+                        }
+                        
+                        // Render the review card
+                        echo '<div class="review-card">';
+                        echo '    <div class="review-profile">';
+                        echo '        <img src="' . htmlspecialchars($profileImage) . '" alt="' . htmlspecialchars($review['name']) . '">';
+                        echo '    </div>';
+                        echo '    <div class="review-content">';
+                        echo '        <div class="review-stars">';
+                        
+                        // Display stars based on rating
+                        $rating = $review['rating'];
+                        for ($i = 1; $i <= 5; $i++) {
+                            if ($i <= $rating) {
+                                echo '<i class="fas fa-star"></i>';
+                            } elseif ($i - 0.5 <= $rating) {
+                                echo '<i class="fas fa-star-half-alt"></i>';
+                            } else {
+                                echo '<i class="far fa-star"></i>';
+                            }
+                        }
+                        
+                        echo '        </div>';
+                        echo '        <h3 class="reviewer-name">' . htmlspecialchars($review['name']) . '</h3>';
+                        echo '        <p class="review-text">' . htmlspecialchars($review['review_text']) . '</p>';
+                        echo '    </div>';
+                        echo '</div>';
+                    }
+                } else {
+                    // If no reviews found, display a message or default reviews
+                    echo '<div class="review-card">';
+                    echo '    <div class="review-profile">';
+                    echo '        <img src="images/reviews/review1.jpg" alt="Client Profile">';
+                    echo '    </div>';
+                    echo '    <div class="review-content">';
+                    echo '        <div class="review-stars">';
+                    echo '            <i class="fas fa-star"></i>';
+                    echo '            <i class="fas fa-star"></i>';
+                    echo '            <i class="fas fa-star"></i>';
+                    echo '            <i class="fas fa-star"></i>';
+                    echo '            <i class="fas fa-star"></i>';
+                    echo '        </div>';
+                    echo '        <h3 class="reviewer-name">Samir Shrestha</h3>';
+                    echo '        <p class="review-text">I have been looking for authentic Nepali cuisine for a long time. The flavors at DineAmaze are incredible! The momos and thali sets are absolutely delicious. I am so glad to have found this place!</p>';
+                    echo '    </div>';
+                    echo '</div>';
+                }
+                
+                // Close the database connection
+                $conn->close();
+                ?>
             </div>
             
             <div class="slider-controls">

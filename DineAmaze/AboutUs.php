@@ -92,11 +92,7 @@ session_start();
                 <p>We ensure fast service and notify you 10 minutes before your order is ready, making pickup convenient and efficient.</p>
             </div>
             
-            <div class="feature-card">
-                <i class="fi fi-rr-money"></i>
-                <h3>Cash Payment Convenience</h3>
-                <p>We offer simple cash payment options for your convenience, making transactions hassle-free.</p>
-            </div>
+            
         </div>
     </div>
     

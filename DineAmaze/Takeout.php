@@ -16,12 +16,14 @@ if ($conn->connect_error) {
 }
 
 $userId = $_SESSION['user_id'];
-$sql = "SELECT email, is_verified FROM user WHERE user_id = '$userId'";
+$sql = "SELECT email, is_verified, name, phone_number FROM user WHERE user_id = '$userId'";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
     $_SESSION['user_email'] = $user['email'];
+    $_SESSION['user_name'] = $user['name'];
+    $_SESSION['user_phone'] = $user['phone_number'];
     $_SESSION['is_verified'] = $user['is_verified'] ?? 0;
 }
 $conn->close();
@@ -116,7 +118,7 @@ $cart_is_empty = !isset($_SESSION['cart']) || empty($_SESSION['cart']);
             <div class="form-row">
                 <div class="form-group">
                     <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                    <input type="text" id="fullName" name="fullName" value="<?php echo htmlspecialchars($_SESSION['user_name'] ?? ''); ?>" placeholder="Enter your full name" required>
                     <div class="error-message" id="fullNameError">Name must be at least 3 characters long</div>
                 </div>
                 <div class="form-group">
@@ -128,7 +130,7 @@ $cart_is_empty = !isset($_SESSION['cart']) || empty($_SESSION['cart']);
             <div class="form-row">
                 <div class="form-group">
                     <label for="contactNumber">Contact Number</label>
-                    <input type="tel" id="contactNumber" name="contactNumber" placeholder="Enter your contact number" required>
+                    <input type="tel" id="contactNumber" name="contactNumber" value="<?php echo htmlspecialchars($_SESSION['user_phone'] ?? ''); ?>" placeholder="Enter your contact number" required>
                     <div class="error-message" id="contactNumberError">Please enter a valid 10-digit phone number</div>
                 </div>
                 <div class="form-group">

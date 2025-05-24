@@ -64,7 +64,7 @@ if (session_status() === PHP_SESSION_NONE) {
             background: linear-gradient(to right, #764ba2, #667eea);
         }
     </style>
-    <meta http-equiv="refresh" content="5;url=Homepage.php">
+    <meta http-equiv="refresh" content="5;url=Login.php">
 </head>
 <body>
     <div class="success-container">
@@ -72,7 +72,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <h2>Signup Successful!</h2>
         <p>Your account has been created successfully.</p>
         <a href="Login.php" class="btn btn-primary">Login now</a>
-        <p class="redirect-text">You will be redirected to the homepage in <span id="countdown">5</span> seconds...</p>
+        <p class="redirect-text">You will be redirected to the login in <span id="countdown">5</span> seconds...</p>
     </div>
 
     <script>

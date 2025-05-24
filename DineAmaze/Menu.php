@@ -15,6 +15,55 @@ session_start();
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-straight/css/uicons-solid-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-chubby/css/uicons-solid-chubby.css'>
     <style>
+        /* Notification styles */
+        #notification-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .notification {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            max-width: 300px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .notification-content {
+            display: flex;
+            align-items: center;
+        }
+        
+        .notification-content i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        .notification.success i {
+            color: #4CAF50;
+        }
+        
+        .notification.error i {
+            color: #F44336;
+        }
+        
+        .notification.info i {
+            color: #2196F3;
+        }
+        
         /* Pagination styles */
         .pagination-container {
             width: 100%;
@@ -373,8 +422,10 @@ session_start();
 
     <?php include 'includes/footer.php'; ?>
     
+    <!-- Notification container -->
+    <div id="notification-container"></div>
+    
     <!-- JavaScript for filtering and customization -->
     <script src="js/menu-filter.js"></script>
-    <script src="js/food-customization.js"></script>
 </body>
 </html>

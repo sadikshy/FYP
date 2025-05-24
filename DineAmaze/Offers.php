@@ -16,149 +16,68 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Mock data for offers
-$offerCategories = [
+// Fetch offers from the database
+$sql = "SELECT * FROM offers WHERE is_hidden = 0 ORDER BY offer_id ASC";
+$result = $conn->query($sql);
+
+// Check if the query was successful
+$offers = [];
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $offers[] = $row;
+    }
+}
+
+// Group offers by section
+$offerSections = [
     [
         'id' => 1,
-        'name' => 'Student Offers',
-        'description' => 'Special discounts for students with valid ID',
-        'icon' => 'fas fa-graduation-cap',
-        'offers' => [
-            [
-                'id' => 101,
-                'title' => 'Student Lunch Special',
-                'description' => '20% off on all lunch items from Monday to Friday',
-                'discount' => '20%',
-                'code' => 'STUDENT20',
-                'valid_until' => '2024-12-31',
-                'image' => 'images/offers/student-lunch.jpg'
-            ],
-            [
-                'id' => 102,
-                'title' => 'Weekend Study Group',
-                'description' => 'Buy 3 meals, get 1 free when you come with your study group',
-                'discount' => 'Buy 3 Get 1',
-                'code' => 'STUDY4',
-                'valid_until' => '2024-12-31',
-                'image' => 'images/offers/study-group.jpg'
-            ],
-            [
-                'id' => 103,
-                'title' => 'Exam Week Boost',
-                'description' => 'Free coffee with any meal purchase during exam weeks',
-                'discount' => 'Free Coffee',
-                'code' => 'EXAMBOOST',
-                'valid_until' => '2024-12-31',
-                'image' => 'images/offers/exam-boost.jpg'
-            ]
-        ]
+        'name' => 'Current Offers',
+        'description' => 'Discover our exclusive deals and promotions designed to enhance your dining experience at DineAmaze.',
+        'icon' => 'fas fa-tags',
+        'offers' => []
     ],
     [
         'id' => 2,
-        'name' => 'Day Offers',
-        'description' => 'Special deals for each day of the week',
-        'icon' => 'fas fa-calendar-day',
-        'offers' => [
-            [
-                'id' => 201,
-                'title' => 'Monday Momo Madness',
-                'description' => '25% off on all momo varieties every Monday',
-                'discount' => '25%',
-                'code' => 'MOMOMONDAY',
-                'valid_until' => '2024-12-31',
-                'image' => 'images/offers/momo-monday.jpg'
-            ],
-            [
-                'id' => 202,
-                'title' => 'Taco Tuesday',
-                'description' => 'Buy 1 Get 1 Free on all tacos every Tuesday',
-                'discount' => 'BOGO',
-                'code' => 'TACOTUES',
-                'valid_until' => '2024-12-31',
-                'image' => 'images/offers/taco-tuesday.jpg'
-            ],
-            [
-                'id' => 203,
-                'title' => 'Weekend Family Special',
-                'description' => '15% off on family platters on Saturday and Sunday',
-                'discount' => '15%',
-                'code' => 'FAMILYWEEKEND',
-                'valid_until' => '2024-12-31',
-                'image' => 'images/offers/family-weekend.jpg'
-            ]
-        ]
+        'name' => 'Special Deals',
+        'description' => 'Exclusive deals for our dine-in customers. These offers cannot be combined with other promotions.',
+        'icon' => 'fas fa-percent',
+        'offers' => []
     ],
     [
         'id' => 3,
-        'name' => 'Seasonal Offers',
-        'description' => 'Limited-time offers for special seasons and festivals',
-        'icon' => 'fas fa-snowflake',
-        'offers' => [
-            [
-                'id' => 301,
-                'title' => 'Dashain Festival Special',
-                'description' => '30% off on traditional Nepali thali during Dashain',
-                'discount' => '30%',
-                'code' => 'DASHAIN30',
-                'valid_until' => '2024-10-31',
-                'image' => 'images/offers/dashain-special.jpg'
-            ],
-            [
-                'id' => 302,
-                'title' => 'Summer Cooler',
-                'description' => 'Buy any meal and get a free cold beverage during summer months',
-                'discount' => 'Free Drink',
-                'code' => 'SUMMERCOOL',
-                'valid_until' => '2024-08-31',
-                'image' => 'images/offers/summer-cooler.jpg'
-            ],
-            [
-                'id' => 303,
-                'title' => 'Winter Warmer',
-                'description' => '20% off on all hot soups and beverages during winter',
-                'discount' => '20%',
-                'code' => 'WINTERWARM',
-                'valid_until' => '2024-02-28',
-                'image' => 'images/offers/winter-warmer.jpg'
-            ]
-        ]
-    ],
-    [
-        'id' => 4,
-        'name' => 'Loyalty Rewards',
-        'description' => 'Special offers for our loyal customers',
-        'icon' => 'fas fa-award',
-        'offers' => [
-            [
-                'id' => 401,
-                'title' => 'Birthday Special',
-                'description' => 'Free dessert on your birthday with any meal purchase',
-                'discount' => 'Free Dessert',
-                'code' => 'BIRTHDAY',
-                'valid_until' => '2024-12-31',
-                'image' => 'images/offers/birthday-special.jpg'
-            ],
-            [
-                'id' => 402,
-                'title' => 'Anniversary Celebration',
-                'description' => '25% off on your bill on your anniversary',
-                'discount' => '25%',
-                'code' => 'ANNIVERSARY25',
-                'valid_until' => '2024-12-31',
-                'image' => 'images/offers/anniversary.jpg'
-            ],
-            [
-                'id' => 403,
-                'title' => 'Frequent Diner',
-                'description' => 'Every 10th meal is on us when you register with our loyalty program',
-                'discount' => 'Free Meal',
-                'code' => 'LOYAL10',
-                'valid_until' => '2024-12-31',
-                'image' => 'images/offers/frequent-diner.jpg'
-            ]
-        ]
+        'name' => 'Celebration Offers',
+        'description' => 'Make your special occasions even more memorable with our celebration offers.',
+        'icon' => 'fas fa-gift',
+        'offers' => []
     ]
 ];
+
+// Distribute offers to their respective sections
+foreach ($offers as $offer) {
+    // Determine which section to put the offer in
+    // Since the database has section as '0', we'll use a different approach
+    // We'll distribute based on offer_id for now (1-3 in first section, 4-5 in second, 6-7 in third)
+    $sectionIndex = 0; // Default to first section
+    
+    if ($offer['offer_id'] >= 4 && $offer['offer_id'] <= 5) {
+        $sectionIndex = 1; // Second section
+    } else if ($offer['offer_id'] >= 6) {
+        $sectionIndex = 2; // Third section
+    }
+    
+    // Add the offer to the appropriate section
+    $offerSections[$sectionIndex]['offers'][] = [
+        'id' => $offer['offer_id'],
+        'title' => $offer['title'],
+        'description' => $offer['description'],
+        'badge' => $offer['badge'],
+        'valid_until' => $offer['valid_until'],
+        'is_ongoing' => $offer['is_ongoing'],
+        'how_to_take' => $offer['how_to_take'],
+        'image' => $offer['image']
+    ];
+}
 
 // Create offers directory if it doesn't exist
 $offersDir = 'images/offers/';
@@ -199,183 +118,48 @@ $conn->close();
         </div>
     </section>
     
-    <section class="offer-section" id="current-offers">
+    <?php foreach ($offerSections as $section): ?>
+    <section class="offer-section" id="<?php echo strtolower(str_replace(' ', '-', $section['name'])); ?>">
         <div class="container">
             <div class="offer-header">
-                <h2 class="offer-title">Our<span>Offers</span></h2>
-                <p class="offer-description">
-                    Discover our exclusive deals and promotions designed to enhance your dining experience at DineAmaze.
-                    Don't miss out on these limited-time offers!
-                </p>
+                <h2 class="offer-title"><?php echo $section['name']; ?></h2>
+                <p class="offer-description"><?php echo $section['description']; ?></p>
             </div>
             
-            <div class="offer-categories">
-                <ul class="nav nav-tabs" id="offerTabs" role="tablist">
-                    <?php foreach ($offerCategories as $index => $category): ?>
-                    <li class="nav-item">
-                        <a class="nav-link <?php echo ($index === 0) ? 'active' : ''; ?>" 
-                           id="tab-<?php echo $category['id']; ?>" 
-                           data-toggle="tab" 
-                           href="#category-<?php echo $category['id']; ?>" 
-                           role="tab">
-                            <i class="<?php echo $category['icon']; ?>"></i> <?php echo $category['name']; ?>
-                        </a>
-                    </li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-            
-            <div class="tab-content" id="offerTabContent">
-                <?php foreach ($offerCategories as $index => $category): ?>
-                <div class="tab-pane fade <?php echo ($index === 0) ? 'show active' : ''; ?>" 
-                     id="category-<?php echo $category['id']; ?>" 
-                     role="tabpanel">
-                    
-                    <div class="category-description">
-                        <h3><?php echo $category['name']; ?></h3>
-                        <p><?php echo $category['description']; ?></p>
-                    </div>
-                    
-                    <div class="offer-container">
-                        <?php foreach ($category['offers'] as $offer): ?>
+            <div class="offer-container">
+                <?php if (!empty($section['offers'])): ?>
+                    <?php foreach ($section['offers'] as $offer): ?>
                         <div class="offer-card">
-                            <div class="offer-badge"><?php echo $offer['discount']; ?></div>
+                            <div class="offer-badge"><?php echo htmlspecialchars($offer['badge']); ?></div>
                             <div class="offer-image">
-                                <img src="<?php echo $offer['image']; ?>" alt="<?php echo $offer['title']; ?>" onerror="this.src='images/offers/default-offer.jpg'">
+                                <img src="<?php echo htmlspecialchars($offer['image']); ?>" alt="<?php echo htmlspecialchars($offer['title']); ?>">
                             </div>
                             <div class="offer-content">
-                                <h3><?php echo $offer['title']; ?></h3>
-                                <p><?php echo $offer['description']; ?></p>
-                                <p class="offer-validity">Valid until: <?php echo date('d M Y', strtotime($offer['valid_until'])); ?></p>
-                                <p class="promo-code">Code: <strong><?php echo $offer['code']; ?></strong></p>
-                                <a href="Menu.php" class="view-all-btn">Order Now</a>
+                                <h3><?php echo htmlspecialchars($offer['title']); ?></h3>
+                                <p><?php echo htmlspecialchars($offer['description']); ?></p>
+                                <p class="offer-validity">
+                                    <?php if ($offer['is_ongoing']): ?>
+                                        Ongoing
+                                    <?php elseif (!empty($offer['valid_until']) && $offer['valid_until'] != '0000-00-00'): ?>
+                                        Valid until: <?php echo date('M d, Y', strtotime($offer['valid_until'])); ?>
+                                    <?php endif; ?>
+                                </p>
+                                <div class="how-to-take">
+                                    <h4>How to Take the Offer:</h4>
+                                    <p><?php echo htmlspecialchars($offer['how_to_take']); ?></p>
+                                </div>
                             </div>
                         </div>
-                        <?php endforeach; ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="no-offers-message">
+                        <p>No offers available in this category at this time. Please check back later!</p>
                     </div>
-                </div>
-                <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div>
     </section>
-    
-    <section class="how-to-use">
-        <div class="container">
-            <div class="offer-header">
-                <h2 class="offer-title">How to<span>Redeem</span></h2>
-                <p class="offer-description">
-                    Follow these simple steps to enjoy our exclusive deals and make the most of your dining experience
-                </p>
-            </div>
-            
-            <div class="steps-container">
-                <div class="step">
-                    <div class="step-icon">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <h4>Find an Offer</h4>
-                    <p>Browse through our available offers and find one that suits you</p>
-                </div>
-                
-                <div class="step">
-                    <div class="step-icon">
-                        <i class="fas fa-copy"></i>
-                    </div>
-                    <h4>Copy the Code</h4>
-                    <p>Note down the promo code for your selected offer</p>
-                </div>
-                
-                <div class="step">
-                    <div class="step-icon">
-                        <i class="fas fa-utensils"></i>
-                    </div>
-                    <h4>Order Your Meal</h4>
-                    <p>Select your favorite items from our menu</p>
-                </div>
-                
-                <div class="step">
-                    <div class="step-icon">
-                        <i class="fas fa-tag"></i>
-                    </div>
-                    <h4>Apply the Code</h4>
-                    <p>Enter the promo code during checkout to get your discount</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section class="offers-faq">
-        <div class="container">
-            <div class="offer-header">
-                <h2 class="offer-title">FAQ<span>About Offers</span></h2>
-                <p class="offer-description">
-                    Get answers to common questions about our special deals and promotions
-                </p>
-            </div>
-            
-            <div class="accordion" id="offersFAQ">
-                <div class="card">
-                    <div class="card-header" id="headingOne">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Can I combine multiple offers?
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#offersFAQ">
-                        <div class="card-body">
-                            No, only one offer can be applied per order. Please choose the offer that provides the best value for your order.
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header" id="headingTwo">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Do I need to show my student ID for student offers?
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#offersFAQ">
-                        <div class="card-body">
-                            Yes, a valid student ID must be presented when redeeming student offers, either in person for dine-in or takeout orders.
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header" id="headingThree">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                How do I redeem my birthday offer?
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#offersFAQ">
-                        <div class="card-body">
-                            To redeem your birthday offer, you must be registered in our system with your birth date. The offer is valid 7 days before and after your birthday. Simply mention the offer when placing your order and show a valid ID.
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header" id="headingFour">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                Are offers valid for both dine-in and takeout?
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#offersFAQ">
-                        <div class="card-body">
-                            Yes, most offers are valid for both dine-in and takeout orders unless specifically mentioned otherwise in the offer details.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<?php endforeach; ?>
     
     <?php include 'includes/footer.php'; ?>
     

@@ -160,15 +160,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     const cartCount = document.querySelector('.cart-count');
                     cartCount.textContent = data.cartCount;
                     
-                    // Show success message
-                    alert(data.message);
+                    // Show notification popup
+                    showNotification(data.message, 'success');
                 } else {
-                    alert('Error adding item to cart: ' + data.message);
+                    showNotification('Error adding item to cart: ' + data.message, 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred while adding the item to cart.');
+                showNotification('An error occurred while adding the item to cart.', 'error');
             });
         });
     });
@@ -189,3 +189,31 @@ document.addEventListener('DOMContentLoaded', function() {
     applyDietaryFilter();
     applySearchFilter();
 });
+
+// Function to show notification popup
+function showNotification(message, type) {
+    const notificationContainer = document.getElementById('notification-container');
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    notificationContainer.appendChild(notification);
+    
+    // Show notification
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+    
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notificationContainer.removeChild(notification);
+        }, 300);
+    }, 3000);
+}

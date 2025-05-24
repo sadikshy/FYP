@@ -139,6 +139,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['change_password'])) {
     }
 }
 
+// Handle order cancellation
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cancel_order'])) {
+    $orderId = intval($_POST['order_id']);
+    
+    // Get order information
+    $orderSql = "SELECT * FROM takeout_order_items WHERE order_id = ?";
+    $stmt = $conn->prepare($orderSql);
+    $stmt->bind_param("i", $orderId);
+    $stmt->execute();
+    $orderResult = $stmt->get_result();
+    
+    if ($orderResult && $orderResult->num_rows > 0) {
+        $order = $orderResult->fetch_assoc();
+        
+        // Check if order was placed within the last 10 minutes
+        $orderTime = strtotime($order['order_date']);
+        $currentTime = time();
+        $timeDifference = $currentTime - $orderTime;
+        
+        // Allow cancellation only within 10 minutes of placing the order
+        if ($timeDifference <= 600) { // 600 seconds = 10 minutes
+            // Update order status to cancelled
+            $updateSql = "UPDATE takeout_order_items SET status = 'cancelled' WHERE order_id = ?";
+            $updateStmt = $conn->prepare($updateSql);
+            $updateStmt->bind_param("i", $orderId);
+            
+            if ($updateStmt->execute()) {
+                $_SESSION['order_cancelled'] = true;
+                $_SESSION['cancellation_message'] = "Your order has been successfully cancelled.";
+            } else {
+                $_SESSION['cancellation_error'] = "Error cancelling order: " . $conn->error;
+            }
+            $updateStmt->close();
+        } else {
+            $_SESSION['cancellation_error'] = "Sorry, orders can only be cancelled within 10 minutes of placing them.";
+        }
+    } else {
+        $_SESSION['cancellation_error'] = "Order not found.";
+    }
+    $stmt->close();
+    
+    // Redirect to refresh the page and avoid form resubmission
+    header("Location: account_settings.php#orders");
+    exit();
+}
+
 $conn->close();
 ?>
 
@@ -153,6 +199,19 @@ $conn->close();
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/Homepage.css">
     <link rel="stylesheet" href="css/account_settings.css">
+    <style>
+        .countdown-timer {
+            font-weight: 600;
+            color: #e74a3b;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+    </style>
 </head>
 <body>
     <?php include 'includes/header.php'; ?>
@@ -188,14 +247,29 @@ $conn->close();
     <!-- Bootstrap Alert for Order Cancellation -->
     <?php if(isset($_SESSION['order_cancelled']) && $_SESSION['order_cancelled']): ?>
     <div class="alert alert-success alert-dismissible fade show" role="alert" id="orderCancelAlert">
-        <strong>Success!</strong> Your order has been cancelled successfully!
+        <strong>Success!</strong> <?php echo isset($_SESSION['cancellation_message']) ? $_SESSION['cancellation_message'] : 'Your order has been cancelled successfully!'; ?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <?php 
+        // Clear the session variables
+        unset($_SESSION['order_cancelled']);
+        unset($_SESSION['cancellation_message']);
+    ?>
+    <?php endif; ?>
+    
+    <!-- Bootstrap Alert for Order Cancellation Error -->
+    <?php if(isset($_SESSION['cancellation_error'])): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="orderCancelErrorAlert">
+        <strong>Error!</strong> <?php echo $_SESSION['cancellation_error']; ?>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <?php 
         // Clear the session variable
-        unset($_SESSION['order_cancelled']);
+        unset($_SESSION['cancellation_error']);
     ?>
     <?php endif; ?>
     
@@ -410,20 +484,38 @@ $conn->close();
                                             <p><strong>Status:</strong> ' . ucfirst($order['status']) . '</p>
                                             <p><strong>Pickup Time:</strong> ' . (isset($order['pickup_time']) && !empty($order['pickup_time']) ? date('H:i A', strtotime($order['pickup_time'])) : 'Not specified') . '</p>';
                         
-                        // Add cancel button if order is pending or verified
+                        // Order information note and cancel button
                         if ($order['status'] == 'pending' || $order['status'] == 'verified') {
+                            echo '<p class="text-muted mt-2 small">Your order is scheduled for pickup at ' . (isset($order['pickup_time']) && !empty($order['pickup_time']) ? date('H:i A', strtotime($order['pickup_time'])) : 'Not specified') . '.</p>';
+                            
+                            // Check if order was placed within the last 10 minutes
+                            $orderTime = strtotime($order['order_date']);
+                            $currentTime = time();
+                            $timeDifference = $currentTime - $orderTime;
+                            $canCancel = ($timeDifference <= 600); // 600 seconds = 10 minutes
+                            
+                            // Calculate time left for cancellation
+                            $timeLeftSeconds = 600 - $timeDifference;
+                            $timeLeftMinutes = floor($timeLeftSeconds / 60);
+                            $timeLeftSecondsRemainder = $timeLeftSeconds % 60;
+                            
                             echo '<form method="POST" action="" class="mt-3">';
                             echo '<input type="hidden" name="order_id" value="' . $order['order_id'] . '">';
                             
                             if ($canCancel) {
                                 echo '<button type="submit" name="cancel_order" class="btn btn-danger btn-sm">Cancel Order</button>';
-                                echo '<p class="text-muted mt-2 small">You can cancel this order until ' . date('H:i A', $cutoffTime) . ' (order scheduled for ' . date('H:i A', $orderTime) . ').</p>';
+                                echo '<p class="text-muted mt-2 small">You can cancel this order for the next <span id="timer-' . $order['order_id'] . '" class="countdown-timer" data-seconds-left="' . $timeLeftSeconds . '">' . $timeLeftMinutes . ' minutes and ' . $timeLeftSecondsRemainder . ' seconds</span>.</p>';
                                 
-                                // Add countdown timer with data attribute for JavaScript
-                                echo '<p class="cancel-timer small text-danger" data-time-left="' . $timeLeftSeconds . '">Time remaining: ' . floor($timeLeftMinutes) . ':' . str_pad(($timeLeftSeconds % 60), 2, '0', STR_PAD_LEFT) . '</p>';
+                                // Add script for this specific timer
+                                echo '<script>
+                                    document.addEventListener("DOMContentLoaded", function() {
+                                        // Initialize timer for order #' . $order['order_id'] . '
+                                        initializeTimer("timer-' . $order['order_id'] . '", ' . $timeLeftSeconds . ');
+                                    });
+                                </script>';
                             } else {
                                 echo '<button type="button" class="btn btn-danger btn-sm" disabled>Cancel Order</button>';
-                                echo '<p class="text-muted mt-2 small">Orders can only be cancelled up to 10 minutes before the scheduled time (' . date('h:i A', $orderTime) . ').</p>';
+                                echo '<p class="text-muted mt-2 small">Orders can only be cancelled within 10 minutes of placing them.</p>';
                             }
                             
                             echo '</form>';
@@ -449,12 +541,59 @@ else {
 
     <?php include 'includes/footer.php'; ?>
     
-    <!-- Add Bootstrap JS for tab functionality -->
+    
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="js/account_settings.js"></script>
-    <!-- Remove the inline script that was here -->
+    
+    <script>
+        // Function to initialize countdown timers
+        function initializeTimer(timerId, secondsLeft) {
+            const timerElement = document.getElementById(timerId);
+            if (!timerElement) return;
+            
+            // Update the timer every second
+            const timerInterval = setInterval(function() {
+                secondsLeft--;
+                
+                if (secondsLeft <= 0) {
+                    // Time's up - disable the button and update message
+                    clearInterval(timerInterval);
+                    timerElement.textContent = '0 minutes and 0 seconds';
+                    
+                    // Find the parent form and disable the button
+                    const form = timerElement.closest('form');
+                    if (form) {
+                        const button = form.querySelector('button[name="cancel_order"]');
+                        if (button) {
+                            button.disabled = true;
+                            button.textContent = 'Cancel Order (Expired)';
+                        }
+                        
+                        // Update the message
+                        const messageElement = timerElement.parentElement;
+                        if (messageElement) {
+                            messageElement.textContent = 'Orders can only be cancelled within 10 minutes of placing them.';
+                        }
+                    }
+                    
+                    // Reload the page to reflect the updated state
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 2000);
+                    
+                    return;
+                }
+                
+                // Calculate minutes and seconds
+                const minutes = Math.floor(secondsLeft / 60);
+                const seconds = secondsLeft % 60;
+                
+                // Update the display
+                timerElement.textContent = minutes + ' minutes and ' + seconds + ' seconds';
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
-  

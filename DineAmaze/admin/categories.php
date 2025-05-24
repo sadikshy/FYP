@@ -294,4 +294,3 @@ if ($result->num_rows > 0) {
     </script>
 </body>
 </html>
-<?php $conn->close(); ?>

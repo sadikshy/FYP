@@ -641,6 +641,6 @@ $stmt->close();
             }
         }
     </script>
-<?php $conn->close(); ?>
+
 </body>
 </html>

@@ -59,9 +59,19 @@ foreach ($_SESSION['cart'] as $item) {
                 <div class="cart-item">
                     <div class="item-image">
                         <?php if (!empty($item['image'])): ?>
-                            <img src="assets/images/menu/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
+                            <?php
+                            $imagePath = $item['image'];
+                            
+                            // Check if the image path already contains the full path structure
+                            if (strpos($imagePath, 'assets/images/menu/') === false) {
+                                // The image path in the database is stored as "Category/filename.jpg"
+                                // So we need to prepend the base path
+                                $imagePath = 'assets/images/menu/' . $imagePath;
+                            }
+                            ?>
+                            <img src="<?php echo htmlspecialchars($imagePath); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>" onerror="this.onerror=null; this.src='assets/images/menu/default-food.jpg';">
                         <?php else: ?>
-                            <img src="assets/images/default-food.jpg" alt="<?php echo htmlspecialchars($item['name']); ?>">
+                            <img src="assets/images/menu/default-food.jpg" alt="<?php echo htmlspecialchars($item['name']); ?>">
                         <?php endif; ?>
                     </div>
                     <div class="item-details">

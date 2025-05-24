@@ -22,10 +22,18 @@
             <i class="fas fa-list"></i> Categories
         </a>
         
+        <a href="manage_offers.php" class="menu-item <?php echo (basename($_SERVER['PHP_SELF']) == 'manage_offers.php') ? 'active' : ''; ?>">
+            <i class="fas fa-tags"></i> Offers
+        </a>
+        
         <div class="menu-category">Orders</div>
         
         <a href="orders.php" class="menu-item <?php echo (basename($_SERVER['PHP_SELF']) == 'orders.php') ? 'active' : ''; ?>">
             <i class="fas fa-shopping-cart"></i> Orders
+        </a>
+        
+        <a href="manual_notifications.php" class="menu-item <?php echo (basename($_SERVER['PHP_SELF']) == 'manual_notifications.php') ? 'active' : ''; ?>">
+            <i class="fas fa-bell"></i> Order Notifications
         </a>
         
         <div class="menu-category">Users</div>
@@ -44,9 +52,7 @@
             <i class="fas fa-cog"></i> Settings
         </a>
         
-        <a href="reports.php" class="menu-item <?php echo (basename($_SERVER['PHP_SELF']) == 'reports.php') ? 'active' : ''; ?>">
-            <i class="fas fa-chart-bar"></i> Reports
-        </a>
+
     </div>
     
     <div class="sidebar-footer">

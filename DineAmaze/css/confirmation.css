@@ -1,0 +1,238 @@
+/* Confirmation Page Styling */
+:root {
+    --primary-color: #4e73df;
+    --secondary-color: #1cc88a;
+    --accent-color: #f6c23e;
+    --danger-color: #e74a3b;
+    --dark-color: #2c3e50;
+    --light-color: #f8f9fc;
+    --border-color: #e3e6f0;
+    --text-color: #5a5c69;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+.confirmation-container {
+    max-width: 800px;
+    margin: 150px auto 50px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-color);
+}
+
+.order-header {
+    background: linear-gradient(135deg, var(--primary-color), #3a5cbe);
+    color: white;
+    padding: 25px 30px;
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+}
+
+.order-header h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: inherit;
+}
+
+.pending-badge {
+    background-color: var(--accent-color);
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.pending-badge:contains("verified") {
+    background-color: var(--secondary-color);
+}
+
+.order-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 25px 30px;
+    background-color: #f8f9fc;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.order-info > div {
+    flex: 1;
+    min-width: 250px;
+}
+
+.info-row {
+    display: flex;
+    margin-bottom: 15px;
+    align-items: baseline;
+}
+
+.info-label {
+    font-weight: 600;
+    color: var(--dark-color);
+    width: 100px;
+    flex-shrink: 0;
+}
+
+.info-value {
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.order-items {
+    padding: 25px 30px;
+}
+
+.order-items h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--dark-color);
+    font-weight: 600;
+    font-size: 20px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+.items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+}
+
+.items-table th {
+    background-color: #f1f3f9;
+    color: var(--dark-color);
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.items-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.items-table tr:last-child td {
+    border-bottom: none;
+}
+
+.items-table tr:hover {
+    background-color: rgba(78, 115, 223, 0.05);
+}
+
+.total-row {
+    font-weight: 700;
+    color: var(--dark-color);
+    background-color: #f8f9fc;
+}
+
+.total-row td {
+    border-top: 2px solid var(--border-color);
+}
+
+.total-row td:last-child {
+    color: var(--primary-color);
+}
+
+.verification-process {
+    background-color: #f8f9fc;
+    padding: 25px 30px;
+    border-radius: 8px;
+    margin: 0 30px 30px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.verification-process h3 {
+    margin-top: 0;
+    color: var(--dark-color);
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.verification-process p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.verification-process ol {
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+.verification-process li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.verification-process li::marker {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.back-button {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary-color), #3a5cbe);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    margin: 20px 0 30px;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    border: none;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #3a5cbe, var(--primary-color));
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .confirmation-container {
+        margin: 100px 15px 30px;
+        border-radius: 8px;
+    }
+    
+    .order-info {
+        flex-direction: column;
+    }
+    
+    .order-info > div {
+        margin-bottom: 15px;
+    }
+    
+    .items-table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .verification-process {
+        margin: 0 15px 20px;
+        padding: 20px;
+    }
+}
+
+/* Status badge colors */
+.pending-badge:not(:contains("verified")) {
+    background-color: var(--accent-color);
+}
+
+.pending-badge:contains("verified") {
+    background-color: var(--secondary-color);
+}

@@ -18,6 +18,7 @@ if ($conn->connect_error) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $item_name = $_POST['item_name'];
     $price = $_POST['price'];
+    $offer_price = !empty($_POST['offer_price']) ? $_POST['offer_price'] : NULL;
     $ingredients = $_POST['ingredients'];
     $category_id = $_POST['category_id'];
     $is_customizable = isset($_POST['is_customizable']) ? $_POST['is_customizable'] : 0;
@@ -55,8 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     // Insert menu item
-    $stmt = $conn->prepare("INSERT INTO menu_item (item_name, price, ingredients, category_id, image_name, is_customizable) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sdsssi", $item_name, $price, $ingredients, $category_id, $image_name, $is_customizable);
+    $stmt = $conn->prepare("INSERT INTO menu_item (item_name, price, offer_price, ingredients, category_id, image_name, is_customizable) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sddsssi", $item_name, $price, $offer_price, $ingredients, $category_id, $image_name, $is_customizable);
     
     if ($stmt->execute()) {
         $success_message = "Menu item added successfully!";
@@ -236,6 +237,11 @@ if ($result->num_rows > 0) {
                                 <input type="number" id="price" name="price" class="form-control" step="0.01" required>
                                 <div class="error-message" id="priceError">Please enter a valid price (greater than 0)</div>
                             </div>
+                            <div class="form-group">
+                                <label for="offer_price">Offer Price (Rs.)</label>
+                                <input type="number" id="offer_price" name="offer_price" class="form-control" step="0.01" placeholder="Leave empty if no offer">
+                                <div class="error-message" id="offerPriceError">Offer price must be less than regular price</div>
+                            </div>
                         </div>
                         
                         <div class="form-group">
@@ -358,4 +364,3 @@ if ($result->num_rows > 0) {
     </script>
 </body>
 </html>
-<?php $conn->close(); ?>

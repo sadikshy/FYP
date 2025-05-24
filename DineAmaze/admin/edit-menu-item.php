@@ -40,6 +40,7 @@ $stmt->close();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $item_name = $_POST['item_name'];
     $price = $_POST['price'];
+    $offer_price = !empty($_POST['offer_price']) ? $_POST['offer_price'] : NULL;
     $ingredients = $_POST['ingredients']; // Changed from description to ingredients
     $category_id = $_POST['category_id'];
     $is_customizable = isset($_POST['customizable']) ? $_POST['customizable'] : 0;
@@ -84,23 +85,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     // Update menu item
-    // Update the SQL query to include is_customizable
+    // Update the SQL query to include is_customizable and offer_price
     $stmt = $conn->prepare("UPDATE menu_item SET 
         item_name = ?, 
         price = ?, 
+        offer_price = ?,
         ingredients = ?, 
         category_id = ?, 
         image_name = ?,
         is_customizable = ? 
         WHERE item_id = ?");
     
-    // Change bind_param types from "sdssiii" to "sdsssii"
-    $stmt->bind_param("sdsssii", 
+    // Update bind_param to include offer_price
+    $stmt->bind_param("sddsssii", 
         $item_name, 
         $price, 
+        $offer_price,
         $ingredients, 
         $category_id, 
-        $image_name,  // Changed from integer (i) to string (s)
+        $image_name,
         $is_customizable,
         $item_id
     );
@@ -297,6 +300,11 @@ if ($result->num_rows > 0) {
                                 <input type="number" id="price" name="price" class="form-control" step="0.01" value="<?php echo $menu_item['price']; ?>" required>
                                 <div class="error-message" id="priceError">Please enter a valid price (greater than 0)</div>
                             </div>
+                            <div class="form-group">
+                                <label for="offer_price">Offer Price (Rs.)</label>
+                                <input type="number" id="offer_price" name="offer_price" class="form-control" step="0.01" value="<?php echo isset($menu_item['offer_price']) ? $menu_item['offer_price'] : ''; ?>" placeholder="Leave empty if no offer">
+                                <div class="error-message" id="offerPriceError">Offer price must be less than regular price</div>
+                            </div>
                         </div>
                         
                         <div class="form-row">
@@ -436,4 +444,3 @@ if ($result->num_rows > 0) {
     </script>
 </body>
 </html>
-<?php $conn->close(); ?>
